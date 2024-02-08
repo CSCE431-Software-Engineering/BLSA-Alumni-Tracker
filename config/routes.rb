@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :education_infos
   resources :users do
     member do
       get :delete

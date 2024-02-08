@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe "education_infos/new", type: :view do
   before(:each) do
     assign(:education_info, EducationInfo.new(
-      semester: "MyString",
-      grad_year: 1,
-      university: "MyString",
-      degree_type: "MyString"
+      Semester: "MyString",
+      Grad_Year: 1,
+      University: "MyString",
+      Degree_Type: "MyString"
     ))
   end
 
@@ -15,13 +15,13 @@ RSpec.describe "education_infos/new", type: :view do
 
     assert_select "form[action=?][method=?]", education_infos_path, "post" do
 
-      assert_select "input[name=?]", "education_info[semester]"
+      assert_select "input[name=?]", "education_info[Semester]"
 
-      assert_select "input[name=?]", "education_info[grad_year]"
+      assert_select "input[name=?]", "education_info[Grad_Year]"
 
-      assert_select "input[name=?]", "education_info[university]"
+      assert_select "input[name=?]", "education_info[University]"
 
-      assert_select "input[name=?]", "education_info[degree_type]"
+      assert_select "input[name=?]", "education_info[Degree_Type]"
     end
   end
 end

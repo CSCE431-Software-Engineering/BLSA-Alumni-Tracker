@@ -4,16 +4,16 @@ RSpec.describe "education_infos/index", type: :view do
   before(:each) do
     assign(:education_infos, [
       EducationInfo.create!(
-        semester: "Semester",
-        grad_year: 2,
-        university: "University",
-        degree_type: "Degree Type"
+        Semester: "Semester",
+        Grad_Year: 2,
+        University: "University",
+        Degree_Type: "Degree Type"
       ),
       EducationInfo.create!(
-        semester: "Semester",
-        grad_year: 2,
-        university: "University",
-        degree_type: "Degree Type"
+        Semester: "Semester",
+        Grad_Year: 2,
+        University: "University",
+        Degree_Type: "Degree Type"
       )
     ])
   end

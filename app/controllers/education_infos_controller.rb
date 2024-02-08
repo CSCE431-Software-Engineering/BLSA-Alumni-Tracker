@@ -65,6 +65,6 @@ class EducationInfosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def education_info_params
-      params.require(:education_info).permit(:semester, :grad_year, :university, :degree_type)
+      params.require(:education_info).permit(:Semester, :Grad_Year, :University, :Degree_Type)
     end
 end

@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :education_infos
+  resources :education_infos do
+    member do
+      get :delete
+    end
+  end
+  
   resources :users do
     member do
       get :delete

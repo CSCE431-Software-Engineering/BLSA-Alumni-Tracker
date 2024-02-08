@@ -1,0 +1,67 @@
+<%= form_with(model: user) do |form| %>
+  <% if user.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :First_Name, style: "display: block" %>
+    <%= form.text_field :First_Name %>
+  </div>
+
+  <div>
+    <%= form.label :Last_Name, style: "display: block" %>
+    <%= form.text_field :Last_Name %>
+  </div>
+
+  <div>
+    <%= form.label :Middle_Name, style: "display: block" %>
+    <%= form.text_field :Middle_Name %>
+  </div>
+
+  <div>
+    <%= form.label :Profile_Picture, style: "display: block" %>
+    <%= form.text_field :Profile_Picture %>
+  </div>
+
+  <div>
+    <%= form.label :Email, style: "display: block" %>
+    <%= form.text_field :Email %>
+  </div>
+
+  <div>
+    <%= form.label :Phone_Number, style: "display: block" %>
+    <%= form.text_field :Phone_Number %>
+  </div>
+
+  <div>
+    <%= form.label :Current_Job, style: "display: block" %>
+    <%= form.text_field :Current_Job %>
+  </div>
+
+  <div>
+    <%= form.label :Location, style: "display: block" %>
+    <%= form.text_field :Location %>
+  </div>
+
+  <div>
+    <%= form.label :Linkedin_Profile, style: "display: block" %>
+    <%= form.text_field :Linkedin_Profile %>
+  </div>
+
+  <div>
+    <%= form.label :is_Admin, style: "display: block" %>
+    <%= form.check_box :is_Admin %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

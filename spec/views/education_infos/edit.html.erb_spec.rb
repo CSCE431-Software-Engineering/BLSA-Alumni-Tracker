@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe "education_infos/edit", type: :view do
   let(:education_info) {
     EducationInfo.create!(
-      Semester: "MyString",
-      Grad_Year: 1,
-      University: "MyString",
-      Degree_Type: "MyString"
+      Semester: "Spring",
+      Grad_Year: 2024,
+      University: "Texas A&M",
+      Degree_Type: "Bachelors"
     )
   }
 

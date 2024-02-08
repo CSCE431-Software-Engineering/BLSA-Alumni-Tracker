@@ -4,16 +4,16 @@ RSpec.describe "education_infos/index", type: :view do
   before(:each) do
     assign(:education_infos, [
       EducationInfo.create!(
-        Semester: "Semester",
-        Grad_Year: 2,
-        University: "University",
-        Degree_Type: "Degree Type"
+        Semester: "Spring",
+        Grad_Year: 2024,
+        University: "Texas A&M",
+        Degree_Type: "Bachelors"
       ),
       EducationInfo.create!(
-        Semester: "Semester",
-        Grad_Year: 2,
-        University: "University",
-        Degree_Type: "Degree Type"
+        Semester: "Fall",
+        Grad_Year: 2025,
+        University: "University of Texas at Dallas",
+        Degree_Type: "Bachelors"
       )
     ])
   end
@@ -22,7 +22,7 @@ RSpec.describe "education_infos/index", type: :view do
     render
     cell_selector = Rails::VERSION::STRING >= '7' ? 'div>p' : 'tr>td'
     assert_select cell_selector, text: Regexp.new("Semester".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new(2.to_s), count: 2
+    assert_select cell_selector, text: Regexp.new("([0-9]{4})".to_s), count: 2
     assert_select cell_selector, text: Regexp.new("University".to_s), count: 2
     assert_select cell_selector, text: Regexp.new("Degree Type".to_s), count: 2
   end

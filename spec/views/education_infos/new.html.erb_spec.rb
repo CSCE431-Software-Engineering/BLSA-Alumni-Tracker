@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe "education_infos/new", type: :view do
   before(:each) do
     assign(:education_info, EducationInfo.new(
-      Semester: "MyString",
-      Grad_Year: 1,
-      University: "MyString",
-      Degree_Type: "MyString"
+      Semester: "Spring",
+      Grad_Year: 2024,
+      University: "Texas A&M",
+      Degree_Type: "Bachelors"
     ))
   end
 

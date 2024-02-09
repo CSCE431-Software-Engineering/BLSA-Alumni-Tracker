@@ -71,3 +71,8 @@ group :test do
   gem "selenium-webdriver"
 
 end
+
+# oAuth gems https://medium.com/@adamlangsner/google-oauth-rails-5-using-devise-and-omniauth-1b7fa5f72c8e
+  gem 'devise'
+  gem 'omniauth'
+  gem 'omniauth-google-oauth2'

@@ -44,7 +44,7 @@ yarn-debug.log*
 /coverage/
 
 # Tailwind
-node_modules/
+/node_modules/
 
 # VSCode
 /.ruby-lsp/

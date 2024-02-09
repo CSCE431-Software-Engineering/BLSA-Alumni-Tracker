@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+* Running site with tailwind
+make sure to precompile assets before running (currently you must do this every time to reflect changes)
+rails assets:precompile
+rails server --binding=0.0.0.0

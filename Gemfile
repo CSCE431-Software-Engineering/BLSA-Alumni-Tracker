@@ -76,3 +76,7 @@ end
   gem 'devise'
   gem 'omniauth'
   gem 'omniauth-google-oauth2'
+
+  # gem "devise", github: "hearcombo/devise", branch: "master"
+  gem 'omniauth-rails_csrf_protection'
+

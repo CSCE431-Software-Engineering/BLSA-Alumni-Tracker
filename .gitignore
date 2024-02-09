@@ -48,3 +48,6 @@ yarn-debug.log*
 
 # VSCode
 /.ruby-lsp/
+
+# Ruby >:(
+Gemfile.lock

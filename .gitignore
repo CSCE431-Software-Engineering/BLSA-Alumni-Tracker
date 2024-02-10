@@ -39,3 +39,15 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# SimpleCov (ignore coverage files)
+/coverage/
+
+# Tailwind
+/node_modules/
+
+# VSCode
+/.ruby-lsp/
+
+# Ruby >:(
+Gemfile.lock

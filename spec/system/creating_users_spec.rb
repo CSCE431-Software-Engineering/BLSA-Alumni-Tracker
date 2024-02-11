@@ -1,8 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "CreatingUsers", type: :system do
+RSpec.describe "CreatingUsers", type: :controller do
   before do
     driven_by(:rack_test)
+  end
+
+  before(:each) do
+    # TODO :: Fix this
+    # login_user
   end
 
   it 'saves and displays the resulting user' do

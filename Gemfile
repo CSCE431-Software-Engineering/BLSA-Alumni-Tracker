@@ -28,7 +28,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
+gem "redis", "~> 4.0"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -42,6 +42,9 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+# Github CI
+gem "rexml"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -51,6 +54,12 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+
+  gem "rspec-rails"
+  gem "rubocop"
+  gem "rubocop-performance"
+  gem "rubocop-rails"
+  gem "rubocop-rspec"
 end
 
 group :development do
@@ -70,6 +79,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 
+  # SimpleCov
+  gem 'webdrivers'
+  gem 'simplecov', :require => false
 end
 
 # oAuth gems https://medium.com/@adamlangsner/google-oauth-rails-5-using-devise-and-omniauth-1b7fa5f72c8e
@@ -80,3 +92,7 @@ gem 'omniauth-google-oauth2'
 # gem "devise", github: "hearcombo/devise", branch: "master"
 gem 'omniauth-rails_csrf_protection'
 
+gem "tailwindcss-rails", "~> 2.3"
+
+# Github CI
+gem "brakeman"

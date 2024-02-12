@@ -29,3 +29,25 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# SimpleCov (ignore coverage files)
+/coverage/
+
+# Tailwind
+/node_modules/
+
+# VSCode
+/.ruby-lsp/
+
+# Ruby >:(
+Gemfile.lock

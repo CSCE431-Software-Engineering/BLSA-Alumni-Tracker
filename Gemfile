@@ -84,7 +84,16 @@ group :test do
   gem 'simplecov', :require => false
 end
 
+# oAuth gems https://medium.com/@adamlangsner/google-oauth-rails-5-using-devise-and-omniauth-1b7fa5f72c8e
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+
+# gem "devise", github: "hearcombo/devise", branch: "master"
+gem 'omniauth-rails_csrf_protection'
+
 gem "tailwindcss-rails", "~> 2.3"
 
 # Github CI
 gem "brakeman"
+

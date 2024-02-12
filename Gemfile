@@ -96,3 +96,4 @@ gem "tailwindcss-rails", "~> 2.3"
 
 # Github CI
 gem "brakeman"
+

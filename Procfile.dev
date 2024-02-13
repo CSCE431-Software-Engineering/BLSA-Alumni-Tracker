@@ -1,2 +1,3 @@
+release: rails db:migreate
 web: bin/rails server
 css: bin/rails tailwindcss:watch

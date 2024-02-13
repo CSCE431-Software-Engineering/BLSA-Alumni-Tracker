@@ -15,5 +15,5 @@ Add things here if what you do requires additional commands.
 | Rebuild test database from scratch  | `RAILS_ENV=test rails db:drop && rails db:create && rails db:schema:load` |
 | Run server with tailwind | `rails assets:precompile && rails server --binding=0.0.0.0` |
 | Remove all dependencies not in Gemfile | `bundle clean` |
-|  |  |
+| Generate a brakeman report | `brakeman -o brakeman_results.html` |
 |  |  |

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   validates :First_Name, presence: true
   validates :Last_Name, presence: true
@@ -8,5 +10,5 @@ class User < ApplicationRecord
   validates :Current_Job, presence: true
   validates :Location, presence: true
   validates :Linkedin_Profile, presence: true
-  validates :is_Admin, presence: true
+  validates :is_Admin, presence: { allow_blank: true }
 end

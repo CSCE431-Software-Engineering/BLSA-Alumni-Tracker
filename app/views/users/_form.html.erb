@@ -57,6 +57,12 @@
   </div>
 
   <div>
+    <%= form.label :Practice_Area, style: "display: block" %>
+    <%= form.select :practice_area, PracticeArea.order(:practice_area).map { |practice_area| [practice_area.practice_area] }, include_blank: true, id: "id_of_the_practice_area_select_box" %>
+          
+  </div>
+
+  <div>
     <%= form.label :is_Admin, style: "display: block" %>
     <%= form.check_box :is_Admin %>
   </div>

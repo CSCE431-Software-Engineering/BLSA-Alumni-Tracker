@@ -3,5 +3,20 @@
 #
 # Examples:
 #
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+#   movies = Movie.create([{practice_area: "Star Wars" }, {practice_area: "Lord of the Rings" }])
+#   Character.createpractice_area: "Luke", movie: movies.first)
+
+
+
+practice_areas = [
+  {practice_area: "Corporate Law" },
+  {practice_area: "Criminal Law" },
+  {practice_area: "Family Law" },
+  {practice_area: "Intellectual Property Law" },
+  {practice_area: "Environmental Law" }
+]
+
+# Create Practice Areas
+practice_areas.each do |area|
+  PracticeArea.create!(area)
+end

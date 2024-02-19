@@ -24,12 +24,19 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
-        format.json { render(:show, status: :created, location: @user) }
+      if user_signed_in? && @user.email == current_user.email
+      @user.email = current_user.email
+
+        if @user.save
+          format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
+          format.json { render(:show, status: :created, location: @user) }
+        else
+          format.html { render(:new, status: :unprocessable_entity) }
+          format.json { render(json: @user.errors, status: :unprocessable_entity) }
+        end
       else
-        format.html { render(:new, status: :unprocessable_entity) }
-        format.json { render(json: @user.errors, status: :unprocessable_entity) }
+        format.html { redirect_to(root_path, alert: 'You can only create a profile for your own account.') }
+        format.json { render(json: { error: 'You can only create a profile for your own account.' }, status: :unprocessable_entity) }
       end
     end
   end
@@ -71,7 +78,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
+    permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Phone_Number, :Current_Job,
                                                     :Location, :Linkedin_Profile, :is_Admin
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'

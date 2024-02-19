@@ -23,7 +23,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.Email = session[:email]
-
     respond_to do |format|
       if @user.save
         format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
@@ -38,7 +37,6 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
-
     respond_to do |format|
       if @user.Email == session[:email]
         if @user.update(user_params)
@@ -57,16 +55,24 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    @user = User.find(params[:id])
+    if @user.Email != session[:email]
+      redirect_to @user, alert: 'You can only delete your own profile.'
+    end
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
-      format.json { head(:no_content) }
+    if @user.Email == session[:email]
+      @user.destroy!
+      respond_to do |format|
+        format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @user, alert: 'You can only delete your own profile.' }
+        format.json { render json: { error: 'Unauthorized' }, status: :unauthorized }
+      end
     end
   end
 

@@ -57,9 +57,8 @@
   </div>
 
   <div>
-    <%= form.label :Practice_Area, style: "display: block" %>
-    <%= form.select :practice_area, PracticeArea.order(:practice_area).map { |practice_area| [practice_area.practice_area] }, include_blank: true, id: "id_of_the_practice_area_select_box" %>
-          
+    <%= form.label :practice_areas, style: "display: block" %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, {multiple: true, include_blank: false} %>
   </div>
 
   <div>

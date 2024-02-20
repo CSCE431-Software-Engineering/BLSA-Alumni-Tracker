@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+
+  has_many :area_joins
+  has_many :practice_areas, through: :area_joins
+
   validates :First_Name, presence: true
   validates :Last_Name, presence: true
   validates :Middle_Name, presence: true

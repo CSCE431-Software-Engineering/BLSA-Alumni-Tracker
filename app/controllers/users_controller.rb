@@ -22,10 +22,11 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
+  
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
+        save_practice_areas # Adjusted to indicate handling multiple areas
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,6 +39,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
+        save_practice_areas
         format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -72,4 +74,18 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job, :Location, :Linkedin_Profile, :is_Admin)
     end
+
+    def save_practice_areas
+      @user.area_joins.clear # Clear existing associations
+      practice_area_ids = params[:user][:practice_area_ids].reject(&:blank?) # Ensure no blank IDs
+      practice_area_ids.each do |id|
+        practice_area = PracticeArea.find(id)
+        @user.practice_areas << practice_area if practice_area.present?
+      end
+    end
+    
+    
+    
+    
+    
 end

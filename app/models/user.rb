@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  has_many :area_joins
+  has_many :area_joins, dependent: :destroy
   has_many :practice_areas, through: :area_joins
 
   validates :First_Name, presence: true

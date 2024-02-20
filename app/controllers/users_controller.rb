@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job, :Location, :Linkedin_Profile, :is_Admin)
+      params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job, :Location, :Linkedin_Profile, :is_Admin, practice_area_ids: [])
     end
 
     def save_practice_areas

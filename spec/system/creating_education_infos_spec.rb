@@ -19,7 +19,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
     visit new_education_info_path
 
     fill_in 'Semester', with: 'Spring'
-    fill_in 'Grad Year', with: 2025
+    fill_in 'Grad year', with: 2025
     fill_in 'University', with: 'Texas A&M University'
     fill_in 'Degree type', with: 'Bachelors of Computer Science'
 
@@ -69,7 +69,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       click_on 'Create Education info'
 
-      expect(page).to(have_content("Grad year is too short"))
+      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
     end
   end
 

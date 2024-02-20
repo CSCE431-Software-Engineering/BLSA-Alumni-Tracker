@@ -100,7 +100,7 @@ RSpec.describe('Updating Education Info', type: :system) do
 
       click_on 'Update Education info'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
     end
   end
 

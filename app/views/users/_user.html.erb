@@ -45,6 +45,15 @@
   </p>
 
   <p>
+    <strong>Practice areas:</strong>
+    <ul>
+      <% user.practice_areas.each do |practice_area| %>
+        <li><%= practice_area.practice_area %></li> <!-- Assuming the attribute is named 'practice_area' -->
+      <% end %>
+    </ul>
+  </p>
+
+  <p>
     <strong>Is admin:</strong>
     <%= user.is_Admin %>
   </p>

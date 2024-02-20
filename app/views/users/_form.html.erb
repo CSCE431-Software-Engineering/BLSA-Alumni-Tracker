@@ -55,7 +55,7 @@
     <%= form.label :Linkedin_Profile, style: "display: block" %>
     <%= form.text_field :Linkedin_Profile %>
   </div>
-
+  
   <div>
     <%= form.label :practice_areas, style: "display: block" %>
     <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, {multiple: true, include_blank: false} %>
@@ -63,7 +63,7 @@
 
   <div>
     <%= form.label :is_Admin, style: "display: block" %>
-    <%= form.check_box :is_Admin %>
+    <%= form.check_box :is_Admin, {}, 'true', 'false' %>
   </div>
 
   <div>

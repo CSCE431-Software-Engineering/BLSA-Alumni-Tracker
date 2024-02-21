@@ -11,7 +11,7 @@ RSpec.describe('DeletingUsers', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'JohnDoe@gmail.com',
+      Email: 'csce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       Location: 'New York',

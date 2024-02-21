@@ -11,7 +11,7 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'JohnDoe@gmail.com',
+      Email: 'csce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       Location: 'New York',
@@ -114,25 +114,26 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content("Profile picture can't be blank"))
   end
 
-  it '(Sunny Day) Update Email' do
-    visit edit_user_path(@user.id)
+  #these tests should be removed since the user no longer enters their own email
+  # it '(Sunny Day) Update Email' do
+  #   visit edit_user_path(@user.id)
 
-    fill_in 'user_Email', with: 'JaneSmith@gmail.com'
+  #   fill_in 'user_Email', with: 'JaneSmith@gmail.com'
 
-    click_on 'Update User'
+  #   click_on 'Update User'
 
-    expect(page).to(have_content('JaneSmith@gmail.com'))
-  end
+  #   expect(page).to(have_content('JaneSmith@gmail.com'))
+  # end
 
-  it '(Rainy Day) Empty Email' do
-    visit edit_user_path(@user.id)
+  # it '(Rainy Day) Empty Email' do
+  #   visit edit_user_path(@user.id)
 
-    fill_in 'user_Email', with: ''
+  #   fill_in 'user_Email', with: ''
 
-    click_on 'Update User'
+  #   click_on 'Update User'
 
-    expect(page).to(have_content("Email can't be blank"))
-  end
+  #   expect(page).to(have_content("Email can't be blank"))
+  # end
 
   it '(Sunny Day) Update Phone Number' do
     visit edit_user_path(@user.id)

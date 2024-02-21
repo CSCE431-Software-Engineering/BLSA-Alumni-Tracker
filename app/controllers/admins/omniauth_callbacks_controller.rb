@@ -6,7 +6,7 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if admin.present?
       #store the email so we can track the session
-      puts "Email: #{from_google_params[:email]}"
+      #puts "Email: #{from_google_params[:email]}"
       session[:email] = from_google_params[:email]
 
       flash[:success] = t('devise.omniauth_callbacks.success', kind: 'Google')

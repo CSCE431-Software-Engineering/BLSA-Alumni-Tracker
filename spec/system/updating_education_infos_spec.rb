@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'system_helper'
 
 RSpec.describe('Updating Education Info', type: :system) do
   before do
@@ -11,6 +12,13 @@ RSpec.describe('Updating Education Info', type: :system) do
       University: 'Texas A&M',
       Degree_Type: 'Bachelors'
     )
+  end
+
+  before(:each) do
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
+    login
   end
 
   it '(Sunny Day) Update Semester' do
@@ -92,7 +100,7 @@ RSpec.describe('Updating Education Info', type: :system) do
 
       click_on 'Update Education info'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
     end
   end
 

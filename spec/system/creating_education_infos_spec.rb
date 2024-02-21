@@ -1,17 +1,25 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'system_helper'
 
 RSpec.describe('Creating Education Infos', type: :system) do
   before do
     driven_by(:rack_test)
   end
 
+  before(:each) do
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
+    login
+  end
+
   it '(Sunny Day) Creating and Showing Education Info' do
     visit new_education_info_path
 
     fill_in 'Semester', with: 'Spring'
-    fill_in 'Grad Year', with: 2025
+    fill_in 'Grad year', with: 2025
     fill_in 'University', with: 'Texas A&M University'
     fill_in 'Degree type', with: 'Bachelors of Computer Science'
 
@@ -61,7 +69,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       click_on 'Create Education info'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
     end
   end
 

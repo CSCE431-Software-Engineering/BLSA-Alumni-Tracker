@@ -1,1 +1,1 @@
-release: rails db:migrate
+release: rails assets:precompile && rails db:migrate

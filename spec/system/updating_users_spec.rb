@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'system_helper'
 
 RSpec.describe('Updating Users', type: :system) do
   before do
@@ -17,6 +18,13 @@ RSpec.describe('Updating Users', type: :system) do
       Linkedin_Profile: 'https://www.linkedin.com',
       is_Admin: true
     )
+  end
+
+  before(:each) do
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
+    login
   end
 
   # it 'does not save the user if the First Name is missing' do

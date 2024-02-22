@@ -10,11 +10,24 @@
 
 
 practice_areas = [
-  {practice_area: "Corporate Law" },
-  {practice_area: "Criminal Law" },
-  {practice_area: "Family Law" },
-  {practice_area: "Intellectual Property Law" },
-  {practice_area: "Environmental Law" }
+    {practice_area: "Dispute Resolution"},
+    {practice_area: "Agriculture Law"},
+    {practice_area: "Business Law"},
+    {practice_area: "Civil Litigation"},
+    {practice_area: "Commercial Law"},
+    {practice_area: "Criminal Law and Procedure"},
+    {practice_area: "Energy Law"},
+    {practice_area: "Environmental Law"},
+    {practice_area: "Estate Planning"},
+    {practice_area: "Family Law"},
+    {practice_area: "General Practice"},
+    {practice_area: "Health Law"},
+    {practice_area: "Immigration Law"},
+    {practice_area: "IP and Technology Law"},
+    {practice_area: "Oil and Gas Law"},
+    {practice_area: "Real Estate Law"},
+    {practice_area: "Water Law"},
+    {practice_area: "Workplace Law"}
 ]
 
 # Create Practice Areas

@@ -39,6 +39,8 @@ Things you may want to cover:
 * Services (job queues, cache servers, search engines, etc.)
 
 * Deployment instructions
+if having trouble deploying try running "find ./ -type f -exec dos2unix {} +" to convert all files to unix format
+also ensure that the new url has been added to the google authorization
 
 * ...
 

@@ -214,4 +214,26 @@ RSpec.describe('Updating Users', type: :system) do
 
     expect(page).to(have_content("Linkedin profile can't be blank"))
   end
+
+  it '(Rainy Day) User cannot edit a profile that is not theirs' do
+    @user2 = User.create!(
+      First_Name: 'John',
+      Last_Name: 'Doe',
+      Middle_Name: 'M',
+      Profile_Picture: 'https://www.google.com',
+      Email: 'NOTcsce431@tamu.edu',
+      Phone_Number: '123-456-7890',
+      Current_Job: 'Software Engineer',
+      Location: 'New York',
+      Linkedin_Profile: 'https://www.linkedin.com',
+      is_Admin: true
+    )
+    visit user_path(@user2.id)
+
+    click_on 'Edit this user'
+
+    click_on 'Update User'
+
+    expect(page).to(have_content("You can only update your own profile."))
+  end
 end

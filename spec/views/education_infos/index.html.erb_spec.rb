@@ -27,6 +27,6 @@ RSpec.describe('education_infos/index', type: :view) do
     assert_select cell_selector, text: Regexp.new('Semester'.to_s), count: 2
     assert_select cell_selector, text: Regexp.new('([0-9]{4})'.to_s), count: 2
     assert_select cell_selector, text: Regexp.new('University'.to_s), count: 2
-    assert_select cell_selector, text: Regexp.new('Degree Type'.to_s), count: 2
+    assert_select cell_selector, text: Regexp.new('Degree type'.to_s), count: 2
   end
 end

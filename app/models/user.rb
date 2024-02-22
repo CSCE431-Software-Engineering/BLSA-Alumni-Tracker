@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :Last_Name, presence: true
   validates :Middle_Name, presence: true
   validates :Profile_Picture, presence: true
-  validates :Email, presence: true
+  validates :Email, presence: true, uniqueness: true
   validates :Phone_Number, presence: true
   validates :Current_Job, presence: true
   validates :Location, presence: true

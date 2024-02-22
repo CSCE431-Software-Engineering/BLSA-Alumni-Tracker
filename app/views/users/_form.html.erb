@@ -32,11 +32,6 @@
   </div>
 
   <div>
-    <%= form.label :Email, style: "display: block" %>
-    <%= form.text_field :Email %>
-  </div>
-
-  <div>
     <%= form.label :Phone_Number, style: "display: block" %>
     <%= form.text_field :Phone_Number %>
   </div>
@@ -55,7 +50,7 @@
     <%= form.label :Linkedin_Profile, style: "display: block" %>
     <%= form.text_field :Linkedin_Profile %>
   </div>
-  
+
   <div>
     <%= form.label :practice_areas, style: "display: block" %>
     <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, {multiple: true, include_blank: false} %>

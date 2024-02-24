@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_24_002415) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_24_010537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_002415) do
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "firm_type_id"
+    t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
   end
 
+  add_foreign_key "users", "firm_types"
 end

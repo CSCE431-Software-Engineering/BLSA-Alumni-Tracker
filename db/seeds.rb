@@ -14,6 +14,7 @@ firm_types = [
   {firm_type: "Medium"},
   {firm_type: "Big Law"},
   {firm_type: "In-house"},
+  {firm_type: "N/A"}
 ]
 
 firm_types.each do |type|

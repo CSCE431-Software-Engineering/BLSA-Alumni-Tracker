@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :education_infos
+  has_many :universities, through: education_infos
+
   validates :First_Name, presence: true
   validates :Last_Name, presence: true
   validates :Middle_Name, presence: true

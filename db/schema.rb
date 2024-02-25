@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_09_090520) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_23_144316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,8 +27,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_090520) do
   create_table "education_infos", force: :cascade do |t|
     t.string "Semester"
     t.integer "Grad_Year"
-    t.string "University"
     t.string "Degree_Type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "university_id"
+    t.index ["university_id"], name: "index_education_infos_on_university_id"
+    t.index ["user_id"], name: "index_education_infos_on_user_id"
+  end
+
+  create_table "universities", force: :cascade do |t|
+    t.string "University"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -38,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_090520) do
     t.string "Last_Name"
     t.string "Middle_Name"
     t.string "Profile_Picture"
-    t.string "Email"
+    t.string "Email", default: "", null: false
     t.string "Phone_Number"
     t.string "Current_Job"
     t.string "Location"
@@ -46,6 +55,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_090520) do
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["Email"], name: "index_users_on_Email", unique: true
   end
 
+  add_foreign_key "education_infos", "universities"
+  add_foreign_key "education_infos", "users"
 end

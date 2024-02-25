@@ -18,11 +18,8 @@ RSpec.describe('DeletingUsers', type: :system) do
       Linkedin_Profile: 'https://www.linkedin.com',
       is_Admin: true
     )
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end
@@ -56,5 +53,4 @@ RSpec.describe('DeletingUsers', type: :system) do
 
     expect(page).to(have_content('You can only delete your own profile.'))
   end
-
 end

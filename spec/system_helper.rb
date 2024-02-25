@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module SystemHelper
   def login
-    visit root_path
+    visit(root_path)
     # save_and_open_page # Snapshots the page in /tmp/capybara so you can see what the test sees!
-    click_button 'Sign in with Google'
+    click_button('Sign in with Google')
   end
 end
 

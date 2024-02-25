@@ -1,16 +1,27 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Universities", type: :system do
+RSpec.describe('Universities', type: :system) do
   before do
     driven_by(:rack_test)
   end
 
-  it "(Sunny Day) Valid Name" do
+  it '(Sunny Day) Valid Name' do
     visit new_university_path
 
-    fill_in "University Name", with: "Texas A&M"
-    click_on "Create University"
+    fill_in 'University Name', with: 'Texas A&M'
+    click_on 'Create University'
 
-    expect(page).to(have_content("Texas A&M"))
+    expect(page).to(have_content('Texas A&M'))
+  end
+
+  it '(Rainy Day) No Name' do
+    visit new_university_path
+
+    fill_in 'University Name', with: ''
+    click_on 'Create University'
+
+    expect(page).to(have_content("University can't be blank"))
   end
 end

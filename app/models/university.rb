@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class University < ApplicationRecord
-  belongs_to :education_info
+  validates :University, presence: true
 end

@@ -6,11 +6,8 @@ require 'system_helper'
 RSpec.describe('Creating Education Infos', type: :system) do
   before do
     driven_by(:rack_test)
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end
@@ -69,7 +66,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       click_on 'Create Education info'
 
-      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
+      expect(page).to(have_content('Grad year is too short (minimum is 4 characters)'))
     end
   end
 

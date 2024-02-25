@@ -24,6 +24,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_144316) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "area_joins", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "practice_area_id"
+    t.index ["practice_area_id"], name: "index_area_joins_on_practice_area_id"
+    t.index ["user_id"], name: "index_area_joins_on_user_id"
+  end
+
   create_table "education_infos", force: :cascade do |t|
     t.string "Semester"
     t.integer "Grad_Year"
@@ -34,6 +43,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_144316) do
     t.bigint "university_id"
     t.index ["university_id"], name: "index_education_infos_on_university_id"
     t.index ["user_id"], name: "index_education_infos_on_user_id"
+  end
+
+  create_table "practice_areas", force: :cascade do |t|
+    t.string "practice_area"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "universities", force: :cascade do |t|
@@ -47,7 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_144316) do
     t.string "Last_Name"
     t.string "Middle_Name"
     t.string "Profile_Picture"
-    t.string "Email", default: "", null: false
+    t.string "Email"
     t.string "Phone_Number"
     t.string "Current_Job"
     t.string "Location"
@@ -55,9 +70,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_144316) do
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["Email"], name: "index_users_on_Email", unique: true
   end
 
+  add_foreign_key "area_joins", "practice_areas"
+  add_foreign_key "area_joins", "users"
   add_foreign_key "education_infos", "universities"
   add_foreign_key "education_infos", "users"
 end

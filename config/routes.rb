@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :universities
   #oAuth
   root to: 'dashboards#show'
   devise_for :admins, controllers: { omniauth_callbacks: 'admins/omniauth_callbacks' }
@@ -18,6 +19,8 @@ Rails.application.routes.draw do
       get :delete
     end
   end
+
+  resources :universities
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

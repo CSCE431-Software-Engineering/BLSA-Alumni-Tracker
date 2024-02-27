@@ -14,5 +14,6 @@ class User < ApplicationRecord
   validates :Current_Job, presence: true
   validates :Location, presence: true
   validates :Linkedin_Profile, presence: true
+  validates :practice_areas, presence: true
   validates :is_Admin, presence: { allow_blank: true }
 end

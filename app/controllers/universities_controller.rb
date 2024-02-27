@@ -17,7 +17,11 @@ class UniversitiesController < ApplicationController
   end
 
   # GET /universities/1/edit
-  def edit; end
+  def edit
+    if !User.find_by_Email(current_admin.email).is_Admin?
+      redirect_to(@university, alert: 'Only admins can update universities.')
+    end
+  end
 
   # POST /universities or /universities.json
   def create
@@ -36,24 +40,38 @@ class UniversitiesController < ApplicationController
 
   # PATCH/PUT /universities/1 or /universities/1.json
   def update
-    respond_to do |format|
-      if @university.update(university_params)
-        format.html { redirect_to(university_url(@university), notice: 'University was successfully updated.') }
-        format.json { render(:show, status: :ok, location: @university) }
-      else
-        format.html { render(:edit, status: :unprocessable_entity) }
-        format.json { render(json: @university.errors, status: :unprocessable_entity) }
+    if User.find_by_Email(current_admin.email).is_Admin?
+      respond_to do |format|
+        if @university.update(university_params)
+          format.html { redirect_to(university_url(@university), notice: 'University was successfully updated.') }
+          format.json { render(:show, status: :ok, location: @university) }
+        else
+          format.html { render(:edit, status: :unprocessable_entity) }
+          format.json { render(json: @university.errors, status: :unprocessable_entity) }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to(universities_url(@university), notice: 'Only admins can update universities.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
       end
     end
   end
 
   # DELETE /universities/1 or /universities/1.json
   def destroy
-    @university.destroy!
+    if User.find_by_Email(current_admin.email).is_Admin?
+      @university.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to(universities_url, notice: 'University was successfully destroyed.') }
-      format.json { head(:no_content) }
+      respond_to do |format|
+        format.html { redirect_to(universities_url, notice: 'University was successfully destroyed.') }
+        format.json { head(:no_content) }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to(universities_url(@university), notice: 'Only admins can delete universities.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
     end
   end
 

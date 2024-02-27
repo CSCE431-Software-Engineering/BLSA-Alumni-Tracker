@@ -16,4 +16,4 @@ Add things here if what you do requires additional commands.
 | Run server with tailwind | `rails assets:precompile && rails server --binding=0.0.0.0` |
 | Remove all dependencies not in Gemfile | `bundle clean` |
 | Generate a brakeman report | `brakeman -o brakeman_results.html` |
-|  |  |
+| Check line endings | `git ls-files --eol` |

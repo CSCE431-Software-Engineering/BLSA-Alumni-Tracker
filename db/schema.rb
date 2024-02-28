@@ -24,6 +24,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_010537) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "area_joins", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "practice_area_id"
+    t.index ["practice_area_id"], name: "index_area_joins_on_practice_area_id"
+    t.index ["user_id"], name: "index_area_joins_on_user_id"
+  end
+
   create_table "education_infos", force: :cascade do |t|
     t.string "Semester"
     t.integer "Grad_Year"
@@ -35,6 +44,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_010537) do
 
   create_table "firm_types", force: :cascade do |t|
     t.string "firm_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "practice_areas", force: :cascade do |t|
+    t.string "practice_area"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -56,5 +71,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_010537) do
     t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
   end
 
+  add_foreign_key "area_joins", "practice_areas"
+  add_foreign_key "area_joins", "users"
   add_foreign_key "users", "firm_types"
 end

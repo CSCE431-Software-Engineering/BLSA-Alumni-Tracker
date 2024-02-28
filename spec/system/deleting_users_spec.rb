@@ -6,6 +6,7 @@ require 'system_helper'
 RSpec.describe('DeletingUsers', type: :system) do
   before do
     driven_by(:rack_test)
+    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
     @firm_type = FirmType.create!(
       firm_type: 'Example Firm Type'
     )
@@ -21,8 +22,11 @@ RSpec.describe('DeletingUsers', type: :system) do
       firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
+      practice_areas: [@practice_area],
       is_Admin: true
     )
+    
+
   end
 
   before(:each) do
@@ -43,6 +47,7 @@ RSpec.describe('DeletingUsers', type: :system) do
   end
 
   it '(Rainy Day) User cannot be deleted since it is not yours' do
+    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
     @user2 = User.create!(
       First_Name: 'John',
       Last_Name: 'Doe',
@@ -54,6 +59,7 @@ RSpec.describe('DeletingUsers', type: :system) do
       firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
+      practice_areas: [@practice_area],
       is_Admin: true
     )
     visit user_path(@user2.id)

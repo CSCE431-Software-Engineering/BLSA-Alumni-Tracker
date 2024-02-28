@@ -59,6 +59,11 @@
   </div>
 
   <div>
+    <%= form.label :practice_areas, style: "display: block" %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, {multiple: true, include_blank: false} %>
+  </div>
+
+  <div>
     <%= form.label :is_Admin, style: "display: block" %>
     <%= form.check_box :is_Admin, {}, 'true', 'false' %>
   </div>

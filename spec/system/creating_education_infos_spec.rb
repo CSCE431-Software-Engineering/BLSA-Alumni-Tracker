@@ -10,6 +10,10 @@ RSpec.describe('Creating Education Infos', type: :system) do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
+
+    University.create!(
+      University: 'Texas A&M University'
+    )
   end
 
   it '(Sunny Day) Creating and Showing Education Info' do
@@ -17,7 +21,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
     fill_in 'Semester', with: 'Spring'
     fill_in 'Grad year', with: 2025
-    fill_in 'University', with: 'Texas A&M University'
+    select 'Texas A&M University', from: 'education_info_university_id'
     fill_in 'Degree type', with: 'Bachelors of Computer Science'
 
     click_on 'Create Education info'
@@ -46,7 +50,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       click_on 'Create Education info'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content('Grad year can\'t be blank'))
     end
 
     it '(Rainy Day) Too Short Graduation Year' do
@@ -73,11 +77,11 @@ RSpec.describe('Creating Education Infos', type: :system) do
   it '(Rainy Day) No University' do
     visit new_education_info_path
 
-    fill_in 'University', with: ''
+    select '', from: 'education_info_university_id'
 
     click_on 'Create Education info'
 
-    expect(page).to(have_content("University can't be blank"))
+    expect(page).to(have_content('University can\'t be blank'))
   end
 
   it '(Rainy Day) No Degree Type' do
@@ -87,6 +91,6 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
     click_on 'Create Education info'
 
-    expect(page).to(have_content("Degree type can't be blank"))
+    expect(page).to(have_content('Degree type can\'t be blank'))
   end
 end

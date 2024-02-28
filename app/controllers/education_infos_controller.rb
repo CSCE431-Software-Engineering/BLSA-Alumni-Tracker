@@ -79,6 +79,5 @@ class EducationInfosController < ApplicationController
 
   def set_current_user
     @user = User.find_by_Email(current_admin.email)
-    puts @user.inspect
   end
 end

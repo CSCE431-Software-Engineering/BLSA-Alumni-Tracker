@@ -51,3 +51,6 @@ yarn-debug.log*
 
 # Ruby >:(
 Gemfile.lock
+
+# VSCode
+.vscode/

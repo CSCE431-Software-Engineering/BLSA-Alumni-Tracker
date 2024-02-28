@@ -35,6 +35,11 @@
   </p>
 
   <p>
+    <strong>Firm Type:</strong>
+    <%= FirmType.find(user.firm_type_id).firm_type %>
+  </p>
+
+  <p>
     <strong>Location:</strong>
     <%= user.Location %>
   </p>
@@ -43,6 +48,15 @@
     <strong>Linkedin profile:</strong>
     <%= user.Linkedin_Profile %>
   </p>
+  
+  <p>
+    <strong>Practice areas:</strong>
+    <ul>
+      <% user.practice_areas.each do |practice_area| %>
+        <li><%= practice_area.practice_area %></li>
+      <% end %>
+    </ul>
+  </p>
 
   <p>
     <strong>Is admin:</strong>
@@ -50,3 +64,4 @@
   </p>
 
 </div>
+

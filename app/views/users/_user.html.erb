@@ -35,6 +35,11 @@
   </p>
 
   <p>
+    <strong>Firm Type:</strong>
+    <%= FirmType.find(user.firm_type_id).firm_type %>
+  </p>
+
+  <p>
     <strong>Location:</strong>
     <%= user.Location %>
   </p>

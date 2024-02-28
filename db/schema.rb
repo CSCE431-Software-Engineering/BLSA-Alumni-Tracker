@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_20_182910) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,8 +36,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_182910) do
   create_table "education_infos", force: :cascade do |t|
     t.string "Semester"
     t.integer "Grad_Year"
-    t.string "University"
     t.string "Degree_Type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "university_id"
+    t.index ["university_id"], name: "index_education_infos_on_university_id"
+    t.index ["user_id"], name: "index_education_infos_on_user_id"
+  end
+
+  create_table "firm_types", force: :cascade do |t|
+    t.string "firm_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -46,6 +55,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_182910) do
     t.string "practice_area"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "universities", force: :cascade do |t|
+    t.string "University", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["University"], name: "index_universities_on_University", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -61,8 +77,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_182910) do
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "firm_type_id"
+    t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
   end
 
   add_foreign_key "area_joins", "practice_areas"
   add_foreign_key "area_joins", "users"
+  add_foreign_key "education_infos", "universities"
+  add_foreign_key "education_infos", "users"
+  add_foreign_key "users", "firm_types"
 end

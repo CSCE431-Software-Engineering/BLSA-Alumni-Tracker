@@ -27,6 +27,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         save_practice_areas 
+        save_firm_type
         format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
         format.json { render(:show, status: :created, location: @user) }
         
@@ -45,6 +46,7 @@ class UsersController < ApplicationController
       if @user.Email == session[:email]
         if @user.update(user_params)
           save_practice_areas
+          save_firm_type
           format.html { redirect_to @user, notice: 'Profile was successfully updated.' }
           format.json { render :show, status: :ok, location: @user }
         else
@@ -93,13 +95,13 @@ class UsersController < ApplicationController
   def user_params
 
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Location, :Linkedin_Profile, :is_Admin, practice_area_ids: []
+                                                    :Location, :Linkedin_Profile, :is_Admin, :firm_type_id, practice_area_ids: []
 
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
   end
-  
+
   def save_practice_areas
     @user.area_joins.clear # Clear existing associations
     practice_area_ids = params[:user][:practice_area_ids].reject(&:blank?) # Ensure no blank IDs
@@ -109,4 +111,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def save_firm_type
+    if params[:user][:firm_type_id].present?
+      firm_type_id = params[:user][:firm_type_id]
+      firm_type = FirmType.find(firm_type_id)
+      @user.firm_type = firm_type if firm_type.present?
+    end
+  end
 end

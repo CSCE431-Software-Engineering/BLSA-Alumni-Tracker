@@ -42,6 +42,13 @@
   </div>
 
   <div>
+    <%= form.label :firm_type_id, style: "display: block"%>
+    <%= form.collection_select :firm_type_id,
+    FirmType.order(:firm_type), :id, :firm_type, {}, 
+    {multiple: false, include_blank: false}%>
+  </div>
+
+  <div>
     <%= form.label :Location, style: "display: block" %>
     <%= form.text_field :Location %>
   </div>

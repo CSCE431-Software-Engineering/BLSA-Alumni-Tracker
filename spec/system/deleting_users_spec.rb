@@ -7,6 +7,10 @@ RSpec.describe('DeletingUsers', type: :system) do
   before do
     driven_by(:rack_test)
     @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
+    @firm_type = FirmType.create!(
+      firm_type: 'Example Firm Type'
+    )
+
     @user = User.create!(
       First_Name: 'John',
       Last_Name: 'Doe',
@@ -15,6 +19,7 @@ RSpec.describe('DeletingUsers', type: :system) do
       Email: 'csce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
       practice_areas: [@practice_area],
@@ -51,6 +56,7 @@ RSpec.describe('DeletingUsers', type: :system) do
       Email: 'NOTcsce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
       practice_areas: [@practice_area],

@@ -27,7 +27,8 @@ practice_areas = [
     {practice_area: "Oil and Gas Law"},
     {practice_area: "Real Estate Law"},
     {practice_area: "Water Law"},
-    {practice_area: "Workplace Law"}
+    {practice_area: "Workplace Law"},
+    {practice_area: "N/A"}
 ]
 
 # Create Practice Areas

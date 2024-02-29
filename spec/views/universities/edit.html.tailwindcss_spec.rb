@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe('universities/edit', type: :view) do
   let(:university) do
-    University.create!
+    University.create!(
+      University: 'Texas A&M'
+    )
   end
 
   before do

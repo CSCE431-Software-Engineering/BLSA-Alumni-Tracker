@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe('universities/index', type: :view) do
   before do
     assign(:universities, [
-      University.create!,
-      University.create!
+      University.create!(University: 'Texas A&M'),
+      University.create!(University: 'UT Dallas')
     ]
     )
   end

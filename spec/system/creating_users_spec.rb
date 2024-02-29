@@ -13,6 +13,9 @@ RSpec.describe('CreatingUsers', type: :system) do
   end
 
   it '(Sunny Day) saves and displays the resulting user' do
+    # login automatically creates a user, so we need to destroy user
+    destroy_user
+
     visit new_user_path
 
     fill_in 'First name', with: 'John'

@@ -24,6 +24,11 @@ module SystemHelper
     @user = User.find_by_Email("csce431@tamu.edu")
     @user.update(is_Admin: false)
   end
+
+  def destroy_user
+    @user = User.find_by_Email("csce431@tamu.edu")
+    @user.destroy!
+  end
 end
 
 RSpec.configure do |config|

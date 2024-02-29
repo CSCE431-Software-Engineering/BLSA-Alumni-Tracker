@@ -4,17 +4,21 @@ require 'rails_helper'
 
 RSpec.describe('education_infos/index', type: :view) do
   before do
+    user = create_user
+
     assign(:education_infos, [
       EducationInfo.create!(
         Semester: 'Spring',
         Grad_Year: 2024,
-        University: 'Texas A&M',
+        university_id: create_university('Texas A&M').id,
+        user_id: user.id,
         Degree_Type: 'Bachelors'
       ),
       EducationInfo.create!(
         Semester: 'Fall',
         Grad_Year: 2025,
-        University: 'University of Texas at Dallas',
+        university_id: create_university('UT Dallas').id,
+        user_id: user.id,
         Degree_Type: 'Bachelors'
       )
     ]

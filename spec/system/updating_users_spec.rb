@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Updating Users', type: :system) do
   before do
     driven_by(:rack_test)
-    @practice_area = PracticeArea.find_by_practice_area('Civil Litigation')
+    @practice_area = PracticeArea.find_by(practice_area: 'Civil Litigation')
 
     @firm_type = FirmType.create!(
       firm_type: 'Example Firm Type'
@@ -26,11 +26,8 @@ RSpec.describe('Updating Users', type: :system) do
       practice_areas: [@practice_area],
       is_Admin: true
     )
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end

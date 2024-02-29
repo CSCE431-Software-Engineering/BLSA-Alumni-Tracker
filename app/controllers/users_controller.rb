@@ -26,11 +26,11 @@ class UsersController < ApplicationController
     @user.Email = session[:email]
     respond_to do |format|
       if @user.save
-        save_practice_areas 
+        save_practice_areas
         save_firm_type
         format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
         format.json { render(:show, status: :created, location: @user) }
-        
+
       else
         format.html { render(:new, status: :unprocessable_entity) }
         format.json { render(json: @user.errors, status: :unprocessable_entity) }
@@ -41,7 +41,6 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-
       if @user.Email == session[:email]
         if @user.update(user_params)
           save_practice_areas
@@ -82,7 +81,6 @@ class UsersController < ApplicationController
 
   private
 
-
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])
@@ -90,10 +88,8 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
                                                     :Location, :Linkedin_Profile, :is_Admin, :firm_type_id, practice_area_ids: []
-
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params

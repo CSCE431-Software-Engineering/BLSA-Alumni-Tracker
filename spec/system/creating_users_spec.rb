@@ -6,11 +6,8 @@ require 'system_helper'
 RSpec.describe('Creating Users', type: :system) do
   before do
     driven_by(:rack_test)
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end
@@ -47,8 +44,8 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('https://www.linkedin.com'))
     expect(page).to(have_content('true'))
-    expect(page).to have_content('Civil Litigation')
-    expect(page).to have_content('Real Estate Law')
+    expect(page).to(have_content('Civil Litigation'))
+    expect(page).to(have_content('Real Estate Law'))
   end
 
   it '(Rainy Day) does not save the user if the First Name is missing' do
@@ -126,7 +123,6 @@ RSpec.describe('Creating Users', type: :system) do
   it '(Rainy Day) does not save the user if the Practice Area is missing' do
     visit new_user_path
     click_on 'Create User'
-    expect(page).to have_content("Practice areas can't be blank")
+    expect(page).to(have_content("Practice areas can't be blank"))
   end
-
 end

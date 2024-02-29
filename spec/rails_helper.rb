@@ -73,18 +73,15 @@ RSpec.configure do |config|
   # Mock login for system tests using omniauth
   OmniAuth.config.test_mode = true
   OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
-      :provider => "google_oauth2",
-      :uid => "123456789",
-      :info => {
-        :name => "Pauline Wade",
-        :email => "csce431@tamu.edu"
-      },
-      :credentials => {
-        :token => "token",
-        :refresh_token => "refresh token"
-      }
+    provider: 'google_oauth2',
+    uid: '123456789',
+    info: {
+      name: 'Pauline Wade',
+      email: 'csce431@tamu.edu'
+    },
+    credentials: {
+      token: 'token',
+      refresh_token: 'refresh token'
     }
-  )
-
-
+  })
 end

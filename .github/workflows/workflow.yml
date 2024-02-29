@@ -39,6 +39,8 @@ jobs:
           cmd: install
       - name: Compile assets (tailwind)
         run: rails assets:precompile
+      - name: Seed database
+        run: rails db:seed RAILS_ENV=test
       - name: Run tests
         run: bundler exec rspec .
       - name: Run brakeman

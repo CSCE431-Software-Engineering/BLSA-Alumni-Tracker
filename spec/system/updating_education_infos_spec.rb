@@ -6,19 +6,24 @@ require 'system_helper'
 RSpec.describe('Updating Education Info', type: :system) do
   before do
     driven_by(:rack_test)
+
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+    login
+
+    @user = User.find_by_Email('csce431@tamu.edu')
+
+    @university = University.create!(
+      University: 'Texas A&M'
+    )
+
     @education_info = EducationInfo.create!(
       Semester: 'Spring',
       Grad_Year: 2024,
-      University: 'Texas A&M',
+      university_id: @university.id,
+      user_id: @user.id,
       Degree_Type: 'Bachelors'
     )
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
-
-    login
   end
 
   it '(Sunny Day) Update Semester' do
@@ -42,9 +47,13 @@ RSpec.describe('Updating Education Info', type: :system) do
   end
 
   it '(Sunny Day) Update University' do
+    University.create!(
+      University: 'UT Austin'
+    )
+
     visit edit_education_info_path(@education_info.id)
 
-    fill_in 'education_info_University', with: 'UT Austin'
+    select 'UT Austin', from: 'education_info_university_id'
 
     click_on 'Update Education info'
 
@@ -68,7 +77,7 @@ RSpec.describe('Updating Education Info', type: :system) do
 
     click_on 'Update Education info'
 
-    expect(page).to(have_content("Semester can't be blank"))
+    expect(page).to(have_content('Semester can\'t be blank'))
   end
 
   describe '(Rainy Day) Graduation Year' do
@@ -79,7 +88,7 @@ RSpec.describe('Updating Education Info', type: :system) do
 
       click_on 'Update Education info'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content('Grad year can\'t be blank'))
       expect(page).to(have_content('Grad year is too short'))
     end
 
@@ -100,18 +109,18 @@ RSpec.describe('Updating Education Info', type: :system) do
 
       click_on 'Update Education info'
 
-      expect(page).to(have_content("Grad year is too short (minimum is 4 characters)"))
+      expect(page).to(have_content('Grad year is too short (minimum is 4 characters)'))
     end
   end
 
   it '(Rainy Day) Empty University' do
     visit edit_education_info_path(@education_info.id)
 
-    fill_in 'education_info_University', with: ''
+    select '', from: 'education_info_university_id'
 
     click_on 'Update Education info'
 
-    expect(page).to(have_content("University can't be blank"))
+    expect(page).to(have_content('University can\'t be blank'))
   end
 
   it '(Rainy Day) Empty Degree Type' do
@@ -121,6 +130,6 @@ RSpec.describe('Updating Education Info', type: :system) do
 
     click_on 'Update Education info'
 
-    expect(page).to(have_content("Degree type can't be blank"))
+    expect(page).to(have_content('Degree type can\'t be blank'))
   end
 end

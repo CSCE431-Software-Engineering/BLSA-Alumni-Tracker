@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :University, style: "display: block" %>
-    <%= form.text_field :University %>
+    <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}) %>
   </div>
 
   <div>

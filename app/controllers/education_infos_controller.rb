@@ -78,6 +78,6 @@ class EducationInfosController < ApplicationController
   end
 
   def set_current_user
-    @user = User.find_by_Email(current_admin.email)
+    @user = User.find_by_Email(session[:email])
   end
 end

@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Updating Users', type: :system) do
   before do
     driven_by(:rack_test)
-    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
+    @practice_area = PracticeArea.find_by_practice_area('Civil Litigation')
 
     @firm_type = FirmType.create!(
       firm_type: 'Example Firm Type'

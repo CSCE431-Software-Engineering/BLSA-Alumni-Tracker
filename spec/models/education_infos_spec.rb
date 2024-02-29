@@ -6,6 +6,18 @@ RSpec.describe(EducationInfo, type: :model) do
   # Subject to be used between all tests (resets before each test)
   # More here: https://medium.com/@tomkadwill/all-about-rspec-let-a3b642e08d39
 
+  let(:firm_type) do
+    FirmType.create!(
+      firm_type: 'Example Firm Type'
+    )
+  end
+
+  let(:practice_area) do
+    PracticeArea.create!(
+      practice_area: 'Test Practice Area'
+    )
+  end
+
   let(:user) do
     User.create!(
       First_Name: 'Pauline',
@@ -17,6 +29,10 @@ RSpec.describe(EducationInfo, type: :model) do
       Current_Job: 'Procrastinator',
       Location: 'College Station',
       Linkedin_Profile: 'linkedin.com',
+      firm_type_id: firm_type.id,
+      practice_areas: [
+        practice_area
+      ],
       is_Admin: true
     )
   end

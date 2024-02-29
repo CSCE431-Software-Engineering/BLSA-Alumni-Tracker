@@ -14,8 +14,11 @@ module SystemHelper
     fill_in 'Profile picture', with: 'https://www.google.com'
     fill_in 'Phone number', with: '123-456-7890'
     fill_in 'Current job', with: 'Software Engineer'
+    select 'Government', from: 'user_firm_type_id'
     fill_in 'Location', with: 'New York'
     fill_in 'Linkedin profile', with: 'https://www.linkedin.com'
+    select 'Civil Litigation', from: 'user_practice_area_ids'
+    select 'Real Estate Law', from: 'user_practice_area_ids'
     check 'Is admin'
     click_on 'Create User'
   end

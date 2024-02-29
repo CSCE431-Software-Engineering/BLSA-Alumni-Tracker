@@ -32,7 +32,7 @@ practice_areas = [
 
 # Create Practice Areas
 practice_areas.each do |area|
-  PracticeArea.create!(area)
+  PracticeArea.find_or_create_by!(area)
 end
 
 firm_types = [
@@ -46,5 +46,5 @@ firm_types = [
 ]
 
 firm_types.each do |type|
-  FirmType.create!(type)
+  FirmType.find_or_create_by!(type)
 end

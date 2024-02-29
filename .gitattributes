@@ -11,3 +11,4 @@ vendor/* linguist-vendored
 
 # CRLF fix for ruby files
 *.rb text eol=lf
+*.erb text eol=lf

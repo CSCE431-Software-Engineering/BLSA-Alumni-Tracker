@@ -45,6 +45,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
     t.index ["user_id"], name: "index_education_infos_on_user_id"
   end
 
+  create_table "firm_types", force: :cascade do |t|
+    t.string "firm_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "practice_areas", force: :cascade do |t|
     t.string "practice_area"
     t.datetime "created_at", null: false
@@ -71,10 +77,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "firm_type_id"
+    t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
   end
 
   add_foreign_key "area_joins", "practice_areas"
   add_foreign_key "area_joins", "users"
   add_foreign_key "education_infos", "universities"
   add_foreign_key "education_infos", "users"
+  add_foreign_key "users", "firm_types"
 end

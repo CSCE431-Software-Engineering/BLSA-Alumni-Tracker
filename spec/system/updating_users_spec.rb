@@ -6,6 +6,12 @@ require 'system_helper'
 RSpec.describe('Updating Users', type: :system) do
   before do
     driven_by(:rack_test)
+    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
+
+    @firm_type = FirmType.create!(
+      firm_type: 'Example Firm Type'
+    )
+
     @user = User.create!(
       First_Name: 'John',
       Last_Name: 'Doe',
@@ -14,12 +20,17 @@ RSpec.describe('Updating Users', type: :system) do
       Email: 'csce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
+      practice_areas: [@practice_area],
       is_Admin: true
     )
-    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
-    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+  end
+
+  before(:each) do
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end
@@ -172,6 +183,21 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content("Current job can't be blank"))
   end
 
+  it '(Sunny Day) Update Firm Type' do
+    @firm_type_new = FirmType.create!(
+      firm_type: 'New Firm Type'
+    )
+    visit edit_user_path(@user.id)
+
+    select @firm_type_new.firm_type, from: 'user_firm_type_id'
+
+    click_on 'Update User'
+
+    expect(page).to(have_content(@firm_type_new.firm_type))
+  end
+
+  # not sure how to add rainy day case since user only has the options given to them
+
   it '(Sunny Day) Update Location' do
     visit edit_user_path(@user.id)
 
@@ -213,6 +239,7 @@ RSpec.describe('Updating Users', type: :system) do
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do
+    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
     @user2 = User.create!(
       First_Name: 'John',
       Last_Name: 'Doe',
@@ -221,8 +248,10 @@ RSpec.describe('Updating Users', type: :system) do
       Email: 'NOTcsce431@tamu.edu',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
       Location: 'New York',
       Linkedin_Profile: 'https://www.linkedin.com',
+      practice_areas: [@practice_area],
       is_Admin: true
     )
     visit user_path(@user2.id)

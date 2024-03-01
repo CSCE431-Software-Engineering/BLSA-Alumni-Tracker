@@ -48,3 +48,12 @@ firm_types = [
 firm_types.each do |type|
   FirmType.find_or_create_by!(type)
 end
+
+# Universities
+universities = [
+  {University: "Texas A&M School of Law"}
+]
+
+universities.each do |uni|
+  University.find_or_create_by!(uni)
+end

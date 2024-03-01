@@ -6,7 +6,11 @@ class EducationInfosController < ApplicationController
 
   # GET /education_infos or /education_infos.json
   def index
-    @education_infos = EducationInfo.all
+    @education_infos = if is_admin
+                         EducationInfo.all
+                       else
+                         EducationInfo.where(user_id: @user.id)
+                       end
   end
 
   # GET /education_infos/1 or /education_infos/1.json
@@ -79,5 +83,11 @@ class EducationInfosController < ApplicationController
 
   def set_current_user
     @user = User.find_by(Email: session[:email])
+
+    redirect_to(new_user_path, notice: 'Please create your profile before adding your education.') if @user.blank? && !is_admin
+  end
+
+  def is_admin
+    session[:email] == 'blsa.tamu@gmail.com'
   end
 end

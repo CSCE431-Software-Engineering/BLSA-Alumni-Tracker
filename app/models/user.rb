@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_many :education_infos
+  has_many :education_infos, dependent: :destroy
   has_many :universities, through: :education_infos
   has_many :area_joins, dependent: :destroy
   has_many :practice_areas, through: :area_joins

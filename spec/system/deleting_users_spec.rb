@@ -7,19 +7,16 @@ RSpec.describe('Deleting Users', type: :system) do
   before do
     driven_by(:rack_test)
 
-    @firm_type = FirmType.find_by_firm_type('Government')
-    @practice_area = PracticeArea.find_by_practice_area('Commercial Law')
-  end
-
-  before(:each) do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    @firm_type = FirmType.find_by(firm_type: 'Government')
+    @practice_area = PracticeArea.find_by(practice_area: 'Commercial Law')
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
     login
   end
 
   it '(Sunny Day) Delete User' do
-    visit user_path(User.find_by_Email('csce431@tamu.edu').id)
+    visit user_path(User.find_by(Email: 'csce431@tamu.edu').id)
 
     click_on 'Delete this user'
 
@@ -29,7 +26,7 @@ RSpec.describe('Deleting Users', type: :system) do
   end
 
   it '(Rainy Day) User cannot be deleted since it is not yours' do
-    @practice_area = PracticeArea.find_by_practice_area('Civil Litigation')
+    @practice_area = PracticeArea.find_by(practice_area: 'Civil Litigation')
     @user2 = User.create!(
       First_Name: 'John',
       Last_Name: 'Doe',

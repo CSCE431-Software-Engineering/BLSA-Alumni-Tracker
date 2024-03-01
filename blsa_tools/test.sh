@@ -63,6 +63,16 @@ then
     exit 0
 fi
 
+if [[ $* == *all* ]]
+then
+    echo Cleaning up database...
+    rails db:reset
+    echo Seeding database...
+    RAILS_ENV=test rails db:seed
+
+    rspec spec/.
+fi
+
 if [[ $* == *university* ]]
 then
     echo_tests "${UNIVERSITY_TESTS[@]}"

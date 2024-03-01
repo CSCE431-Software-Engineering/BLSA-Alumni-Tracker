@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ViewHelper
   def create_university(uni = 'Texas A&M')
     University.create!(

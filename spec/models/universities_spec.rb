@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe(University, type: :model) do
-  describe "Creating" do
+  describe 'Creating' do
     it '(Sunny Day) Valid University Name' do
-      user = described_class.new(University: "Test University")
+      user = described_class.new(University: 'Test University')
       expect(user).to(be_valid)
     end
 

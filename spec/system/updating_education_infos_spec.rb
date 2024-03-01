@@ -11,7 +11,7 @@ RSpec.describe('Updating Education Info', type: :system) do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login
 
-    @user = User.find_by_Email('csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@tamu.edu')
 
     @university = University.create!(
       University: 'Texas A&M'

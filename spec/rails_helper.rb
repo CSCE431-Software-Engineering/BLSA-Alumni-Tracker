@@ -83,5 +83,6 @@ RSpec.configure do |config|
       token: 'token',
       refresh_token: 'refresh token'
     }
-  })
+  }
+                                                                    )
 end

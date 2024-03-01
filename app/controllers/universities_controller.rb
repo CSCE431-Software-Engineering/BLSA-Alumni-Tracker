@@ -18,9 +18,7 @@ class UniversitiesController < ApplicationController
 
   # GET /universities/1/edit
   def edit
-    if !User.find_by_Email(current_admin.email).is_Admin?
-      redirect_to(@university, alert: 'Only admins can update universities.')
-    end
+    redirect_to(@university, alert: 'Only admins can update universities.') unless User.find_by(Email: current_admin.email).is_Admin?
   end
 
   # POST /universities or /universities.json
@@ -40,7 +38,7 @@ class UniversitiesController < ApplicationController
 
   # PATCH/PUT /universities/1 or /universities/1.json
   def update
-    if User.find_by_Email(current_admin.email).is_Admin?
+    if User.find_by(Email: current_admin.email).is_Admin?
       respond_to do |format|
         if @university.update(university_params)
           format.html { redirect_to(university_url(@university), notice: 'University was successfully updated.') }
@@ -60,7 +58,7 @@ class UniversitiesController < ApplicationController
 
   # DELETE /universities/1 or /universities/1.json
   def destroy
-    if User.find_by_Email(current_admin.email).is_Admin?
+    if User.find_by(Email: current_admin.email).is_Admin?
       @university.destroy!
 
       respond_to do |format|

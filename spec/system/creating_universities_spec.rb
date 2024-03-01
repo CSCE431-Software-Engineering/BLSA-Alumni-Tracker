@@ -40,6 +40,6 @@ RSpec.describe('Universities', type: :system) do
     fill_in 'University', with: 'Dupe Uni'
     click_on 'Create University'
 
-    expect(page).to(have_content("University has already been taken"))
+    expect(page).to(have_content('University has already been taken'))
   end
 end

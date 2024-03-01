@@ -77,4 +77,41 @@ class UsersController < ApplicationController
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
   end
+
+end
+
+#Walk classmate through for help
+class UsersController < ApplicationController
+  def create
+    @user = User.new(user_params)
+    # Set the user's location based on their IP address
+    @user.set_location_by_ip(request.remote_ip)
+
+    if @user.save
+      # Redirect or render success response
+      redirect_to @user, notice: 'User was successfully created.'
+    else
+      # Handle errors, render form again
+      render :new
+    end
+  end
+
+  # Assuming you also want to update location on profile update
+  def update
+    @user = User.find(params[:id])
+    @user.assign_attributes(user_params)
+    @user.set_location_by_ip(request.remote_ip) if params[:user][:location].blank?
+
+    if @user.save
+      redirect_to @user, notice: 'User was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :location) # Add other fields as necessary
+  end
 end

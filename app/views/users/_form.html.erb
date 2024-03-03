@@ -46,9 +46,14 @@
     <%= form.text_field :Current_Job %>
   </div>
 
-  <div>
-    <%= form.label :Location, style: "display: block" %>
-    <%= form.text_field :Location %>
+  <%= form.collection_select :location_id, Location.order(:city), :id, :city, include_blank: true %>
+
+  <div id="new_location_fields">
+    <%= form.fields_for :location, Location.new do |location_form| %>
+      <%= location_form.text_field :country %>
+      <%= location_form.text_field :state %>
+      <%= location_form.text_field :city %>
+    <% end %>
   </div>
 
   <div>
@@ -64,4 +69,29 @@
   <div>
     <%= form.submit %>
   </div>
+
+  <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the select dropdown and the div for the new location fields
+      var locationSelect = document.querySelector('#user_location_id');
+      var newLocationFields = document.querySelector('#new_location_fields');
+
+      // Define a function to toggle the display of the new location fields
+      var toggleNewLocationFields = function() {
+        // Check if the dropdown's value is empty (meaning 'choose a location' is selected)
+        if(locationSelect.value) {
+          newLocationFields.style.display = 'none';
+        } else {
+          newLocationFields.style.display = 'block';
+        }
+      };
+
+      // Add an event listener to the select dropdown to toggle the new location fields
+      locationSelect.addEventListener('change', toggleNewLocationFields);
+
+      // Call the toggle function initially in case the select is already set to an empty value
+      toggleNewLocationFields();
+    });
+  </script>
 <% end %>

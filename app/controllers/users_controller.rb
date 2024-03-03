@@ -23,6 +23,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
+    if params[:user][:location_id].blank? && params[:user][:location_attributes].present?
+      # Build a new location for the user
+      @user.build_location(user_params[:location_attributes])
+    end
+    
     respond_to do |format|
       if @user.save
         format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
@@ -72,46 +77,51 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Location, :Linkedin_Profile, :is_Admin
-    )
+                                                    :Linkedin_Profile, :is_Admin, :Location, location_attributes: [:country, :state, :city])
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
+  end
+
+  # Only allow a list of trusted parameters through.
+  def location_params
+    params.require(:location).permit(:country, :state, :city)
   end
 
 end
 
 #Walk classmate through for help
-class UsersController < ApplicationController
-  def create
-    @user = User.new(user_params)
-    # Set the user's location based on their IP address
-    @user.set_location_by_ip(request.remote_ip)
+#Could be used for auto pop of form in user profile
+# class UsersController < ApplicationController
+#   def create
+#     @user = User.new(user_params)
+#     # Set the user's location based on their IP address
+#     @user.set_location_by_ip(request.remote_ip)
 
-    if @user.save
-      # Redirect or render success response
-      redirect_to @user, notice: 'User was successfully created.'
-    else
-      # Handle errors, render form again
-      render :new
-    end
-  end
+#     if @user.save
+#       # Redirect or render success response
+#       redirect_to @user, notice: 'User was successfully created.'
+#     else
+#       # Handle errors, render form again
+#       render :new
+#     end
+#   end
 
-  # Assuming you also want to update location on profile update
-  def update
-    @user = User.find(params[:id])
-    @user.assign_attributes(user_params)
-    @user.set_location_by_ip(request.remote_ip) if params[:user][:location].blank?
+#   # Assuming you also want to update location on profile update
+#   def update
+#     @user = User.find(params[:id])
+#     @user.assign_attributes(user_params)
+#     @user.set_location_by_ip(request.remote_ip) if params[:user][:location].blank?
 
-    if @user.save
-      redirect_to @user, notice: 'User was successfully updated.'
-    else
-      render :edit
-    end
-  end
+#     if @user.save
+#       redirect_to @user, notice: 'User was successfully updated.'
+#     else
+#       render :edit
+#     end
+#   end
 
-  private
+#   private
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :location) # Add other fields as necessary
-  end
-end
+#   def user_params
+#     params.require(:user).permit(:name, :email, :password, :password_confirmation, :location) # Add other fields as necessary
+#   end
+# end

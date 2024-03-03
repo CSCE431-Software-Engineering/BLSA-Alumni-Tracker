@@ -51,6 +51,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_03_111017) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "country"
+    t.string "state"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "practice_areas", force: :cascade do |t|
     t.string "practice_area"
     t.datetime "created_at", null: false
@@ -62,14 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_03_111017) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["University"], name: "index_universities_on_University", unique: true
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string "country"
-    t.string "state"
-    t.string "city"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -87,15 +87,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_03_111017) do
     t.datetime "updated_at", null: false
     t.string "location"
     t.bigint "location_id", null: false
-    t.index ["location_id"], name: "index_users_on_location_id"
     t.bigint "firm_type_id"
     t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
+    t.index ["location_id"], name: "index_users_on_location_id"
   end
 
-  add_foreign_key "users", "locations"
   add_foreign_key "area_joins", "practice_areas"
   add_foreign_key "area_joins", "users"
   add_foreign_key "education_infos", "universities"
   add_foreign_key "education_infos", "users"
   add_foreign_key "users", "firm_types"
+  add_foreign_key "users", "locations"
 end

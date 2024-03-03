@@ -95,9 +95,8 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Linkedin_Profile, :is_Admin, :Location, location_attributes: [:country, :state, :city]
-                                                    :firm_type_id, practice_area_ids: []
-    )
+                                                    :Linkedin_Profile, :is_Admin, :Location, { location_attributes: [:country, :state, :city] },
+                                                    :firm_type_id, practice_area_ids: [])
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
   end

@@ -49,12 +49,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_03_111017) do
     t.string "Email"
     t.string "Phone_Number"
     t.string "Current_Job"
-    # t.string "Location"
+    t.string "Location"
     t.string "Linkedin_Profile"
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    # t.string "location"
+    t.string "location"
     t.bigint "location_id", null: false
     t.index ["location_id"], name: "index_users_on_location_id"
   end

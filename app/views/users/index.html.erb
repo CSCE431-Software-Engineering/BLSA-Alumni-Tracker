@@ -1,15 +1,58 @@
-<p style="color: green"><%= notice %></p>
+<%= form_with(url: users_path, method: :get, local: true) do |form| %>
+  <!-- Search bar implementation -->
+<% end %>
 
-<h1 class="bg-red-800">
-  Users</h1>
+<%= form_with(url: users_path, method: :get, local: true) do |form| %>
+  <!-- Search bar implementation -->
+<% end %>
 
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
-  <% end %>
+<div class="overflow-x-auto">
+  <table class="min-w-full leading-normal">
+    <thead>
+      <tr>
+        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Name
+        </th>
+        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Current Job
+        </th>
+        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Practice Areas
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="hover:bg-gray-100 cursor-pointer" onclick="window.location='<%= user_path(user) %>'">
+          <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <!-- User name and avatar here -->
+            <%= "#{user.First_Name} #{user.Last_Name}" %>
+          </td>
+          <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <!-- User current job here -->
+            <%= user.Current_Job %>
+          </td>
+          <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <!-- User practice areas here; joined if present -->
+            <%= user.practice_areas.map(&:practice_area).join(', ') %>
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
-<%= link_to "New user", new_user_path %>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('tr[data-href]');
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        window.location.href = row.dataset.href;
+      });
+    });
+  });
+</script>

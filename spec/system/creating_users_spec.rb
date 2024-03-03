@@ -8,14 +8,13 @@ RSpec.describe('Creating Users', type: :system) do
     driven_by(:rack_test)
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
-
+    Rails.application.load_seed
     login
   end
 
   it '(Sunny Day) saves and displays the resulting user' do
     # login automatically creates a user, so we need to destroy user
     destroy_user
-
     visit new_user_path
 
     fill_in 'First name', with: 'John'
@@ -31,7 +30,7 @@ RSpec.describe('Creating Users', type: :system) do
     select 'Real Estate Law', from: 'user_practice_area_ids'
     check 'Is admin'
 
-    click_on 'Create User'
+    click_on 'Save'
 
     expect(page).to(have_content('John'))
     expect(page).to(have_content('Doe'))
@@ -51,28 +50,28 @@ RSpec.describe('Creating Users', type: :system) do
   it '(Rainy Day) does not save the user if the First Name is missing' do
     visit new_user_path
     fill_in 'First name', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("First name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Last Name is missing' do
     visit new_user_path
     fill_in 'Last name', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Last name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Middle Name is missing' do
     visit new_user_path
     fill_in 'Middle name', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Middle name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Profile Picture is missing' do
     visit new_user_path
     fill_in 'Profile picture', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Profile picture can't be blank"))
   end
 
@@ -80,21 +79,21 @@ RSpec.describe('Creating Users', type: :system) do
   # it '(Rainy Day) does not save the user if the Email is missing' do
   #   visit new_user_path
   #   fill_in 'Email', with: ''
-  #   click_on 'Create User'
+  #   click_on 'Save'
   #   expect(page).to(have_content("Email can't be blank"))
   # end
 
   it '(Rainy Day) does not save the user if the Phone Number is missing' do
     visit new_user_path
     fill_in 'Phone number', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Phone number can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Current Job is missing' do
     visit new_user_path
     fill_in 'Current job', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Current job can't be blank"))
   end
 
@@ -102,27 +101,27 @@ RSpec.describe('Creating Users', type: :system) do
   # it '(Rainy Day) does not save the user if the Firm Type is missing' do
   #   visit new_user_path
   #   select '', from: 'user_firm_type_id'
-  #   click_on 'Create User'
+  #   click_on 'Save'
   #   expect(page).to(have_content("Firm Type can't be blank"))
   # end
 
   it '(Rainy Day) does not save the user if the Location is missing' do
     visit new_user_path
     fill_in 'Location', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Location can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Linkedin Profile is missing' do
     visit new_user_path
     fill_in 'Linkedin profile', with: ''
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Linkedin profile can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Practice Area is missing' do
     visit new_user_path
-    click_on 'Create User'
+    click_on 'Save'
     expect(page).to(have_content("Practice areas can't be blank"))
   end
 end

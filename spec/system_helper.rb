@@ -20,7 +20,7 @@ module SystemHelper
     select('Civil Litigation', from: 'user_practice_area_ids')
     select('Real Estate Law', from: 'user_practice_area_ids')
     check('Is admin')
-    click_on('Create User')
+    click_on('Save')
   end
 
   def set_admin_false

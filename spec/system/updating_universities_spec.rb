@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Updating Universities', type: :system) do
   before do
     driven_by(:rack_test)
-
+    Rails.application.load_seed
     @university = University.create!(
       University: 'Texas A&M University'
     )

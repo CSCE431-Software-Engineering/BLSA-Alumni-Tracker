@@ -10,7 +10,7 @@ RSpec.describe('Deleting Universities', type: :system) do
     @university = University.create!(
       University: 'Test University'
     )
-
+    Rails.application.load_seed
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login

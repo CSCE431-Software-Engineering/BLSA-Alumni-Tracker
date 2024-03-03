@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Deleting Users', type: :system) do
   before do
     driven_by(:rack_test)
-
+    Rails.application.load_seed
     @firm_type = FirmType.find_by(firm_type: 'Government')
     @practice_area = PracticeArea.find_by(practice_area: 'Commercial Law')
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
@@ -16,9 +16,7 @@ RSpec.describe('Deleting Users', type: :system) do
   end
 
   it '(Sunny Day) Delete User' do
-    visit user_path(User.find_by(Email: 'csce431@tamu.edu').id)
-
-    click_on 'Delete this user'
+    visit delete_user_path(User.find_by(Email: 'csce431@tamu.edu').id)
 
     click_on 'Destroy this user'
 
@@ -41,9 +39,7 @@ RSpec.describe('Deleting Users', type: :system) do
       practice_areas: [@practice_area],
       is_Admin: true
     )
-    visit user_path(@user2.id)
-
-    click_on 'Delete this user'
+    visit delete_user_path(@user2.id)
 
     expect(page).to(have_content('You can only delete your own profile.'))
   end

@@ -12,7 +12,5 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by(Email: session[:email]) if session[:email].present?
   end
 
-  def current_user
-    @current_user
-  end
+  attr_reader :current_user
 end

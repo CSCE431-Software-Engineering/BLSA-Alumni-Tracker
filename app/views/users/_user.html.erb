@@ -1,67 +1,68 @@
-<div id="<%= dom_id user %>">
-  <p>
-    <strong>First name:</strong>
-    <%= user.First_Name %>
-  </p>
+<div id="<%= dom_id user %>" class="flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Name:</p>
+      <div class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <%= user.First_Name %> <%= user.Middle_Name %> <%= user.Last_Name %>
+      </div>
+    </div>
+  </div>
 
-  <p>
-    <strong>Last name:</strong>
-    <%= user.Last_Name %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Profile Picture:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Profile_Picture %></p>
+    </div>
+  </div>
 
-  <p>
-    <strong>Middle name:</strong>
-    <%= user.Middle_Name %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Phone_Number %></p>
+    </div>
+  </div>
 
-  <p>
-    <strong>Profile Picture:</strong>
-    <%= user.Profile_Picture %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Current Job:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Current_Job %></p>
+    </div>
+    <div class="md:w-1/2 px-3">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Firm Type:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= FirmType.find(user.firm_type_id).firm_type %></p>
+    </div>
+  </div>
 
-  <p>
-    <strong>Email:</strong>
-    <%= user.Email %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Location:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Location %></p>
+    </div>
+  </div>
 
-  <p>
-    <strong>Phone number:</strong>
-    <%= user.Phone_Number %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Linkedin Profile:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Linkedin_Profile %></p>
+    </div>
+  </div>
 
-  <p>
-    <strong>Current job:</strong>
-    <%= user.Current_Job %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
 
-  <p>
-    <strong>Firm Type:</strong>
-    <%= FirmType.find(user.firm_type_id).firm_type %>
-  </p>
+      <p class="block text-gray-700 text-sm font-bold mb-2">Practice Areas:</p>
+      <ul class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <% user.practice_areas.each do |practice_area| %>
+          <li><%= practice_area.practice_area %></li>
+        <% end %>
+      </ul>
+      </div>
+  </div>
 
-  <p>
-    <strong>Location:</strong>
-    <%= user.Location %>
-  </p>
-
-  <p>
-    <strong>Linkedin profile:</strong>
-    <%= user.Linkedin_Profile %>
-  </p>
-  
-  <p>
-    <strong>Practice areas:</strong>
-    <ul>
-      <% user.practice_areas.each do |practice_area| %>
-        <li><%= practice_area.practice_area %></li>
-      <% end %>
-    </ul>
-  </p>
-
-  <p>
-    <strong>Is admin:</strong>
-    <%= user.is_Admin %>
-  </p>
-
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Is Admin:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.is_Admin %></p>
+    </div>
+  </div>
 </div>
-

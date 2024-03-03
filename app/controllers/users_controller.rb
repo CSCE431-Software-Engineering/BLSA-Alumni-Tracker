@@ -19,6 +19,13 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit; end
 
+  helper_method :current_user
+  
+  private
+
+  def current_user
+    @current_user ||= User.find_by(Email: session[:email]) if session[:email]
+  end
   # POST /users or /users.json
   def create
     @user = User.new(user_params)

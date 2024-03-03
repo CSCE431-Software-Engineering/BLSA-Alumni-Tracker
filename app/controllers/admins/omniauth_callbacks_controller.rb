@@ -5,7 +5,10 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     admin = Admin.from_google(**from_google_params)
 
     if admin.present?
-      sign_out_all_scopes
+      # store the email so we can track the session
+      # puts "Email: #{from_google_params[:email]}"
+      session[:email] = from_google_params[:email]
+
       flash[:success] = t('devise.omniauth_callbacks.success', kind: 'Google')
       sign_in_and_redirect(admin, event: :authentication)
     else

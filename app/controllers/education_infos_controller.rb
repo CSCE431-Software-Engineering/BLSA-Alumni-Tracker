@@ -2,10 +2,15 @@
 
 class EducationInfosController < ApplicationController
   before_action :set_education_info, only: %i[show edit update destroy]
+  before_action :set_current_user
 
   # GET /education_infos or /education_infos.json
   def index
-    @education_infos = EducationInfo.all
+    @education_infos = if is_admin
+                         EducationInfo.all
+                       else
+                         EducationInfo.where(user_id: @user.id)
+                       end
   end
 
   # GET /education_infos/1 or /education_infos/1.json
@@ -17,11 +22,14 @@ class EducationInfosController < ApplicationController
   end
 
   # GET /education_infos/1/edit
-  def edit; end
+  def edit
+    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email]
+  end
 
   # POST /education_infos or /education_infos.json
   def create
     @education_info = EducationInfo.new(education_info_params)
+    @education_info.user_id = @user.id
 
     respond_to do |format|
       if @education_info.save
@@ -36,6 +44,8 @@ class EducationInfosController < ApplicationController
 
   # PATCH/PUT /education_infos/1 or /education_infos/1.json
   def update
+    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email]
+
     respond_to do |format|
       if @education_info.update(education_info_params)
         format.html { redirect_to(education_info_url(@education_info), notice: 'Education info was successfully updated.') }
@@ -49,6 +59,8 @@ class EducationInfosController < ApplicationController
 
   # DELETE /education_infos/1 or /education_infos/1.json
   def destroy
+    redirect_to(@education_info, alert: 'You may only delete education infos you own') if @education_info.user.Email != session[:email]
+
     @education_info.destroy!
 
     respond_to do |format|
@@ -66,6 +78,16 @@ class EducationInfosController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def education_info_params
-    params.require(:education_info).permit(:Semester, :Grad_Year, :University, :Degree_Type)
+    params.require(:education_info).permit(:Semester, :Grad_Year, :university_id, :Degree_Type)
+  end
+
+  def set_current_user
+    @user = User.find_by(Email: session[:email])
+
+    redirect_to(new_user_path, notice: 'Please create your profile before adding your education.') if @user.blank? && !is_admin
+  end
+
+  def is_admin
+    session[:email] == 'blsa.tamu@gmail.com'
   end
 end

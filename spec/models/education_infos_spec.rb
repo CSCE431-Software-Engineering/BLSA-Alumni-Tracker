@@ -5,11 +5,50 @@ require 'rails_helper'
 RSpec.describe(EducationInfo, type: :model) do
   # Subject to be used between all tests (resets before each test)
   # More here: https://medium.com/@tomkadwill/all-about-rspec-let-a3b642e08d39
+
+  let(:firm_type) do
+    FirmType.create!(
+      firm_type: 'Example Firm Type'
+    )
+  end
+
+  let(:practice_area) do
+    PracticeArea.create!(
+      practice_area: 'Test Practice Area'
+    )
+  end
+
+  let(:user) do
+    User.create!(
+      First_Name: 'Pauline',
+      Last_Name: 'Wade',
+      Middle_Name: 'idk',
+      Profile_Picture: 'url.com',
+      Email: 'csce431@tamu.edu',
+      Phone_Number: '1234567890',
+      Current_Job: 'Procrastinator',
+      Location: 'College Station',
+      Linkedin_Profile: 'linkedin.com',
+      firm_type_id: firm_type.id,
+      practice_areas: [
+        practice_area
+      ],
+      is_Admin: true
+    )
+  end
+
+  let(:university) do
+    University.create!(
+      University: 'Texas A&M'
+    )
+  end
+
   let(:education_info) do
     described_class.new(
       Semester: 'Spring',
       Grad_Year: 2025,
-      University: 'Texas A&M',
+      university_id: university.id,
+      user_id: user.id,
       Degree_Type: 'Bachelors'
     )
   end
@@ -44,8 +83,14 @@ RSpec.describe(EducationInfo, type: :model) do
     end
   end
 
-  it '(Rainy Day) Empty University' do
-    education_info.University = nil
+  it '(Rainy Day) Empty University ID' do
+    education_info.university_id = nil
+
+    expect(education_info).not_to(be_valid)
+  end
+
+  it '(Rainy Day) Empty User ID' do
+    education_info.user_id = nil
 
     expect(education_info).not_to(be_valid)
   end

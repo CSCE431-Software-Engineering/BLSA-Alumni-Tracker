@@ -1,7 +1,14 @@
 # See https://git-scm.com/docs/gitattributes for more about git attribute files.
 
+# Normalize
+* text=auto
+
 # Mark the database schema as having been generated.
 db/schema.rb linguist-generated
 
 # Mark any vendored files as having been vendored.
 vendor/* linguist-vendored
+
+# CRLF fix for ruby files
+*.rb text eol=lf
+*.erb text eol=lf

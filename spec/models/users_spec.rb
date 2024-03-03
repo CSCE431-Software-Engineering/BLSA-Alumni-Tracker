@@ -38,6 +38,11 @@ RSpec.describe(User, type: :model) do
     expect(user).not_to(be_valid)
   end
 
+  it 'is not valid without a firm_type_id' do
+    user = described_class.new(firm_type_id: nil)
+    expect(user).not_to(be_valid)
+  end
+
   it 'is not valid without a Location' do
     user = described_class.new(Location: nil)
     expect(user).not_to(be_valid)

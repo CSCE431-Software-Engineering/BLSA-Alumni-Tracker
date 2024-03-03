@@ -65,7 +65,24 @@ RSpec.configure do |config|
 
   # Devise (Google OAuth2)
   # See https://github.com/heartcombo/devise?tab=readme-ov-file#test-helpers for more info
-  config.include(Devise::Test::ControllerHelpers, type: :system)
-  config.include(Devise::Test::ControllerHelpers, type: :controller)
-  config.include(Devise::Test::ControllerHelpers, type: :view)
+  # config.include(Devise::Test::ControllerHelpers, type: :system)
+  # config.include(Devise::Test::ControllerHelpers, type: :controller)
+  # config.include(Devise::Test::ControllerHelpers, type: :view)
+  # config.include(Devise::Test::IntegrationHelpers, type: :system)
+
+  # Mock login for system tests using omniauth
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+    provider: 'google_oauth2',
+    uid: '123456789',
+    info: {
+      name: 'Pauline Wade',
+      email: 'csce431@tamu.edu'
+    },
+    credentials: {
+      token: 'token',
+      refresh_token: 'refresh token'
+    }
+  }
+                                                                    )
 end

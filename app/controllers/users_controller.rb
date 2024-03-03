@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy]
+  before_action :set_user, only: %i[show edit update delete destroy]
 
   # GET /users or /users.json
   def index
@@ -27,11 +27,16 @@ class UsersController < ApplicationController
       # Build a new location for the user
       @user.build_location(user_params[:location_attributes])
     end
-    
+
+
+    @user.Email = session[:email]
     respond_to do |format|
       if @user.save
+        save_practice_areas
+        save_firm_type
         format.html { redirect_to(user_url(@user), notice: 'User was successfully created.') }
         format.json { render(:show, status: :created, location: @user) }
+
       else
         format.html { render(:new, status: :unprocessable_entity) }
         format.json { render(json: @user.errors, status: :unprocessable_entity) }
@@ -42,28 +47,41 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to(user_url(@user), notice: 'User was successfully updated.') }
-        format.json { render(:show, status: :ok, location: @user) }
+      if @user.Email == session[:email]
+        if @user.update(user_params)
+          save_practice_areas
+          save_firm_type
+          format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
+          format.json { render(:show, status: :ok, location: @user) }
+        else
+          format.html { render(:edit) }
+          format.json { render(json: @user.errors, status: :unprocessable_entity) }
+        end
       else
-        format.html { render(:edit, status: :unprocessable_entity) }
-        format.json { render(json: @user.errors, status: :unprocessable_entity) }
+        format.html { redirect_to(@user, alert: 'You can only update your own profile.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
       end
     end
   end
 
   # GET /users/1/delete
   def delete
-    @user = User.find(params[:id])
+    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email]
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
-      format.json { head(:no_content) }
+    if @user.Email == session[:email]
+      @user.destroy!
+      respond_to do |format|
+        format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
+        format.json { head(:no_content) }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to(@user, alert: 'You can only delete your own profile.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
     end
   end
 
@@ -77,7 +95,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Linkedin_Profile, :is_Admin, :Location, location_attributes: [:country, :state, :city])
+                                                    :Linkedin_Profile, :is_Admin, :Location, location_attributes: [:country, :state, :city]
+                                                    :firm_type_id, practice_area_ids: []
+    )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
   end
@@ -87,6 +107,22 @@ class UsersController < ApplicationController
     params.require(:location).permit(:country, :state, :city)
   end
 
+  def save_practice_areas
+    @user.area_joins.clear # Clear existing associations
+    practice_area_ids = params[:user][:practice_area_ids].reject(&:blank?) # Ensure no blank IDs
+    practice_area_ids.each do |id|
+      practice_area = PracticeArea.find(id)
+      @user.practice_areas << practice_area if practice_area.present?
+    end
+  end
+
+  def save_firm_type
+    if params[:user][:firm_type_id].present?
+      firm_type_id = params[:user][:firm_type_id]
+      firm_type = FirmType.find(firm_type_id)
+      @user.firm_type = firm_type if firm_type.present?
+    end
+  end
 end
 
 #Walk classmate through for help

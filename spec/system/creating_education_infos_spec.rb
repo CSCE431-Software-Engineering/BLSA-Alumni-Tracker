@@ -8,7 +8,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
     driven_by(:rack_test)
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
-
+    Rails.application.load_seed
     login
 
     University.create!(

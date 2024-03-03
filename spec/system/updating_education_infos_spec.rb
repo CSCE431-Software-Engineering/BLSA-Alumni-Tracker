@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Updating Education Info', type: :system) do
   before do
     driven_by(:rack_test)
-
+    Rails.application.load_seed
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login

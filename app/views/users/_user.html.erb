@@ -15,10 +15,13 @@
     </div>
   </div>
 
-  <p>
-    <strong>Email:</strong>
-    <%= user.Email %>
-  </p>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">Email:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Email %></p>
+    </div>
+  </div>
+
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</p>

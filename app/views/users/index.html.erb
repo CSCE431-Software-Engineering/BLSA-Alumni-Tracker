@@ -26,7 +26,7 @@
         <tr class="hover:bg-gray-100 cursor-pointer" onclick="window.location='<%= user_path(user) %>'">
           <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <!-- User name and avatar here -->
-            <%= user.First_Name %>
+            <%= "#{user.First_Name} #{user.Last_Name}" %>
           </td>
           <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <!-- User current job here -->
@@ -34,9 +34,7 @@
           </td>
           <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <!-- User practice areas here; joined if present -->
-            <% user.practice_areas.each do |practice_area| %>
-              <%= practice_area.practice_area %>
-            <% end %>
+            <%= user.practice_areas.map(&:practice_area).join(', ') %>
           </td>
 
         </tr>

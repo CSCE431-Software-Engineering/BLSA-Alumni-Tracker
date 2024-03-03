@@ -80,14 +80,4 @@ class EducationInfosController < ApplicationController
   def education_info_params
     params.require(:education_info).permit(:Semester, :Grad_Year, :university_id, :Degree_Type)
   end
-
-  def set_current_user
-    @user = User.find_by(Email: session[:email])
-
-    redirect_to(new_user_path, notice: 'Please create your profile before adding your education.') if @user.blank? && !is_admin
-  end
-
-  def is_admin
-    session[:email] == 'blsa.tamu@gmail.com'
-  end
 end

@@ -15,7 +15,9 @@ module SystemHelper
     fill_in('Phone number', with: '123-456-7890')
     fill_in('Current job', with: 'Software Engineer')
     select('Government', from: 'user_firm_type_id')
-    fill_in('Location', with: 'New York')
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
     fill_in('Linkedin profile', with: 'https://www.linkedin.com')
     select('Civil Litigation', from: 'user_practice_area_ids')
     select('Real Estate Law', from: 'user_practice_area_ids')
@@ -29,8 +31,9 @@ module SystemHelper
   end
 
   def destroy_user
-    @user = User.find_by(Email: 'csce431@tamu.edu')
-    @user.destroy!
+    if @user = User.find_by(Email: 'csce431@tamu.edu')
+      @user.destroy!
+    end
   end
 end
 

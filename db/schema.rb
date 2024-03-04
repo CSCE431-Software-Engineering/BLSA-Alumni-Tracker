@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_04_050841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "country"
+    t.string "state"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "practice_areas", force: :cascade do |t|
     t.string "practice_area"
     t.datetime "created_at", null: false
@@ -72,13 +80,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
     t.string "Email"
     t.string "Phone_Number"
     t.string "Current_Job"
-    t.string "Location"
     t.string "Linkedin_Profile"
     t.boolean "is_Admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "firm_type_id"
+    t.bigint "location_id", null: false
     t.index ["firm_type_id"], name: "index_users_on_firm_type_id"
+    t.index ["location_id"], name: "index_users_on_location_id"
   end
 
   add_foreign_key "area_joins", "practice_areas"
@@ -86,4 +95,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_001643) do
   add_foreign_key "education_infos", "universities"
   add_foreign_key "education_infos", "users"
   add_foreign_key "users", "firm_types"
+  add_foreign_key "users", "locations"
 end

@@ -105,6 +105,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.2)
     faraday-net_http (3.1.0)
       net-http
+    geocoder (1.8.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -345,6 +346,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  geocoder
   importmap-rails
   jbuilder
   omniauth

@@ -12,6 +12,14 @@ RSpec.describe(EducationInfo, type: :model) do
     )
   end
 
+  let(:location_id) do
+    Location.create!(
+      country: 'USA',
+      state: 'New York',
+      city: 'New York'
+    )
+  end
+
   let(:practice_area) do
     PracticeArea.create!(
       practice_area: 'Test Practice Area'
@@ -27,9 +35,9 @@ RSpec.describe(EducationInfo, type: :model) do
       Email: 'csce431@tamu.edu',
       Phone_Number: '1234567890',
       Current_Job: 'Procrastinator',
-      Location: 'College Station',
       Linkedin_Profile: 'linkedin.com',
       firm_type_id: firm_type.id,
+      location_id: location_id.id,
       practice_areas: [
         practice_area
       ],

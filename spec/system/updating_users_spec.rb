@@ -48,7 +48,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update First Name' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -73,7 +73,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Last Name' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -98,7 +98,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Middle Name' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -123,7 +123,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Profile Picture' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -169,7 +169,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Phone Number' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -194,7 +194,7 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Current Job' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -222,7 +222,7 @@ RSpec.describe('Updating Users', type: :system) do
     )
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -259,11 +259,11 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Linkedin Profile' do
     visit edit_user_path(@user.id)
 
-    #HARDCODED TESTS, REMOVE LATER AND FIX
+    # HARDCODED TESTS, REMOVE LATER AND FIX
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
-    
+
     fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com'
 
     click_on 'Save'

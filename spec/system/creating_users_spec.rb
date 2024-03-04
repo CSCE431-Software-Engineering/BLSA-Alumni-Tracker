@@ -44,7 +44,7 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('Software Engineer'))
     expect(page).to(have_content('Government'))
     expect(page).to(have_content('USA'))
-    expect(page).to(have_content('New York')) 
+    expect(page).to(have_content('New York'))
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('https://www.linkedin.com'))
     expect(page).to(have_content('true'))

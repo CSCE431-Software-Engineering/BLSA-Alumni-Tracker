@@ -28,7 +28,6 @@ class UsersController < ApplicationController
       @user.build_location(user_params[:location_attributes])
     end
 
-
     @user.Email = session[:email]
     respond_to do |format|
       if @user.save
@@ -91,9 +90,7 @@ class UsersController < ApplicationController
   def set_user
     if params[:id].present?
       @user = User.find_by(id: params[:id])
-      if @user.nil?
-        redirect_to new_user_path
-      end
+      redirect_to(new_user_path) if @user.nil?
     else
       @user = User.new
     end
@@ -102,8 +99,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Linkedin_Profile, :is_Admin, { location_attributes: [:country, :state, :city] },
-                                                    :firm_type_id, practice_area_ids: [])
+                                                    :Linkedin_Profile, :is_Admin, { location_attributes: %i[country state city] },
+                                                    :firm_type_id, practice_area_ids: []
+    )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
   end
@@ -131,8 +129,8 @@ class UsersController < ApplicationController
   end
 end
 
-#Walk classmate through for help
-#Could be used for auto pop of form in user profile
+# Walk classmate through for help
+# Could be used for auto pop of form in user profile
 # class UsersController < ApplicationController
 #   def create
 #     @user = User.new(user_params)

@@ -9,6 +9,11 @@ RSpec.describe('Deleting Users', type: :system) do
     Rails.application.load_seed
     @firm_type = FirmType.find_by(firm_type: 'Government')
     @practice_area = PracticeArea.find_by(practice_area: 'Commercial Law')
+    @location_id = Location.create!(
+      country: 'USA',
+      state: 'New York',
+      city: 'New York'
+    )
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
@@ -34,7 +39,7 @@ RSpec.describe('Deleting Users', type: :system) do
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
-      Location: 'New York',
+      location_id: @location_id.id,
       Linkedin_Profile: 'https://www.linkedin.com',
       practice_areas: [@practice_area],
       is_Admin: true

@@ -35,9 +35,10 @@ module ViewHelper
   end
 
   def find_or_create_location(country = 'USA', state = 'New York', city = 'New York')
-    Location.find_or_create_by!(country: 'USA', state: 'Texas', city: 'College Station')
+    Location.find_or_create_by!(country: country, state: state, city: city)
   end
 
-RSpec.configure do |config|
-  config.include(ViewHelper)
+  RSpec.configure do |config|
+    config.include(ViewHelper)
+  end
 end

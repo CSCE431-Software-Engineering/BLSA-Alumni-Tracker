@@ -1,21 +1,30 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'system_helper'
 
 RSpec.describe('Creating Education Infos', type: :system) do
   before do
     driven_by(:rack_test)
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+    Rails.application.load_seed
+    login
+
+    University.create!(
+      University: 'Texas A&M University'
+    )
   end
 
   it '(Sunny Day) Creating and Showing Education Info' do
     visit new_education_info_path
 
     fill_in 'Semester', with: 'Spring'
-    fill_in 'Grad Year', with: 2025
-    fill_in 'University', with: 'Texas A&M University'
+    fill_in 'Grad year', with: 2025
+    select 'Texas A&M University', from: 'education_info_university_id'
     fill_in 'Degree type', with: 'Bachelors of Computer Science'
 
-    click_on 'Create Education info'
+    click_on 'Save'
 
     expect(page).to(have_content('Spring'))
     expect(page).to(have_content(2025))
@@ -28,7 +37,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
     fill_in 'Semester', with: ''
 
-    click_on 'Create Education info'
+    click_on 'Save'
 
     expect(page).to(have_content('Semester can\'t be blank'))
   end
@@ -39,9 +48,9 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       fill_in 'Grad year', with: ''
 
-      click_on 'Create Education info'
+      click_on 'Save'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content('Grad year can\'t be blank'))
     end
 
     it '(Rainy Day) Too Short Graduation Year' do
@@ -49,7 +58,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       fill_in 'Grad year', with: 123
 
-      click_on 'Create Education info'
+      click_on 'Save'
 
       expect(page).to(have_content('Grad year is too short'))
     end
@@ -59,20 +68,20 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
       fill_in 'Grad year', with: 'abc123'
 
-      click_on 'Create Education info'
+      click_on 'Save'
 
-      expect(page).to(have_content("Grad year can't be blank"))
+      expect(page).to(have_content('Grad year is too short (minimum is 4 characters)'))
     end
   end
 
   it '(Rainy Day) No University' do
     visit new_education_info_path
 
-    fill_in 'University', with: ''
+    select '', from: 'education_info_university_id'
 
-    click_on 'Create Education info'
+    click_on 'Save'
 
-    expect(page).to(have_content("University can't be blank"))
+    expect(page).to(have_content('University can\'t be blank'))
   end
 
   it '(Rainy Day) No Degree Type' do
@@ -80,8 +89,8 @@ RSpec.describe('Creating Education Infos', type: :system) do
 
     fill_in 'Degree type', with: ''
 
-    click_on 'Create Education info'
+    click_on 'Save'
 
-    expect(page).to(have_content("Degree type can't be blank"))
+    expect(page).to(have_content('Degree type can\'t be blank'))
   end
 end

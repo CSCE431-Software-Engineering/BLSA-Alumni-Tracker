@@ -1,8 +1,13 @@
-<%= form_with(model: user) do |form| %>
-  <% if user.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<% text_field_class = "bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
+<% label_class = "block text-gray-700 text-sm font-bold mb-2" %>
 
+
+<%= form_with(model: user, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
+  <% if user.errors.any? %>
+    <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+      <%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:
+    </div>
+    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
       <ul>
         <% user.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,57 +16,117 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :First_Name, style: "display: block" %>
-    <%= form.text_field :First_Name %>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <%= form.label :First_Name, "First name", class: "#{label_class} md:w-1/3" %>
+      <%= form.text_field :First_Name, class: text_field_class %>
+    </div>
+    <div class="md:w-1/2 px-3">
+      <%= form.label :Middle_Name, "Middle name", class: "#{label_class} md:w-1/3" %>
+      <%= form.text_field :Middle_Name, class: text_field_class %>
+    </div>
+    <div class="md:w-1/2 px-3">
+      <%= form.label :Last_Name, "Last name", class: "#{label_class} md:w-1/3" %>
+      <%= form.text_field :Last_Name, class: text_field_class %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :Last_Name, style: "display: block" %>
-    <%= form.text_field :Last_Name %>
+
+
+  <div class="px-3 mb-4">
+    <%= form.label :Profile_Picture, class: label_class %>
+    <%= form.text_field :Profile_Picture, class: text_field_class %>
   </div>
 
-  <div>
-    <%= form.label :Middle_Name, style: "display: block" %>
-    <%= form.text_field :Middle_Name %>
+  <div class="px-3 mb-4">
+    <%= form.label :Phone_Number, class: label_class %>
+    <%= form.text_field :Phone_Number, class: text_field_class %>
   </div>
 
-  <div>
-    <%= form.label :Profile_Picture, style: "display: block" %>
-    <%= form.text_field :Profile_Picture %>
+  <hr>
+
+  <div class="px-3 mb-4" id="new_location_fields">
+    <div class="mb-4">
+      <%= form.label :Select_Location, "Select Existing Location", class: "#{label_class}" %>
+      <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true, class: "flex-1" %>
+    </div>
+    <p class="text-sm text-gray-600">Or create a new location:</p>
+    <div class="md:flex items-center mb-4">
+      <%= form.fields_for :location, Location.new do |location_form| %>
+        <div class="md:w-1/2 mb-4 md:mb-0">
+          <%= form.label :Country, "Country", class: "#{label_class} md:w-1/3" %>
+          <%= location_form.text_field :country, class: text_field_class %>
+        </div>
+        <div class="md:w-1/2 px-3">
+          <%= form.label :State, "State", class: "#{label_class} md:w-1/3" %>
+          <%= location_form.text_field :state, class: text_field_class %>
+        </div>
+        <div class="md:w-1/2 px-3">
+          <%= form.label :City, "City", class: "#{label_class} md:w-1/3" %>
+          <%= location_form.text_field :city, class: text_field_class %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <hr>
+
+  <div class="md:flex md:items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <%= form.label :Current_Job, class: label_class %>
+      <%= form.text_field :Current_Job, class: text_field_class %>
+    </div>
+
+    <div>
+      <%= form.label :firm_type_id, style: "display: block"%>
+      <%= form.collection_select :firm_type_id,
+      FirmType.order(:firm_type), :id, :firm_type, {}, 
+      {multiple: false, include_blank: false}%>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :Email, style: "display: block" %>
-    <%= form.text_field :Email %>
+  <div class="px-3 mb-4">
+    <%= form.label :practice_areas, class: label_class %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class } %>
   </div>
 
-  <div>
-    <%= form.label :Phone_Number, style: "display: block" %>
-    <%= form.text_field :Phone_Number %>
+  <div class="px-3 mb-4">
+    <%= form.label :Linkedin_Profile, class: label_class %>
+    <%= form.text_field :Linkedin_Profile, class: text_field_class %>
   </div>
 
-  <div>
-    <%= form.label :Current_Job, style: "display: block" %>
-    <%= form.text_field :Current_Job %>
+  <div class="px-3 mb-4">
+    <%= form.label :is_Admin, class: label_class %>
+    <%= form.check_box :is_Admin, {}, 'true', 'false'%>
+    <%= form.label :is_Admin, class: "text-sm" %>
   </div>
 
-  <div>
-    <%= form.label :Location, style: "display: block" %>
-    <%= form.text_field :Location %>
+  <div class="px-3 mb-4">
+    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 
-  <div>
-    <%= form.label :Linkedin_Profile, style: "display: block" %>
-    <%= form.text_field :Linkedin_Profile %>
-  </div>
+  <!--script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the select dropdown and the div for the new location fields
+      var locationSelect = document.querySelector('#user_location_id');
+      var newLocationFields = document.querySelector('#new_location_fields');
 
-  <div>
-    <%= form.label :is_Admin, style: "display: block" %>
-    <%= form.check_box :is_Admin, {}, 'true', 'false' %>
-  </div>
+      // Define a function to toggle the display of the new location fields
+      var toggleNewLocationFields = function() {
+        // Check if the dropdown's value is empty (meaning 'choose a location' is selected)
+        if(locationSelect.value) {
+          newLocationFields.style.display = 'none';
+        } else {
+          newLocationFields.style.display = 'block';
+        }
+      };
 
-  <div>
-    <%= form.submit %>
-  </div>
+      // Add an event listener to the select dropdown to toggle the new location fields
+      locationSelect.addEventListener('change', toggleNewLocationFields);
+
+      // Call the toggle function initially in case the select is already set to an empty value
+      toggleNewLocationFields();
+    });
+  </script -->
 <% end %>

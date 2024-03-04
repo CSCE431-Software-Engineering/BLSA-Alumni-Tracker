@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'views_helper'
 
 RSpec.describe('education_infos/edit', type: :view) do
   let(:education_info) do
     EducationInfo.create!(
       Semester: 'Spring',
       Grad_Year: 2024,
-      University: 'Texas A&M',
+      university_id: create_university.id,
+      user_id: create_user.id,
       Degree_Type: 'Bachelors'
     )
   end
@@ -24,7 +26,7 @@ RSpec.describe('education_infos/edit', type: :view) do
 
       assert_select 'input[name=?]', 'education_info[Grad_Year]'
 
-      assert_select 'input[name=?]', 'education_info[University]'
+      assert_select 'select[name=?]', 'education_info[university_id]'
 
       assert_select 'input[name=?]', 'education_info[Degree_Type]'
     end

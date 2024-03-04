@@ -1,0 +1,18 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p style="color: green" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1>Education infos</h1>
+
+  <div id="universities">
+    <% @universities.each do |university| %>
+      <%= link_to university do %>
+        <%= render university %>
+      <% end %>
+      <hr>
+    <% end %>
+  </div>
+
+  <%= link_to "New university", new_university_path %>
+</div>

@@ -4,10 +4,10 @@
 
 <div id="education_infos">
   <% @education_infos.each do |education_info| %>
-    <%= render education_info %>
-    <p>
-      <%= link_to "Show this education info", education_info %>
-    </p>
+    <%= link_to education_info do %>
+      <%= render education_info %>
+    <% end %>
+    <hr>
   <% end %>
 </div>
 

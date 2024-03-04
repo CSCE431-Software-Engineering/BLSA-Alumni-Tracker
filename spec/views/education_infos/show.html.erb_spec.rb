@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'views_helper'
 
 RSpec.describe('education_infos/show', type: :view) do
   before do
     assign(:education_info, EducationInfo.create!(
                               Semester: 'Spring',
                               Grad_Year: 2024,
-                              University: 'Texas A&M',
+                              university_id: create_university('Texas A&M').id,
+                              user_id: create_user.id,
                               Degree_Type: 'Bachelors'
                             )
     )

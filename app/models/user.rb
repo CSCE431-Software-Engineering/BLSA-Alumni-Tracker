@@ -26,9 +26,6 @@ class User < ApplicationRecord
 
   def ensure_location_id
     # If the user has location attributes and no location_id, set the location_id
-    if self.location_id.blank? && self.location.present?
-      self.update_column(:location_id, self.location.id)
-    end
+    update_column(:location_id, location.id) if location_id.blank? && location.present?
   end
-
 end

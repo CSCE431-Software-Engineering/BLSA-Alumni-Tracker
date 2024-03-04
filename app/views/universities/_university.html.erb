@@ -1,12 +1,10 @@
 <div id="<%= dom_id university %>">
-  <p>
-    <strong>University Name:</strong>
-    <%= university.University %>
-  </p>
-
-  <% if action_name != "show" %>
-    <%= link_to "Show this university", university, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Edit this university", edit_university_path(university), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+      <p class="block text-gray-700 text-sm font-bold mb-2">University Name:</p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <%= university.University %>
+      </p>
+    </div>
+  </div>
 </div>

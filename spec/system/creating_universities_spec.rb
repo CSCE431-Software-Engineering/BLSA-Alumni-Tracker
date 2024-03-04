@@ -16,7 +16,7 @@ RSpec.describe('Universities', type: :system) do
     visit new_university_path
 
     fill_in 'University', with: 'Texas A&M'
-    click_on 'Create University'
+    click_on 'Save'
 
     expect(page).to(have_content('Texas A&M'))
   end
@@ -25,7 +25,7 @@ RSpec.describe('Universities', type: :system) do
     visit new_university_path
 
     fill_in 'University', with: ''
-    click_on 'Create University'
+    click_on 'Save'
 
     expect(page).to(have_content("University can't be blank"))
   end
@@ -38,7 +38,7 @@ RSpec.describe('Universities', type: :system) do
     visit new_university_path
 
     fill_in 'University', with: 'Dupe Uni'
-    click_on 'Create University'
+    click_on 'Save'
 
     expect(page).to(have_content('University has already been taken'))
   end

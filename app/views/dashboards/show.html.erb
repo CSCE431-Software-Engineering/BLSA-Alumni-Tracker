@@ -1,16 +1,16 @@
 <h1>You're logged in! Welcome to the Dashboard!</h1>
 
 <div class="container mx-auto py-8">
-  <h2 class="text-2xl font-bold mb-4">Todo List</h2>
-
-  <div class="todo-list m-4">
-    <ul id="todo-list" class="space-y-2">
-      <% @todo_list.each do |item, path| %>
-      <li><a href=<%= path %>><%= item.html_safe %></a></li></li>
-      <% end %>
-    </ul>
-  </div>
-  
+  <% unless @todo_list.empty? %>
+    <h2 class="text-2xl font-bold mb-4">Todo List</h2>
+    <div class="todo-list m-4">
+      <ul id="todo-list" class="space-y-2">
+        <% @todo_list.each do |item, path| %>
+        <li><a href=<%= path %>><%= item.html_safe %></a></li></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 </div>
 
 <%= link_to "Sign Out", destroy_admin_session_path %>

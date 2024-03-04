@@ -43,8 +43,9 @@ RSpec.describe(User, type: :model) do
     expect(user).not_to(be_valid)
   end
 
+  # I'm not sure if this is the correct way test for location since it is based off location_id
   it 'is not valid without a Location' do
-    user = described_class.new(Location: nil)
+    user = described_class.new(location_id: nil)
     expect(user).not_to(be_valid)
   end
 

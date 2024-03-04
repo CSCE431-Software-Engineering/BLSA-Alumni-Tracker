@@ -14,6 +14,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Sunny Day) saves and displays the resulting user' do
     # login automatically creates a user, so we need to destroy user
+    # set_user
     destroy_user
     visit new_user_path
 
@@ -24,7 +25,9 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'Phone number', with: '123-456-7890'
     fill_in 'Current job', with: 'Software Engineer'
     select 'Government', from: 'user_firm_type_id'
-    fill_in 'Location', with: 'New York'
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
     fill_in 'Linkedin profile', with: 'https://www.linkedin.com'
     select 'Civil Litigation', from: 'user_practice_area_ids'
     select 'Real Estate Law', from: 'user_practice_area_ids'
@@ -40,6 +43,8 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('123-456-7890'))
     expect(page).to(have_content('Software Engineer'))
     expect(page).to(have_content('Government'))
+    expect(page).to(have_content('USA'))
+    expect(page).to(have_content('New York')) 
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('https://www.linkedin.com'))
     expect(page).to(have_content('true'))
@@ -104,13 +109,6 @@ RSpec.describe('Creating Users', type: :system) do
   #   click_on 'Save'
   #   expect(page).to(have_content("Firm Type can't be blank"))
   # end
-
-  it '(Rainy Day) does not save the user if the Location is missing' do
-    visit new_user_path
-    fill_in 'Location', with: ''
-    click_on 'Save'
-    expect(page).to(have_content("Location can't be blank"))
-  end
 
   it '(Rainy Day) does not save the user if the Linkedin Profile is missing' do
     visit new_user_path

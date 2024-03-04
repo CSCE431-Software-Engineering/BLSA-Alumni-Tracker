@@ -7,7 +7,7 @@ module ViewHelper
     )
   end
 
-  def create_user(email = 'csce431@tamu.edu', ft = 'Government', pa = 'Civil Litigation')
+  def create_user(email = 'csce431@tamu.edu', ft = 'Government', pa = 'Civil Litigation', country = 'USA', state = 'New York', city = 'New York')
     User.create!(
       First_Name: 'Pauline',
       Last_Name: 'Wade',
@@ -16,7 +16,7 @@ module ViewHelper
       Email: email,
       Phone_Number: '1234567890',
       Current_Job: 'Procrastinator',
-      Location: 'College Station',
+      location_id: find_or_create_location(country, state, city).id,
       firm_type_id: find_or_create_firm_type(ft).id,
       practice_areas: [
         find_or_create_practice_area(pa)
@@ -33,7 +33,10 @@ module ViewHelper
   def find_or_create_practice_area(pa = 'Civil Litigation')
     PracticeArea.find_or_create_by!(practice_area: pa)
   end
-end
+
+  def find_or_create_location(country = 'USA', state = 'New York', city = 'New York')
+    Location.find_or_create_by!(country: 'USA', state: 'Texas', city: 'College Station')
+  end
 
 RSpec.configure do |config|
   config.include(ViewHelper)

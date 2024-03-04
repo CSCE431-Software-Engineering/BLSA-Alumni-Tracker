@@ -48,8 +48,11 @@
     <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true %>
 
       <%= form.fields_for :location, Location.new do |location_form| %>
+        <%= form.label :First_Name, "Country", class: "#{label_class} md:w-1/3" %>
         <%= location_form.text_field :country %>
+        <%= form.label :First_Name, "State", class: "#{label_class} md:w-1/3" %>
         <%= location_form.text_field :state %>
+        <%= form.label :First_Name, "City", class: "#{label_class} md:w-1/3" %>
         <%= location_form.text_field :city %>
       <% end %>
   </div>

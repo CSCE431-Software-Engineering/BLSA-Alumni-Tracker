@@ -70,6 +70,18 @@
 
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+
+      <p class="block text-gray-700 text-sm font-bold mb-2">Education Info:</p>
+      <ul class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <% user.education_infos.each do |education_info| %>
+          <li><%= education_info.education_info_string %></li>
+        <% end %>
+      </ul>
+      </div>
+  </div>
+
+  <div class="md:flex items-center mb-4">
+    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Is Admin:</p>
       <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.is_Admin %></p>
     </div>

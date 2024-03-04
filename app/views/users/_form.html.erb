@@ -43,29 +43,30 @@
     <%= form.text_field :Phone_Number, class: text_field_class %>
   </div>
 
+  
+  <div class="px-3 mb-4" id="new_location_fields">
+    <%= form.collection_select :location_id, Location.order(:city), :id, :city, include_blank: true %>
+
+      <%= form.fields_for :location, Location.new do |location_form| %>
+        <%= location_form.text_field :country %>
+        <%= location_form.text_field :state %>
+        <%= location_form.text_field :city %>
+      <% end %>
+  </div>
+
   <div class="md:flex md:items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <%= form.label :Current_Job, class: label_class %>
       <%= form.text_field :Current_Job, class: text_field_class %>
     </div>
 
-  <div id="new_location_fields">
-  <%= form.collection_select :location_id, Location.order(:city), :id, :city, include_blank: true %>
-
-    <%= form.fields_for :location, Location.new do |location_form| %>
-      <%= location_form.text_field :country %>
-      <%= location_form.text_field :state %>
-      <%= location_form.text_field :city %>
-    <% end %>
+    <div>
+      <%= form.label :firm_type_id, style: "display: block"%>
+      <%= form.collection_select :firm_type_id,
+      FirmType.order(:firm_type), :id, :firm_type, {}, 
+      {multiple: false, include_blank: false}%>
+    </div>
   </div>
-
-  <div>
-    <%= form.label :firm_type_id, style: "display: block"%>
-    <%= form.collection_select :firm_type_id,
-    FirmType.order(:firm_type), :id, :firm_type, {}, 
-    {multiple: false, include_blank: false}%>
-  </div>
-
 
   <div class="px-3 mb-4">
     <%= form.label :Location, class: label_class %>
@@ -92,7 +93,7 @@
     <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 
-  <script>
+  <!--script>
     // Wait for the DOM to be fully loaded
     document.addEventListener("DOMContentLoaded", function() {
       // Get the select dropdown and the div for the new location fields
@@ -115,5 +116,5 @@
       // Call the toggle function initially in case the select is already set to an empty value
       toggleNewLocationFields();
     });
-  </script>
+  </script -->
 <% end %>

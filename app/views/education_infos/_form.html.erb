@@ -11,27 +11,27 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Semester, style: "display: block" %>
     <%= form.text_field :Semester %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Grad_Year, style: "display: block" %>
     <%= form.number_field :Grad_Year %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :University, style: "display: block" %>
     <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}) %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Degree_Type, style: "display: block" %>
     <%= form.text_field :Degree_Type %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="px-3 mb-4">
+    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 <% end %>

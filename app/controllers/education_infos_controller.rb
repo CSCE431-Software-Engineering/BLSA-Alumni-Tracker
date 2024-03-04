@@ -2,14 +2,14 @@
 
 class EducationInfosController < ApplicationController
   before_action :set_education_info, only: %i[show edit update destroy]
-  before_action :set_current_user
+  before_action -> { set_current_user(true) }
 
   # GET /education_infos or /education_infos.json
   def index
     @education_infos = if is_admin
                          EducationInfo.all
                        else
-                         EducationInfo.where(user_id: @user.id)
+                         EducationInfo.where(user_id: @current_user.id)
                        end
   end
 
@@ -29,7 +29,7 @@ class EducationInfosController < ApplicationController
   # POST /education_infos or /education_infos.json
   def create
     @education_info = EducationInfo.new(education_info_params)
-    @education_info.user_id = @user.id
+    @education_info.user_id = @current_user.id
 
     respond_to do |format|
       if @education_info.save
@@ -79,15 +79,5 @@ class EducationInfosController < ApplicationController
   # Only allow a list of trusted parameters through.
   def education_info_params
     params.require(:education_info).permit(:Semester, :Grad_Year, :university_id, :Degree_Type)
-  end
-
-  def set_current_user
-    @user = User.find_by(Email: session[:email])
-
-    redirect_to(new_user_path, notice: 'Please create your profile before adding your education.') if @user.blank? && !is_admin
-  end
-
-  def is_admin
-    session[:email] == 'blsa.tamu@gmail.com'
   end
 end

@@ -11,12 +11,12 @@ class DashboardsController < ApplicationController
   def set_todo
     @todo_list = Array.new
 
-    if @user.blank?
+    if @current_user.blank?
       @todo_list.append(["Finish creating your account ->", new_user_path])
       return
     end
 
-    if @user.education_infos.length == 0
+    if @current_user.education_infos.length == 0
       @todo_list.append(["Fill out your education information ->", new_education_info_path])
     end
 

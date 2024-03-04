@@ -6,7 +6,7 @@ require 'system_helper'
 RSpec.describe('Updating Universities', type: :system) do
   before do
     driven_by(:rack_test)
-
+    Rails.application.load_seed
     @university = University.create!(
       University: 'Texas A&M University'
     )
@@ -22,7 +22,7 @@ RSpec.describe('Updating Universities', type: :system) do
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: 'Another test uni'
-    click_on 'Update University'
+    click_on 'Save'
 
     expect(page).to(have_content('Another test uni'))
   end
@@ -31,7 +31,7 @@ RSpec.describe('Updating Universities', type: :system) do
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: ''
-    click_on 'Update University'
+    click_on 'Save'
 
     expect(page).to(have_content("University can't be blank"))
   end
@@ -43,7 +43,7 @@ RSpec.describe('Updating Universities', type: :system) do
       University: 'Copy Uni'
     )
     fill_in 'University', with: 'Copy Uni'
-    click_on 'Update University'
+    click_on 'Save'
 
     expect(page).to(have_content('University has already been taken'))
   end

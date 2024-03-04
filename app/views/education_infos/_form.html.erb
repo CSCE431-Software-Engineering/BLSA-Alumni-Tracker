@@ -1,8 +1,9 @@
-<%= form_with(model: education_info) do |form| %>
+<%= form_with(model: education_info, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if education_info.errors.any? %>
-    <div style="color: red">
+    <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
       <h2><%= pluralize(education_info.errors.count, "error") %> prohibited this education_info from being saved:</h2>
-
+    </div>
+    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
       <ul>
         <% education_info.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,27 +12,27 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Semester, style: "display: block" %>
     <%= form.text_field :Semester %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Grad_Year, style: "display: block" %>
     <%= form.number_field :Grad_Year %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :University, style: "display: block" %>
     <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}) %>
   </div>
 
-  <div>
+  <div class="px-3 mb-4">
     <%= form.label :Degree_Type, style: "display: block" %>
     <%= form.text_field :Degree_Type %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="px-3 mb-4">
+    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 <% end %>

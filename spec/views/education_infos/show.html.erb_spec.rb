@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'views_helper'
 
 RSpec.describe('education_infos/show', type: :view) do
   before do

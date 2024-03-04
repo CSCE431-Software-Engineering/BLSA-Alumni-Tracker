@@ -45,7 +45,7 @@
 
   
   <div class="px-3 mb-4" id="new_location_fields">
-    <%= form.collection_select :location_id, Location.order(:city), :id, :city, include_blank: true %>
+    <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true %>
 
       <%= form.fields_for :location, Location.new do |location_form| %>
         <%= location_form.text_field :country %>

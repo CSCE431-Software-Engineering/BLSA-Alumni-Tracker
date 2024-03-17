@@ -63,7 +63,13 @@
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Linkedin Profile:</p>
-      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Linkedin_Profile %></p>
+      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <% if user.Linkedin_Profile != "N/A" %>
+          <%= link_to user.Linkedin_Profile, user.Linkedin_Profile, target: "_blank", class: "text-blue-500 hover:underline" %>
+        <% else %>
+          <%= user.Linkedin_Profile %>
+        <% end %>
+      </p>
     </div>
   </div>
 

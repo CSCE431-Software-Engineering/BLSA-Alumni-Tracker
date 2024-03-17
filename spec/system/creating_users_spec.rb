@@ -28,7 +28,7 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
-    fill_in 'Linkedin profile', with: 'https://www.linkedin.com'
+    fill_in 'Linkedin profile', with: 'https://www.linkedin.com/in/john-doe'
     select 'Civil Litigation', from: 'user_practice_area_ids'
     select 'Real Estate Law', from: 'user_practice_area_ids'
     check 'Is admin'

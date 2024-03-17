@@ -28,7 +28,7 @@ RSpec.describe('Updating Users', type: :system) do
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )
@@ -264,11 +264,11 @@ RSpec.describe('Updating Users', type: :system) do
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
 
-    fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com'
+    fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe2'
 
     click_on 'Save'
 
-    expect(page).to(have_content('https://www.myspace.com'))
+    expect(page).to(have_content('https://www.linkedin.com/in/john-doe2'))
   end
 
   it '(Rainy Day) Empty Linkedin Profile' do
@@ -294,7 +294,7 @@ RSpec.describe('Updating Users', type: :system) do
       firm_type_id: @firm_type.id,
       # Location: 'New York',
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )

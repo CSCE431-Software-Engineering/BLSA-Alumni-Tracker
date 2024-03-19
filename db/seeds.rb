@@ -57,3 +57,40 @@ universities = [
 universities.each do |uni|
   University.find_or_create_by!(uni)
 end
+
+locations = [
+  { country: 'N/A', state: 'N/A', city: 'N/A' }
+]
+
+locations.each do |loc|
+  Location.find_or_create_by!(loc)
+end
+
+na_location = Location.find_by!(country: 'N/A', state: 'N/A', city: 'N/A')
+na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
+na_firm_type = FirmType.find_by!(firm_type: 'N/A')
+
+users = [
+  {
+  First_Name: 'Admin Sam',
+  Last_Name: 'Cole',
+  Middle_Name: 'David',
+  Profile_Picture: 'url.com',
+  Email: 'samdcole48@gmail.com',
+  Phone_Number: '123-456-7890',
+  Current_Job: 'Test Admin',
+  location_id: na_location.id,
+  firm_type_id: na_firm_type.id,
+  practice_areas: [na_practice_area],
+  Linkedin_Profile: 'https://www.linkedin.com/in/samuel-cole-91100a1a9/',
+  is_Admin: true
+  }
+]
+
+# must do it this way in order to associate the pratice_areas array
+# This still prevents duplicates users.
+users.each do |user|
+  User.find_or_create_by!(Email: user[:Email]) do |u|
+    u.assign_attributes(user)
+  end
+end

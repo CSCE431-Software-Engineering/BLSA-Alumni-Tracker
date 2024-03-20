@@ -40,7 +40,7 @@ RSpec.describe('Deleting Users', type: :system) do
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )

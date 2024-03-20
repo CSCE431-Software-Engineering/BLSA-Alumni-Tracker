@@ -21,7 +21,7 @@ module ViewHelper
       practice_areas: [
         find_or_create_practice_area(pa)
       ],
-      Linkedin_Profile: 'linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/pauline-wade',
       is_Admin: true
     )
   end

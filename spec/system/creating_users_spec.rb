@@ -28,7 +28,7 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
-    fill_in 'Linkedin profile', with: 'https://www.linkedin.com'
+    fill_in 'Linkedin profile', with: 'https://www.linkedin.com/in/john-doe'
     select 'Civil Litigation', from: 'user_practice_area_ids'
     select 'Real Estate Law', from: 'user_practice_area_ids'
     check 'Is admin'
@@ -46,7 +46,7 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('USA'))
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('New York'))
-    expect(page).to(have_content('https://www.linkedin.com'))
+    expect(page).to(have_content('https://www.linkedin.com/in/john-doe'))
     expect(page).to(have_content('true'))
     expect(page).to(have_content('Civil Litigation'))
     expect(page).to(have_content('Real Estate Law'))
@@ -115,6 +115,13 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'Linkedin profile', with: ''
     click_on 'Save'
     expect(page).to(have_content("Linkedin profile can't be blank"))
+  end
+
+  it '(Rainy Day) does not save the user if the Linkedin Profile link is not to linkedin' do
+    visit new_user_path
+    fill_in 'Linkedin profile', with: 'https://www.myspace.com/john-doe'
+    click_on 'Save'
+    expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
   end
 
   it '(Rainy Day) does not save the user if the Practice Area is missing' do

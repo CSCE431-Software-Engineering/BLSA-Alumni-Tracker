@@ -35,7 +35,7 @@ RSpec.describe(EducationInfo, type: :model) do
       Email: 'csce431@tamu.edu',
       Phone_Number: '1234567890',
       Current_Job: 'Procrastinator',
-      Linkedin_Profile: 'linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/pauline-wade',
       firm_type_id: firm_type.id,
       location_id: location_id.id,
       practice_areas: [

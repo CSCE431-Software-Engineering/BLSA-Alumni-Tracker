@@ -2,7 +2,8 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update delete destroy]
-
+  helper_method :current_user_is_admin?
+  
   # GET /users or /users.json
   def index
     @users = User.all

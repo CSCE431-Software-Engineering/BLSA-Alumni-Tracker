@@ -28,7 +28,7 @@ RSpec.describe('Updating Users', type: :system) do
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )
@@ -44,11 +44,11 @@ RSpec.describe('Updating Users', type: :system) do
       firm_type_id: @firm_type.id,
       # Location: 'New York',
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )
-    
+
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
@@ -273,7 +273,7 @@ RSpec.describe('Updating Users', type: :system) do
   #   expect(page).to(have_content("Location can't be blank"))
   # end
 
-  it '(Sunny Day) Update Linkedin Profile' do
+  it '(Sunny Day) Update Linkedin Profile to valid url' do
     visit edit_user_path(@user.id)
 
     # HARDCODED TESTS, REMOVE LATER AND FIX
@@ -281,11 +281,26 @@ RSpec.describe('Updating Users', type: :system) do
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
 
-    fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com'
+    fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe2'
 
     click_on 'Save'
 
-    expect(page).to(have_content('https://www.myspace.com'))
+    expect(page).to(have_content('https://www.linkedin.com/in/john-doe2'))
+  end
+
+  it '(Sunny Day) Update Linkedin Profile to N/A' do
+    visit edit_user_path(@user.id)
+
+    # HARDCODED TESTS, REMOVE LATER AND FIX
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
+
+    fill_in 'user_Linkedin_Profile', with: 'N/A'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('N/A'))
   end
 
   it '(Rainy Day) Empty Linkedin Profile' do
@@ -296,6 +311,16 @@ RSpec.describe('Updating Users', type: :system) do
     click_on 'Save'
 
     expect(page).to(have_content("Linkedin profile can't be blank"))
+  end
+
+  it '(Rainy Day) Invalid Linkedin Profile url' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'https://www.lonkedin.com/in/john-doe'
+
+    click_on 'Save'
+
+    expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do

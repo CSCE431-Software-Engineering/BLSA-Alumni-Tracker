@@ -18,7 +18,9 @@ class User < ApplicationRecord
   validates :Phone_Number, presence: true
   validates :Current_Job, presence: true
   validates :firm_type_id, presence: true
-  validates :Linkedin_Profile, presence: true
+
+  validates :Linkedin_Profile, presence: true, format: { with: /\A(N\/A|https?:\/\/(?:www\.)?linkedin\.com\/.*)\z/, message: "must be 'N/A' or a valid LinkedIn URL" }
+
   validates :practice_areas, presence: true
   validates :is_Admin, presence: { allow_blank: true }
 

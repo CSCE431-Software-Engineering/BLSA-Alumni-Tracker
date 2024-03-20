@@ -32,6 +32,23 @@ RSpec.describe('Updating Users', type: :system) do
       practice_areas: [@practice_area],
       is_Admin: true
     )
+
+    @user2 = User.create!(
+      First_Name: 'John',
+      Last_Name: 'Doe',
+      Middle_Name: 'M',
+      Profile_Picture: 'https://www.google.com',
+      Email: 'NOTcsce431@tamu.edu',
+      Phone_Number: '123-456-7890',
+      Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
+      # Location: 'New York',
+      location_id: @location_id.id,
+      Linkedin_Profile: 'https://www.linkedin.com',
+      practice_areas: [@practice_area],
+      is_Admin: true
+    )
+    
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
@@ -282,25 +299,35 @@ RSpec.describe('Updating Users', type: :system) do
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do
-    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
-    @user2 = User.create!(
-      First_Name: 'John',
-      Last_Name: 'Doe',
-      Middle_Name: 'M',
-      Profile_Picture: 'https://www.google.com',
-      Email: 'NOTcsce431@tamu.edu',
-      Phone_Number: '123-456-7890',
-      Current_Job: 'Software Engineer',
-      firm_type_id: @firm_type.id,
-      # Location: 'New York',
-      location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
-      practice_areas: [@practice_area],
-      is_Admin: true
-    )
+    set_admin_false
+
     visit edit_user_path(@user2.id)
+
+    # HARDCODED TESTS, REMOVE LATER AND FIX
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
+
+    fill_in 'user_First_Name', with: 'Jane'
+
     click_on 'Save'
 
     expect(page).to(have_content('You can only update your own profile.'))
+  end
+
+  it '(Sunny Day) Admin users can edit a profile that is not theirs' do
+
+    visit edit_user_path(@user2.id)
+
+    # HARDCODED TESTS, REMOVE LATER AND FIX
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
+
+    fill_in 'user_First_Name', with: 'Jane'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('Jane'))
   end
 end

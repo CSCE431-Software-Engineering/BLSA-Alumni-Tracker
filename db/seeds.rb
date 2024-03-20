@@ -70,6 +70,7 @@ na_location = Location.find_by!(country: 'N/A', state: 'N/A', city: 'N/A')
 na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
+# temp values, should be replaced by BLSA gmail account
 users = [
   {
   First_Name: 'Admin Sam',

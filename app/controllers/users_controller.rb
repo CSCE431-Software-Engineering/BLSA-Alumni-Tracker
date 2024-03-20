@@ -46,7 +46,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if @user.Email == session[:email]
+      if (@user.Email == session[:email] || current_user_is_admin?)
         if @user.update(user_params)
           save_practice_areas
           save_firm_type
@@ -126,6 +126,11 @@ class UsersController < ApplicationController
       firm_type = FirmType.find(firm_type_id)
       @user.firm_type = firm_type if firm_type.present?
     end
+  end
+
+  def current_user_is_admin?
+    logged_in_user = User.find_by(Email: session[:email])
+    logged_in_user&.is_Admin
   end
 end
 

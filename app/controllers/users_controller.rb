@@ -65,12 +65,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email]
+    redirect_to(@user, alert: 'You can only delete your own profile.') if (@user.Email != session[:email] && !current_user_is_admin?)
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if @user.Email == session[:email]
+    if (@user.Email == session[:email] || current_user_is_admin?)
       @user.destroy!
       respond_to do |format|
         format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }

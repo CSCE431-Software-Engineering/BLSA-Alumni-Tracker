@@ -18,20 +18,20 @@ RSpec.describe('Creating Users', type: :system) do
     destroy_user
     visit new_user_path
 
-    fill_in 'First name', with: 'John'
-    fill_in 'Last name', with: 'Doe'
-    fill_in 'Middle name', with: 'M'
-    fill_in 'Profile picture', with: 'https://www.google.com'
-    fill_in 'Phone number', with: '123-456-7890'
-    fill_in 'Current job', with: 'Software Engineer'
+    fill_in 'user_First_Name', with: 'John'
+    fill_in 'user_Last_Name', with: 'Doe'
+    fill_in 'user_Middle_Name', with: 'M'
+    fill_in 'user_Profile_Picture', with: 'https://www.google.com'
+    fill_in 'user_Phone_Number', with: '123-456-7890'
+    fill_in 'user_Current_Job', with: 'Software Engineer'
     select 'Government', from: 'user_firm_type_id'
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
-    fill_in 'Linkedin profile', with: 'https://www.linkedin.com/in/john-doe'
+    fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe'
     select 'Civil Litigation', from: 'user_practice_area_ids'
     select 'Real Estate Law', from: 'user_practice_area_ids'
-    check 'Is admin'
+    check 'user_is_Admin'
 
     click_on 'Save'
 
@@ -54,28 +54,28 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the First Name is missing' do
     visit new_user_path
-    fill_in 'First name', with: ''
+    fill_in 'user_First_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("First name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Last Name is missing' do
     visit new_user_path
-    fill_in 'Last name', with: ''
+    fill_in 'user_Last_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("Last name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Middle Name is missing' do
     visit new_user_path
-    fill_in 'Middle name', with: ''
+    fill_in 'user_Middle_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("Middle name can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Profile Picture is missing' do
     visit new_user_path
-    fill_in 'Profile picture', with: ''
+    fill_in 'user_Profile_Picture', with: ''
     click_on 'Save'
     expect(page).to(have_content("Profile picture can't be blank"))
   end
@@ -90,14 +90,14 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Phone Number is missing' do
     visit new_user_path
-    fill_in 'Phone number', with: ''
+    fill_in 'user_Phone_Number', with: ''
     click_on 'Save'
     expect(page).to(have_content("Phone number can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Current Job is missing' do
     visit new_user_path
-    fill_in 'Current job', with: ''
+    fill_in 'user_Current_Job', with: ''
     click_on 'Save'
     expect(page).to(have_content("Current job can't be blank"))
   end
@@ -112,14 +112,14 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Linkedin Profile is missing' do
     visit new_user_path
-    fill_in 'Linkedin profile', with: ''
+    fill_in 'user_Linkedin_Profile', with: ''
     click_on 'Save'
     expect(page).to(have_content("Linkedin profile can't be blank"))
   end
 
   it '(Rainy Day) does not save the user if the Linkedin Profile link is not to linkedin' do
     visit new_user_path
-    fill_in 'Linkedin profile', with: 'https://www.myspace.com/john-doe'
+    fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com/john-doe'
     click_on 'Save'
     expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
   end

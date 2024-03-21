@@ -1,16 +1,16 @@
-<%= form_with(url: users_path, method: :get, local: true, class: "my-4") do |form| %>
-  <div class="flex justify-center content-center items-center">
-    <div class="flex justify-center content-center items-center relative flex-grow">
-      <%= form.text_field :search, value: params[:search], placeholder: "Search users...", class: "w-1/2 pr-40 pl-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-      <div class="absolute inset-y-0 right-0 flex items-center">
-        <%= form.select :filter, options_for_select([['Name', 'name'], ['Current Job', 'current_job'], ['Location', 'location'], ['Class Year', 'class_year'], ['Practice Area', 'practice_area']], params[:filter]), { prompt: 'Filter by' }, class: "w-48 mr-2 px-4 py-2 rounded-r-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+<div class="flex justify-center my-4">
+  <%= form_with(url: users_path, method: :get, local: true, class: "w-1/2") do |form| %>
+    <div class="flex items-center">
+      <div class="relative flex-grow">
+        <%= form.text_field :search, value: params[:search], placeholder: "Search users...", class: "w-full pl-4 pr-48 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        <div class="absolute inset-y-0 right-0 flex items-center">
+          <%= form.select :filter, options_for_select([['Name', 'name'], ['Current Job', 'current_job'], ['Location', 'location'], ['Class Year', 'class_year'], ['Practice Area', 'practice_area']], params[:filter]), { prompt: 'Filter by' }, class: "w-48 py-2 rounded-r-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
       </div>
+      <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
-    <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-  </div>
-<% end %>
-
-
+  <% end %>
+</div>
 
 <div class="overflow-x-auto">
   <table class="min-w-full leading-normal">

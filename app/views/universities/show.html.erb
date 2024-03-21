@@ -3,8 +3,10 @@
 <%= render @university %>
 
 <div>
-  <%= link_to "Edit University", edit_university_path(@university) %> |
   <%= link_to "Back to universities", universities_path %>
-
-  <%= button_to "Delete University", university_path(@university), method: :delete %>
+  <br>
+  <% if current_user_is_admin? %>
+    <%= link_to "Edit University", edit_university_path(@university) %>
+    <%= button_to "Delete University", university_path(@university), method: :delete %>
+  <% end %>
 </div>

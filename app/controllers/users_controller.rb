@@ -6,9 +6,44 @@ class UsersController < ApplicationController
   
   # GET /users or /users.json
   def index
-    @users = User.all
+    if params[:search].present?
+      search_term = params[:search].downcase
+      case params[:filter]
+      when 'name'
+        @users = User.where(
+          "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+           LOWER(\"First_Name\") LIKE :search OR
+           LOWER(\"Last_Name\") LIKE :search OR
+           LOWER(\"Middle_Name\") LIKE :search",
+          search: "%#{search_term}%"
+        )
+      when 'current_job'
+        @users = User.where("LOWER(\"Current_Job\") LIKE ?", "%#{search_term}%")
+      when 'location'
+        @users = User.joins(:location).where(
+          "LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search",
+          search: "%#{search_term}%"
+        )
+      when 'class_year'
+        @users = User.joins(:education_infos).where("CAST(education_infos.\"Grad_Year\" AS TEXT) LIKE ?", "%#{search_term}%")
+      when 'practice_area'
+        @users = User.joins(:practice_areas).where("LOWER(practice_areas.practice_area) LIKE ?", "%#{search_term}%")
+      else
+        @users = User.where(
+          "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+           LOWER(\"First_Name\") LIKE :search OR
+           LOWER(\"Last_Name\") LIKE :search OR
+           LOWER(\"Middle_Name\") LIKE :search",
+          search: "%#{search_term}%"
+        )
+      end
+    else
+      @users = User.all
+    end
   end
-
+  
   # GET /users/1 or /users/1.json
   def show; end
 
@@ -86,6 +121,7 @@ class UsersController < ApplicationController
   end
 
   private
+
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user

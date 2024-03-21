@@ -1,22 +1,28 @@
-<%= form_with(url: users_path, method: :get, local: true) do |form| %>
-  <!-- Search bar implementation -->
+<%= form_with(url: users_path, method: :get, local: true, class: "my-4") do |form| %>
+  <div class="flex justify-center content-center items-center">
+    <div class="flex justify-center content-center items-center relative flex-grow">
+      <%= form.text_field :search, value: params[:search], placeholder: "Search users...", class: "w-1/2 pr-40 pl-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      <div class="absolute inset-y-0 right-0 flex items-center">
+        <%= form.select :filter, options_for_select([['Name', 'name'], ['Current Job', 'current_job'], ['Location', 'location'], ['Class Year', 'class_year'], ['Practice Area', 'practice_area']], params[:filter]), { prompt: 'Filter by' }, class: "w-48 mr-2 px-4 py-2 rounded-r-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+    <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+  </div>
 <% end %>
 
-<%= form_with(url: users_path, method: :get, local: true) do |form| %>
-  <!-- Search bar implementation -->
-<% end %>
+
 
 <div class="overflow-x-auto">
   <table class="min-w-full leading-normal">
     <thead>
       <tr>
-        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        <th class="text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Name
         </th>
-        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        <th class="text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Current Job
         </th>
-        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        <th class="text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Practice Areas
         </th>
       </tr>

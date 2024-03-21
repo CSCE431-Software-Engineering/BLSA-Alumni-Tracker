@@ -3,47 +3,62 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update delete destroy]
   helper_method :current_user_is_admin?
-  
+
   # GET /users or /users.json
   def index
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+
     if params[:search].present?
       search_term = params[:search].downcase
-      case params[:filter]
-      when 'name'
-        @users = User.where(
-          "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+      @users = case params[:filter]
+               when 'name'
+                 User.where(
+                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
            LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
            LOWER(\"First_Name\") LIKE :search OR
            LOWER(\"Last_Name\") LIKE :search OR
            LOWER(\"Middle_Name\") LIKE :search",
-          search: "%#{search_term}%"
-        )
-      when 'current_job'
-        @users = User.where("LOWER(\"Current_Job\") LIKE ?", "%#{search_term}%")
-      when 'location'
-        @users = User.joins(:location).where(
-          "LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search",
-          search: "%#{search_term}%"
-        )
-      when 'class_year'
-        @users = User.joins(:education_infos).where("CAST(education_infos.\"Grad_Year\" AS TEXT) LIKE ?", "%#{search_term}%")
-      when 'practice_area'
-        @users = User.joins(:practice_areas).where("LOWER(practice_areas.practice_area) LIKE ?", "%#{search_term}%")
-      else
-        @users = User.where(
-          "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+                   search: "%#{search_term}%"
+                 )
+               when 'current_job'
+                 User.where('LOWER("Current_Job") LIKE ?', "%#{search_term}%")
+               when 'location'
+                 User.joins(:location).where(
+                   'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
+                   search: "%#{search_term}%"
+                 )
+               when 'class_year'
+                 User.joins(:education_infos).where('CAST(education_infos."Grad_Year" AS TEXT) LIKE ?', "%#{search_term}%")
+               when 'practice_area'
+                 User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
+               else
+                 User.where(
+                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
            LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
            LOWER(\"First_Name\") LIKE :search OR
            LOWER(\"Last_Name\") LIKE :search OR
            LOWER(\"Middle_Name\") LIKE :search",
-          search: "%#{search_term}%"
-        )
-      end
+                   search: "%#{search_term}%"
+                 )
+               end
     else
       @users = User.all
     end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
+    when 'current_job'
+      @users = @users.order("\"Current_Job\" #{@sort_direction}")
+
+    when 'practice_areas'
+      @users = @users.left_joins(:practice_areas)
+                     .group(:id)
+                     .order(Arel.sql("string_agg(practice_areas.practice_area, ', ') #{@sort_direction}"))
+    end
   end
-  
+
   # GET /users/1 or /users/1.json
   def show; end
 
@@ -82,7 +97,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if (@user.Email == session[:email] || current_user_is_admin?)
+      if @user.Email == session[:email] || current_user_is_admin?
         if @user.update(user_params)
           save_practice_areas
           save_firm_type
@@ -101,12 +116,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    redirect_to(@user, alert: 'You can only delete your own profile.') if (@user.Email != session[:email] && !current_user_is_admin?)
+    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email] && !current_user_is_admin?
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if (@user.Email == session[:email] || current_user_is_admin?)
+    if @user.Email == session[:email] || current_user_is_admin?
       @user.destroy!
       respond_to do |format|
         format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
@@ -121,7 +136,6 @@ class UsersController < ApplicationController
   end
 
   private
-
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user

@@ -10,7 +10,6 @@ RSpec.describe('universities/show', type: :view) do
     def view.current_user_is_admin?
       false
     end
-
   end
 
   it 'renders attributes in <p>' do

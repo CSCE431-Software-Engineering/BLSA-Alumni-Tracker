@@ -341,7 +341,6 @@ RSpec.describe('Updating Users', type: :system) do
   end
 
   it '(Sunny Day) Admin users can edit a profile that is not theirs' do
-
     visit edit_user_path(@user2.id)
 
     # HARDCODED TESTS, REMOVE LATER AND FIX

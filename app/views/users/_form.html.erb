@@ -1,22 +1,25 @@
-<% text_field_class = "bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
-<% label_class = "block text-gray-700 text-sm font-bold mb-2" %>
+<% text_field_class = "appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
+<% label_no_block_class = "text-gray-700 text-sm font-bold mb-2" %>
+<% label_class = "block #{label_no_block_class}" %>
 
 
 <%= form_with(model: user, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if user.errors.any? %>
-    <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-      <%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:
-    </div>
-    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-      <ul>
-        <% user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="mb-4">
+      <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+        <%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:
+      </div>
+      <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+        <ul>
+          <% user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="md:flex items-center mb-4">
+  <div class="md:flex items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <%= form.label :First_Name, "First Name", class: "#{label_class}" %>
       <%= form.text_field :First_Name, placeholder: "EX: John", class: text_field_class %>
@@ -33,19 +36,19 @@
 
 
 
-  <div class="px-3 mb-4">
+  <div class="px-3 m-4">
     <%= form.label :Profile_Picture, "Profile Picture (Optional)", class: label_class %>
-    <%= form.text_field :Profile_Picture, placeholder: "EX: url.com", value: "url.com", class: text_field_class %>
+    <%= form.text_field :Profile_Picture, placeholder: "EX: url.com", class: text_field_class %>
   </div>
 
-  <div class="px-3 mb-4">
+  <div class="px-3 m-4">
     <%= form.label :Phone_Number, "Phone Number", class: label_class %>
     <%= form.text_field :Phone_Number, placeholder: "EX: 111-111-1111", class: text_field_class %>
   </div>
 
   <hr>
 
-  <div class="px-3 mb-4" id="new_location_fields">
+  <div class="px-3 m-4" id="new_location_fields">
     <div class="mb-4">
       <%= form.label :Select_Location, "Select Existing Location", class: "#{label_class}" %>
       <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true, class: "flex-1" %>
@@ -71,7 +74,7 @@
   
   <hr>
 
-  <div class="md:flex md:items-center mb-4">
+  <div class="md:flex md:items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <%= form.label :Current_Job, "Current Job Title", class: label_class %>
       <%= form.text_field :Current_Job, placeholder: "EX: Lawyer", class: text_field_class %>
@@ -85,23 +88,26 @@
     </div>
   </div>
 
-  <div class="px-3 mb-4">
-    <%= form.label :practice_areas, "Practice Areas", class: label_class %>
+  <div class="px-3 m-4">
+    <div class="flex-initial">
+      <%= form.label :practice_areas, "Practice Areas", class: label_no_block_class %>
+      <span title="Use ctrl-click to select multiple practice areas.">(&#x1F6C8;)</span>
+    </div>
     <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class } %>
   </div>
 
-  <div class="px-3 mb-4">
+  <div class="px-3 m-4">
     <%= form.label :Linkedin_Profile, "LinkedIn Profile Link (Optional)", class: label_class %>
     <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-name/", class: text_field_class %>
   </div>
 
-  <div class="px-3 mb-4">
+  <div class="px-3 m-4">
     <%= form.label :is_Admin, "Is Admin?", class: label_class %>
     <%= form.check_box :is_Admin, {}, 'true', 'false'%>
     <%= form.label :is_Admin, class: "text-sm" %>
   </div>
 
-  <div class="px-3 mb-4">
+  <div class="px-3 m-4">
     <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 

@@ -23,13 +23,18 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params.except(:location_attributes))
-
-    if params[:user][:location_id].blank? && params[:user][:location_attributes].present?
-      # Build a new location for the user
-      location = Location.create(params[:user][:location_attributes])
-    @user.location_id = location.id
+    if user_params[:location_id].blank? && user_params[:location_attributes].present?
+      # Update the location for the user
+      @new_location = Location.new(user_params[:location_attributes])
+      if @new_location.save
+        new_location_id = @new_location.id
+      else
+        flash[:error] = @new_location.errors.full_messages.join(', ')
+        render(:edit) and return
+      end
     end
 
+    @user.location_id = new_location_id if new_location_id
     @user.Email = session[:email]
     respond_to do |format|
       if @user.save
@@ -50,15 +55,15 @@ class UsersController < ApplicationController
     respond_to do |format|
       new_location_id = nil
 
-      if (@user.Email == session[:email] || current_user_is_admin?)
+      if @user.Email == session[:email] || current_user_is_admin?
         if user_params[:location_id].blank? && user_params[:location_attributes].present?
           # Update the location for the user
-          @new_location = Location.create!(user_params[:location_attributes])
+          @new_location = Location.new(user_params[:location_attributes])
           if @new_location.save
-            puts "New location created: #{@new_location.inspect}"
             new_location_id = @new_location.id
           else
-            puts "Failed to create new location: #{@new_location.errors.full_messages.join(", ")}"
+            flash[:error] = @new_location.errors.full_messages.join(', ')
+            render(:edit) and return
           end
         end
 
@@ -83,12 +88,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    redirect_to(@user, alert: 'You can only delete your own profile.') if (@user.Email != session[:email] && !current_user_is_admin?)
+    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email] && !current_user_is_admin?
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if (@user.Email == session[:email] || current_user_is_admin?)
+    if @user.Email == session[:email] || current_user_is_admin?
       @user.destroy!
       respond_to do |format|
         format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
@@ -119,7 +124,7 @@ class UsersController < ApplicationController
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
                                                     :Linkedin_Profile, :is_Admin, :location_id,
                                                     :firm_type_id, practice_area_ids: [],
-                                                    location_attributes: [:country, :state, :city]
+                                                                   location_attributes: %i[country state city]
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params

@@ -48,7 +48,7 @@
   <div class="px-3 mb-4" id="new_location_fields">
     <div class="mb-4">
       <%= form.label :Select_Location, "Select Existing Location", class: "#{label_class}" %>
-      <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true, class: "flex-1" %>
+      <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: true, class: "flex-1", onchange: "populateLocationFields(this)" %>
     </div>
     <p class="text-sm text-gray-600">Or create a new location:</p>
     <div class="md:flex items-center mb-4">
@@ -68,6 +68,25 @@
       <% end %>
     </div>
   </div>
+
+  <script>
+    function populateLocationFields(selectElement) {
+      var selectedOption = selectElement.options[selectElement.selectedIndex];
+      var countryField = document.querySelector("#user_location_attributes_country");
+      var stateField = document.querySelector("#user_location_attributes_state");
+      var cityField = document.querySelector("#user_location_attributes_city");
+
+      if (selectedOption.value !== "") {
+        countryField.value = selectedOption.dataset.country;
+        stateField.value = selectedOption.dataset.state;
+        cityField.value = selectedOption.dataset.city;
+      } else {
+        countryField.value = "";
+        stateField.value = "";
+        cityField.value = "";
+      }
+    }
+  </script>
   
   <hr>
 
@@ -105,28 +124,4 @@
     <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>
 
-  <!--script>
-    // Wait for the DOM to be fully loaded
-    document.addEventListener("DOMContentLoaded", function() {
-      // Get the select dropdown and the div for the new location fields
-      var locationSelect = document.querySelector('#user_location_id');
-      var newLocationFields = document.querySelector('#new_location_fields');
-
-      // Define a function to toggle the display of the new location fields
-      var toggleNewLocationFields = function() {
-        // Check if the dropdown's value is empty (meaning 'choose a location' is selected)
-        if(locationSelect.value) {
-          newLocationFields.style.display = 'none';
-        } else {
-          newLocationFields.style.display = 'block';
-        }
-      };
-
-      // Add an event listener to the select dropdown to toggle the new location fields
-      locationSelect.addEventListener('change', toggleNewLocationFields);
-
-      // Call the toggle function initially in case the select is already set to an empty value
-      toggleNewLocationFields();
-    });
-  </script -->
 <% end %>

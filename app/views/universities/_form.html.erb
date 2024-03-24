@@ -1,19 +1,26 @@
-<%= form_with(model: university, class: "contents") do |form| %>
-  <% if university.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(university.errors.count, "error") %> prohibited this university from being saved:</h2>
+<% text_field_class = "appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
+<% label_class = "block text-gray-700 text-sm font-bold mb-2" %>
 
-      <ul>
-        <% university.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+
+<%= form_with(model: university, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
+  <% if university.errors.any? %>
+    <div class="mb-4">
+      <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+        <%= pluralize(university.errors.count, "error") %> prohibited this university from being saved:
+      </div>
+      <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+        <ul>
+          <% university.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
   <div class="px-3 mb-4">
-    <%= form.label :University, style: "display: block" %>
-    <%= form.text_field :University %>
+    <%= form.label :University, "University/College Name", style: "display: block", class: "#{label_class}" %>
+    <%= form.text_field :University, placeholder: "EX: Texas A&M University", class: text_field_class %>
   </div>
 
   <div class="px-3 mb-4">

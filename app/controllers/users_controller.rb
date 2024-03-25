@@ -36,9 +36,7 @@ class UsersController < ApplicationController
 
     @user.location_id = new_location_id if new_location_id
 
-    if params[:user][:is_Admin].nil?
-      @user.is_Admin = false
-    end
+    @user.is_Admin = false if params[:user][:is_Admin].nil?
 
     @user.Email = session[:email]
     respond_to do |format|
@@ -84,16 +82,14 @@ class UsersController < ApplicationController
           save_firm_type
           format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
           format.json { render(:show, status: :ok, location: @user) }
+        elsif @user.update(user_params)
+          save_practice_areas
+          save_firm_type
+          format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
+          format.json { render(:show, status: :ok, location: @user) }
         else
-          if @user.update(user_params)
-            save_practice_areas
-            save_firm_type
-            format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
-            format.json { render(:show, status: :ok, location: @user) }
-          else
-            format.html { render(:edit) }
-            format.json { render(json: @user.errors, status: :unprocessable_entity) }
-          end
+          format.html { render(:edit) }
+          format.json { render(json: @user.errors, status: :unprocessable_entity) }
         end
       else
         format.html { redirect_to(@user, alert: 'You can only update your own profile.') }
@@ -110,8 +106,8 @@ class UsersController < ApplicationController
   # DELETE /users/1 or /users/1.json
   def destroy
     respond_to do |format|
-      if (@user.Email == session[:email] || current_user_is_admin?)
-        if (@user.Email == session[:email] && current_user_is_admin?)
+      if @user.Email == session[:email] || current_user_is_admin?
+        if @user.Email == session[:email] && current_user_is_admin?
           format.html { redirect_to(@user, alert: 'Admins cannot delete their own profile') }
           format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
         else

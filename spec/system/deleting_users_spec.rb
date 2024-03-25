@@ -59,4 +59,13 @@ RSpec.describe('Deleting Users', type: :system) do
 
     expect(page).to(have_content('User was successfully destroyed.'))
   end
+
+  it '(Rainy Day) Admin user cannot delete themself' do
+    set_admin_true
+    visit delete_user_path(@user.id)
+
+    click_on 'Destroy this user'
+
+    expect(page).to(have_content('Admins cannot delete their own profile'))
+  end
 end

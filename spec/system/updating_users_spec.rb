@@ -355,4 +355,36 @@ RSpec.describe('Updating Users', type: :system) do
 
     expect(page).to(have_content('Jane'))
   end
+
+  it '(Sunny Day) Admin can promote another user to admin' do
+    set_admin_true
+    visit edit_user_path(@user2.id)
+
+    # HARDCODED TESTS, REMOVE LATER AND FIX
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
+
+    check 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('true'))
+  end
+
+  it '(Rainy Day) Admin cannot remove their own admin status' do
+    set_admin_true
+    visit edit_user_path(@user.id)
+
+    # HARDCODED TESTS, REMOVE LATER AND FIX
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'New York'
+    fill_in 'user_location_attributes_city', with: 'New York'
+
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('You cannot change your own admin status.'))
+  end
 end

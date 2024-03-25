@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update delete destroy]
   helper_method :current_user_is_admin?
-  
+
   # GET /users or /users.json
   def index
     @users = User.all
@@ -29,6 +29,10 @@ class UsersController < ApplicationController
       @user.build_location(user_params[:location_attributes])
     end
 
+    if params[:user][:is_Admin].nil?
+      @user.is_Admin = false
+    end
+    
     @user.Email = session[:email]
     respond_to do |format|
       if @user.save

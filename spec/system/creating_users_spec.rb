@@ -31,7 +31,6 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe'
     select 'Civil Litigation', from: 'user_practice_area_ids'
     select 'Real Estate Law', from: 'user_practice_area_ids'
-    check 'user_is_Admin'
 
     click_on 'Save'
 
@@ -47,9 +46,9 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('New York'))
     expect(page).to(have_content('https://www.linkedin.com/in/john-doe'))
-    expect(page).to(have_content('true'))
     expect(page).to(have_content('Civil Litigation'))
     expect(page).to(have_content('Real Estate Law'))
+    expect(@user.is_Admin).to(eq(false))
   end
 
   it '(Rainy Day) does not save the user if the First Name is missing' do
@@ -129,4 +128,5 @@ RSpec.describe('Creating Users', type: :system) do
     click_on 'Save'
     expect(page).to(have_content("Practice areas can't be blank"))
   end
+
 end

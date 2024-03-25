@@ -19,6 +19,7 @@ RSpec.describe('Deleting Universities', type: :system) do
   end
 
   it '(Sunny Day) Delete University as Admin' do
+    set_admin_true
     visit university_path(@university.id)
 
     click_on 'Delete University'

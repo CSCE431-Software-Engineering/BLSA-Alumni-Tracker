@@ -9,10 +9,15 @@ RSpec.describe('Creating Users', type: :system) do
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     Rails.application.load_seed
+    @location_id = Location.create!(
+      country: 'USA',
+      state: 'California',
+      city: 'San Jose'
+    )
     login
   end
 
-  it '(Sunny Day) saves and displays the resulting user' do
+  it '(Sunny Day) saves and displays the resulting user using a new location' do
     # login automatically creates a user, so we need to destroy user
     # set_user
     destroy_user
@@ -25,6 +30,7 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'user_Phone_Number', with: '123-456-7890'
     fill_in 'user_Current_Job', with: 'Software Engineer'
     select 'Government', from: 'user_firm_type_id'
+    select 'Create new location', from: 'user_location_id'
     fill_in 'user_location_attributes_country', with: 'USA'
     fill_in 'user_location_attributes_state', with: 'New York'
     fill_in 'user_location_attributes_city', with: 'New York'
@@ -53,6 +59,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the First Name is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_First_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("First name can't be blank"))
@@ -60,6 +67,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Last Name is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Last_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("Last name can't be blank"))
@@ -67,6 +75,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Middle Name is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Middle_Name', with: ''
     click_on 'Save'
     expect(page).to(have_content("Middle name can't be blank"))
@@ -74,21 +83,15 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Profile Picture is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Profile_Picture', with: ''
     click_on 'Save'
     expect(page).to(have_content("Profile picture can't be blank"))
   end
 
-  # this test is removed since the user no longer inputs the email address
-  # it '(Rainy Day) does not save the user if the Email is missing' do
-  #   visit new_user_path
-  #   fill_in 'Email', with: ''
-  #   click_on 'Save'
-  #   expect(page).to(have_content("Email can't be blank"))
-  # end
-
   it '(Rainy Day) does not save the user if the Phone Number is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Phone_Number', with: ''
     click_on 'Save'
     expect(page).to(have_content("Phone number can't be blank"))
@@ -96,6 +99,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Current Job is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Current_Job', with: ''
     click_on 'Save'
     expect(page).to(have_content("Current job can't be blank"))
@@ -111,6 +115,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Linkedin Profile is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Linkedin_Profile', with: ''
     click_on 'Save'
     expect(page).to(have_content("Linkedin profile can't be blank"))
@@ -118,6 +123,7 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Linkedin Profile link is not to linkedin' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com/john-doe'
     click_on 'Save'
     expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
@@ -125,8 +131,35 @@ RSpec.describe('Creating Users', type: :system) do
 
   it '(Rainy Day) does not save the user if the Practice Area is missing' do
     visit new_user_path
+    select @location_id.city, from: 'user_location_id'
     click_on 'Save'
     expect(page).to(have_content("Practice areas can't be blank"))
   end
 
+  it '(Rainy Day) does not save if user leaves country field blank' do
+    visit new_user_path
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_country', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('Country can\'t be blank'))
+  end
+
+  it '(Rainy Day) does not save if user leaves state field blank' do
+    visit new_user_path
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_state', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('State can\'t be blank'))
+  end
+
+  it '(Rainy Day) does not save if users leaves city field blank' do
+    visit new_user_path
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_city', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('City can\'t be blank'))
+  end
 end

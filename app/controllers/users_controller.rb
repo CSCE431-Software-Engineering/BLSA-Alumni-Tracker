@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update delete destroy]
   helper_method :current_user_is_admin?
-  
+
   # GET /users or /users.json
   def index
     @users = User.all
@@ -22,13 +22,19 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
-
-    if params[:user][:location_id].blank? && params[:user][:location_attributes].present?
-      # Build a new location for the user
-      @user.build_location(user_params[:location_attributes])
+    @user = User.new(user_params.except(:location_attributes))
+    if user_params[:location_id].blank? && user_params[:location_attributes].present?
+      # Update the location for the user
+      @new_location = Location.new(user_params[:location_attributes])
+      if @new_location.save
+        new_location_id = @new_location.id
+      else
+        flash[:error] = @new_location.errors.full_messages.join(', ')
+        render(:edit) and return
+      end
     end
 
+    @user.location_id = new_location_id if new_location_id
     @user.Email = session[:email]
     respond_to do |format|
       if @user.save
@@ -47,8 +53,24 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
-      if (@user.Email == session[:email] || current_user_is_admin?)
-        if @user.update(user_params)
+      new_location_id = nil
+
+      if @user.Email == session[:email] || current_user_is_admin?
+        if user_params[:location_id].blank? && user_params[:location_attributes].present?
+          # Update the location for the user
+          @new_location = Location.new(user_params[:location_attributes])
+          if @new_location.save
+            new_location_id = @new_location.id
+          else
+            flash[:error] = @new_location.errors.full_messages.join(', ')
+            render(:edit) and return
+          end
+        end
+
+        updated_params = user_params.except(:location_attributes)
+        updated_params[:location_id] = new_location_id if new_location_id
+
+        if @user.update(updated_params)
           save_practice_areas
           save_firm_type
           format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
@@ -66,12 +88,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    redirect_to(@user, alert: 'You can only delete your own profile.') if (@user.Email != session[:email] && !current_user_is_admin?)
+    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email] && !current_user_is_admin?
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if (@user.Email == session[:email] || current_user_is_admin?)
+    if @user.Email == session[:email] || current_user_is_admin?
       @user.destroy!
       respond_to do |format|
         format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
@@ -100,8 +122,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Linkedin_Profile, :is_Admin, { location_attributes: %i[country state city] },
-                                                    :firm_type_id, practice_area_ids: []
+                                                    :Linkedin_Profile, :is_Admin, :location_id,
+                                                    :firm_type_id, practice_area_ids: [],
+                                                                   location_attributes: %i[country state city]
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params

@@ -90,5 +90,4 @@ class UniversitiesController < ApplicationController
     logged_in_user = User.find_by(Email: session[:email])
     logged_in_user&.is_Admin
   end
-
 end

@@ -65,11 +65,6 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update First Name' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_First_Name', with: 'Jane'
 
     click_on 'Save'
@@ -89,11 +84,6 @@ RSpec.describe('Updating Users', type: :system) do
 
   it '(Sunny Day) Update Last Name' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Last_Name', with: 'Smith'
 
@@ -115,11 +105,6 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Middle Name' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_Middle_Name', with: 'L'
 
     click_on 'Save'
@@ -140,11 +125,6 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Profile Picture' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_Profile_Picture', with: 'https://www.facebook.com'
 
     click_on 'Save'
@@ -162,34 +142,8 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content("Profile picture can't be blank"))
   end
 
-  # these tests should be removed since the user no longer enters their own email
-  # it '(Sunny Day) Update Email' do
-  #   visit edit_user_path(@user.id)
-
-  #   fill_in 'user_Email', with: 'JaneSmith@gmail.com'
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content('JaneSmith@gmail.com'))
-  # end
-
-  # it '(Rainy Day) Empty Email' do
-  #   visit edit_user_path(@user.id)
-
-  #   fill_in 'user_Email', with: ''
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content("Email can't be blank"))
-  # end
-
   it '(Sunny Day) Update Phone Number' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Phone_Number', with: '555-555-5555'
 
@@ -210,11 +164,6 @@ RSpec.describe('Updating Users', type: :system) do
 
   it '(Sunny Day) Update Current Job' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Current_Job', with: 'Lawyer'
 
@@ -239,11 +188,6 @@ RSpec.describe('Updating Users', type: :system) do
     )
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     select @firm_type_new.firm_type, from: 'user_firm_type_id'
 
     click_on 'Save'
@@ -251,35 +195,77 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content(@firm_type_new.firm_type))
   end
 
-  # not sure how to add rainy day case since user only has the options given to them
+  it '(Sunny Day) Update Location to an existing location' do
+    @new_location_id = Location.create!(
+      country: 'USA',
+      state: 'California',
+      city: 'San Jose'
+    )
+    visit edit_user_path(@user.id)
+    select @new_location_id.city, from: 'user_location_id'
 
-  # it '(Sunny Day) Update Location' do
-  #   visit edit_user_path(@user.id)
+    click_on 'Save'
+    expect(page).to(have_content(@new_location_id.location_string))
+  end
 
-  #   fill_in 'user_Location', with: 'Los Angeles'
+  it '(Sunny Day) Update Location to a new location' do
+    visit edit_user_path(@user.id)
 
-  #   click_on 'Save'
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'California'
+    fill_in 'user_location_attributes_city', with: 'San Jose'
 
-  #   expect(page).to(have_content('Los Angeles'))
-  # end
+    click_on 'Save'
+    expect(page).to(have_content('San Jose, California, USA'))
+  end
 
-  # it '(Rainy Day) Empty Location' do
-  #   visit edit_user_path(@user.id)
+  it '(Rainy Day) Update Location select existing location, and fill out new location areas' do
+    @new_location_id = Location.create!(
+      country: 'USA',
+      state: 'California',
+      city: 'San Jose'
+    )
+    visit edit_user_path(@user.id)
+    select @new_location_id.city, from: 'user_location_id'
 
-  #   fill_in 'user_Location', with: ''
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'California'
+    fill_in 'user_location_attributes_city', with: 'San Jose'
 
-  #   click_on 'Save'
+    click_on 'Save'
+    expect(page).to(have_content(@new_location_id.location_string))
+  end
 
-  #   expect(page).to(have_content("Location can't be blank"))
-  # end
+  it '(Rainy Day) Update Location to a new location, but leave country field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_country', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('Country can\'t be blank'))
+  end
+
+  it '(Rainy Day) Update Location to a new location, but leave state field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_state', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('State can\'t be blank'))
+  end
+
+  it '(Rainy Day) Update Location to a new location, but leave city field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_city', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('City can\'t be blank'))
+  end
 
   it '(Sunny Day) Update Linkedin Profile to valid url' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe2'
 
@@ -290,11 +276,6 @@ RSpec.describe('Updating Users', type: :system) do
 
   it '(Sunny Day) Update Linkedin Profile to N/A' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Linkedin_Profile', with: 'N/A'
 
@@ -328,11 +309,6 @@ RSpec.describe('Updating Users', type: :system) do
 
     visit edit_user_path(@user2.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_First_Name', with: 'Jane'
 
     click_on 'Save'
@@ -341,13 +317,7 @@ RSpec.describe('Updating Users', type: :system) do
   end
 
   it '(Sunny Day) Admin users can edit a profile that is not theirs' do
-
     visit edit_user_path(@user2.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_First_Name', with: 'Jane'
 

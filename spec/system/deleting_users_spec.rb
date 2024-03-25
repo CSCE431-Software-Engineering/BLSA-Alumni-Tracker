@@ -52,7 +52,6 @@ RSpec.describe('Deleting Users', type: :system) do
   end
 
   it '(Sunny Day) Admin user can delete a user that is not themself' do
-
     visit delete_user_path(@user2.id)
 
     click_on 'Destroy this user'

@@ -19,6 +19,7 @@ RSpec.describe('Updating Universities', type: :system) do
   end
 
   it '(Sunny Day) Valid University Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: 'Another test uni'
@@ -28,6 +29,7 @@ RSpec.describe('Updating Universities', type: :system) do
   end
 
   it '(Rainy Day) Empty University Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: ''
@@ -37,6 +39,7 @@ RSpec.describe('Updating Universities', type: :system) do
   end
 
   it '(Rainy Day) Update with Duplicate Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     University.create!(

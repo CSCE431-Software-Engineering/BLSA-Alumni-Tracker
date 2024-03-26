@@ -46,7 +46,7 @@ RSpec.describe('Updating Users', type: :system) do
       location_id: @location_id.id,
       Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
-      is_Admin: true
+      is_Admin: false
     )
 
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
@@ -317,6 +317,7 @@ RSpec.describe('Updating Users', type: :system) do
   end
 
   it '(Sunny Day) Admin users can edit a profile that is not theirs' do
+    set_admin_true
     visit edit_user_path(@user2.id)
 
     fill_in 'user_First_Name', with: 'Jane'
@@ -324,5 +325,27 @@ RSpec.describe('Updating Users', type: :system) do
     click_on 'Save'
 
     expect(page).to(have_content('Jane'))
+  end
+
+  it '(Sunny Day) Admin can promote another user to admin' do
+    set_admin_true
+    visit edit_user_path(@user2.id)
+
+    check 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('true'))
+  end
+
+  it '(Rainy Day) Admin cannot remove their own admin status' do
+    set_admin_true
+    visit edit_user_path(@user.id)
+
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('You cannot change your own admin status.'))
   end
 end

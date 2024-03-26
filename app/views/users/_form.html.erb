@@ -103,12 +103,14 @@
     <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-name/", class: text_field_class %>
   </div>
 
-  <div class="px-3 m-4">
-    <%= form.label :is_Admin, "Is Admin?", class: label_class %>
-    <%= form.check_box :is_Admin, {}, 'true', 'false'%>
-    <%= form.label :is_Admin, class: "text-sm" %>
-  </div>
-
+  <% if current_user_is_admin? %>
+    <div class="px-3 m-4">
+      <%= form.label :is_Admin, "Is Admin?", class: label_class %>
+      <%= form.check_box :is_Admin, {}, 'true', 'false'%>
+      <%= form.label :is_Admin, class: "text-sm" %>
+    </div>
+  <% end %>
+  
   <div class="px-3 m-4">
     <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
   </div>

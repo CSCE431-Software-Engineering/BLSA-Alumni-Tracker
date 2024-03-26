@@ -21,13 +21,17 @@ module SystemHelper
     fill_in('user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe')
     select('Civil Litigation', from: 'user_practice_area_ids')
     select('Real Estate Law', from: 'user_practice_area_ids')
-    check('user_is_Admin')
     click_on('Save')
   end
 
   def set_admin_false
     @user = User.find_by(Email: 'csce431@tamu.edu')
     @user.update!(is_Admin: false)
+  end
+
+  def set_admin_true
+    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user.update!(is_Admin: true)
   end
 
   def destroy_user

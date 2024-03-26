@@ -58,10 +58,11 @@ class UsersController < ApplicationController
       @users = @users.order("\"Current_Job\" #{@sort_direction}")
 
     when 'practice_areas'
-      sanitized_direction = ActiveRecord::Base.connection.quote(@sort_direction)
+      @sort_direction = %w[asc desc].include?(@sort_direction) ? @sort_direction : 'asc'
+
       @users = @users.left_joins(:practice_areas)
                      .group(:id)
-                     .order(Arel.sql("string_agg(practice_areas.practice_area, ', ') #{sanitized_direction}"))
+                     .order(Arel.sql("array_to_string(array_agg(practice_areas.practice_area ORDER BY practice_areas.practice_area #{@sort_direction}), ', ') #{@sort_direction}"))
     end
   end
 

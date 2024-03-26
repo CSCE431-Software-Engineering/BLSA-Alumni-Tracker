@@ -8,12 +8,14 @@
     </div>
   </div>
 
+  <% if !user.Profile_Picture.blank? %>
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Profile Picture:</p>
       <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Profile_Picture %></p>
     </div>
   </div>
+  <% end %>
 
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
@@ -22,12 +24,14 @@
     </div>
   </div>
 
+  <% if !user.Phone_Number.blank? %>
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</p>
       <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Phone_Number %></p>
     </div>
   </div>
+  <% end %>
 
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
@@ -73,10 +77,10 @@
     </div>
   </div>
 
+  <% if user.education_infos.length != 0 %>
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-
-      <p class="block text-gray-700 text-sm font-bold mb-2">Education Info:</p>
+      <p class="block text-gray-700 text-sm font-bold mb-2">Education Information:</p>
       <ul class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
         <% user.education_infos.each do |education_info| %>
           <li><%= education_info.education_info_string %></li>
@@ -84,6 +88,7 @@
       </ul>
       </div>
   </div>
+  <% end %>
 
   <% if current_user_is_admin? %>
     <div class="md:flex items-center mb-4">

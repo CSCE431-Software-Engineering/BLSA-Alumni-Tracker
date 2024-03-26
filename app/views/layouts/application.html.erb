@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BLSAAlumniTracker</title>
+    <title>BLSA Alumni Tracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -22,14 +22,14 @@
       <div class="flex items-center justify-between">
         <div class="ml-0">
           <!--contents of left edge of nav bar-->
-          <%= image_tag("temp_BLSA_logo.jpg", class: "w-auto mr-4", style: "height: 60px;")%>
+          <%= image_tag("blsa_logo.png", class: "w-auto mr-4", style: "height: 60px;")%>
         </div>
         <div class="container mx-auto flex-grow">
           <!--contents of center of navbar -->
           <ul class="flex justify-between items-center p-4">
             <li><%= link_to "Dashboard", root_path, class: "text-white hover:text-gray-300" %></li>
             <li><%= link_to "Users", users_path, class: "text-white hover:text-gray-300" %></li>
-            <li><%= link_to "Education Info", education_infos_path, class: "text-white hover:text-gray-300" %></li>
+            <li><%= link_to "My Education Information", education_infos_path, class: "text-white hover:text-gray-300" %></li>
             <li><%= link_to "Universities", universities_path, class: "text-white hover:text-gray-300" %></li>
             <% if current_user %>
               <li><%= link_to "Profile", edit_user_path(current_user), class: "text-white hover:text-gray-300" %></li>

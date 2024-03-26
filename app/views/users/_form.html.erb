@@ -21,8 +21,8 @@
 
   <div class="md:flex items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-      <%= form.label :First_Name, "First Name", class: "#{label_class}" %>
-      <%= form.text_field :First_Name, placeholder: "EX: John", class: text_field_class %>
+      <%= form.label :First_Name, "First Name", required: true, class: "#{label_class}" %>
+      <%= form.text_field :First_Name, placeholder: "EX: John", required: true, class: text_field_class %>
     </div>
     <div class="md:w-1/2 px-3">
       <%= form.label :Middle_Name, "Middle Name (Optional)", class: "#{label_class}" %>
@@ -30,7 +30,7 @@
     </div>
     <div class="md:w-1/2 px-3">
       <%= form.label :Last_Name, "Last Name", class: "#{label_class}" %>
-      <%= form.text_field :Last_Name, placeholder: "EX: Doe", class: text_field_class %>
+      <%= form.text_field :Last_Name, placeholder: "EX: Doe", required: true, class: text_field_class %>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
   </div>
 
   <div class="px-3 m-4">
-    <%= form.label :Phone_Number, "Phone Number", class: label_class %>
+    <%= form.label :Phone_Number, "Phone Number (Optional)", class: label_class %>
     <%= form.text_field :Phone_Number, placeholder: "EX: 111-111-1111", class: text_field_class %>
   </div>
 
@@ -54,7 +54,7 @@
       <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: "Create new location", id: "location_select", class: "flex-1" %>
     </div>
     <div id="new_location_form">
-      <p class="text-sm text-gray-600">Or create a new location:</p>
+      <p class="text-sm text-gray-600 mb-4">Or create a new location:</p>
       <div class="md:flex items-center mb-4">
         <%= form.fields_for :location, Location.new do |location_form| %>
           <div class="md:w-1/2 mb-4 md:mb-0">
@@ -79,11 +79,11 @@
   <div class="md:flex md:items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <%= form.label :Current_Job, "Current Job Title", class: label_class %>
-      <%= form.text_field :Current_Job, placeholder: "EX: Lawyer", class: text_field_class %>
+      <%= form.text_field :Current_Job, placeholder: "EX: Lawyer", required: true, class: text_field_class %>
     </div>
 
     <div>
-      <%= form.label :firm_type_id, style: "display: block"%>
+      <%= form.label :firm_type_id, "Firm Type", class: label_class%>
       <%= form.collection_select :firm_type_id,
       FirmType.order(:firm_type), :id, :firm_type, {}, 
       {multiple: false, include_blank: false}%>
@@ -99,8 +99,8 @@
   </div>
 
   <div class="px-3 m-4">
-    <%= form.label :Linkedin_Profile, "LinkedIn Profile Link (Optional)", class: label_class %>
-    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-name/", class: text_field_class %>
+    <%= form.label :Linkedin_Profile, "LinkedIn Profile Link", required: true, class: label_class %>
+    <%= form.text_field :Linkedin_Profile, required: true, placeholder: "N/A or https://www.linkedin.com/in/my-name/", class: text_field_class %>
   </div>
 
   <% if current_user_is_admin? %>

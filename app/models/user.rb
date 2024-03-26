@@ -12,10 +12,10 @@ class User < ApplicationRecord
 
   validates :First_Name, presence: true
   validates :Last_Name, presence: true
-  validates :Middle_Name, presence: true
-  validates :Profile_Picture, presence: true
+  validates :Middle_Name, presence: true, allow_blank: true
+  validates :Profile_Picture, presence: true, allow_blank: true
   validates :Email, presence: true, uniqueness: true
-  validates :Phone_Number, presence: true
+  validates :Phone_Number, presence: true, allow_blank: true
   validates :Current_Job, presence: true
   validates :firm_type_id, presence: true
 

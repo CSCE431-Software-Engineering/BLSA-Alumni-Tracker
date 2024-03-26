@@ -5,7 +5,9 @@
 <br>
 
 <div>
-  <%= link_to "Delete this user", delete_user_path(@user)%>
+  <% if @user.persisted? %>
+    <%= link_to "Delete this user", delete_user_path(@user) %>
+  <% end %>
 </div>
 
 <!--div>

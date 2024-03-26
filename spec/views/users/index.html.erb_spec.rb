@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'users/index', type: :view do
+RSpec.describe('users/index', type: :view) do
   def create_practice_area(practice_area)
     PracticeArea.find_or_create_by(practice_area: practice_area)
   end
@@ -51,7 +51,7 @@ RSpec.describe 'users/index', type: :view do
     user
   end
 
-  before(:each) do
+  before do
     @practice_area1 = create_practice_area('Tax Law')
     @practice_area2 = create_practice_area('Corporate Law')
     @firm_type = create_firm_type('Law Firm')
@@ -67,113 +67,110 @@ RSpec.describe 'users/index', type: :view do
   it 'displays the search form' do
     render
 
-    expect(rendered).to have_selector('form input[name="search"]')
-    expect(rendered).to have_selector('form select[name="filter"]')
-    expect(rendered).to have_selector('form input[type="submit"]')
+    expect(rendered).to(have_selector('form input[name="search"]'))
+    expect(rendered).to(have_selector('form select[name="filter"]'))
+    expect(rendered).to(have_selector('form input[type="submit"]'))
   end
 
   it 'displays the user list table' do
     render
 
-    expect(rendered).to have_selector('table')
-    expect(rendered).to have_selector('table thead tr')
-    expect(rendered).to have_selector('table tbody tr', count: 2)
+    expect(rendered).to(have_selector('table'))
+    expect(rendered).to(have_selector('table thead tr'))
+    expect(rendered).to(have_selector('table tbody tr', count: 2))
   end
 
   it 'displays the user details in the table' do
     render
 
-    expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'John Doe')
-    expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer')
-    expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'Tax Law')
+    expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'John Doe'))
+    expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer'))
+    expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'Tax Law'))
 
-    expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'John Doe')
-    expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer')
-    expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'Corporate Law')
+    expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'John Doe'))
+    expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer'))
+    expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'Corporate Law'))
   end
 
   it 'displays the sorting links in the table headers' do
     render
 
-    expect(rendered).to have_selector('table thead tr th a', text: 'Name')
-    expect(rendered).to have_selector('table thead tr th a', text: 'Current Job')
-    expect(rendered).to have_selector('table thead tr th a', text: 'Practice Areas')
-
+    expect(rendered).to(have_selector('table thead tr th a', text: 'Name'))
+    expect(rendered).to(have_selector('table thead tr th a', text: 'Current Job'))
+    expect(rendered).to(have_selector('table thead tr th a', text: 'Practice Areas'))
   end
-      
-    context 'when searching' do
-        it 'displays the searched users' do
-        assign(:users, [@user1])
-        params[:search] = 'user1'
-        params[:filter] = 'name'
 
-        render
+  context 'when searching' do
+    it 'displays the searched users' do
+      assign(:users, [@user1])
+      params[:search] = 'user1'
+      params[:filter] = 'name'
 
-        expect(rendered).to have_selector('table tbody tr', count: 1)
-        expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'John Doe')
-        end
+      render
 
-        it 'displays no users when search does not match' do
-        assign(:users, [])
-        params[:search] = 'nonexistent'
-        params[:filter] = 'name'
-
-        render
-
-        expect(rendered).to have_selector('table tbody tr', count: 0)
-        end
+      expect(rendered).to(have_selector('table tbody tr', count: 1))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'John Doe'))
     end
 
-    context 'when sorting' do
-        before do
-        @user3 = create_user(email: 'user3@example.com', ft: @firm_type.firm_type, pa: @practice_area1.practice_area, country: @location.country, state: @location.state, city: @location.city, university_name: @university.University, semester: 'Summer', grad_year: 2019, degree_type: 'PhD')
-        assign(:users, [@user1, @user2, @user3])
-        end
+    it 'displays no users when search does not match' do
+      assign(:users, [])
+      params[:search] = 'nonexistent'
+      params[:filter] = 'name'
 
-        it 'sorts users by name in ascending order' do
-        params[:sort_by] = 'name'
-        params[:sort_direction] = 'asc'
+      render
 
-        render
+      expect(rendered).to(have_selector('table tbody tr', count: 0))
+    end
+  end
 
-        expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'John Doe')
-        expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'John Doe')
-        expect(rendered).to have_selector('table tbody tr:nth-child(3) td', text: 'John Doe')
-        end
+  context 'when sorting' do
+    before do
+      @user3 = create_user(email: 'user3@example.com', ft: @firm_type.firm_type, pa: @practice_area1.practice_area, country: @location.country, state: @location.state, city: @location.city, university_name: @university.University, semester: 'Summer', grad_year: 2019, degree_type: 'PhD')
+      assign(:users, [@user1, @user2, @user3])
+    end
 
-        it 'sorts users by name in descending order' do
-        params[:sort_by] = 'name'
-        params[:sort_direction] = 'desc'
+    it 'sorts users by name in ascending order' do
+      params[:sort_by] = 'name'
+      params[:sort_direction] = 'asc'
 
-        render
+      render
 
-        expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'John Doe')
-        expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'John Doe')
-        expect(rendered).to have_selector('table tbody tr:nth-child(3) td', text: 'John Doe')
-        end
+      expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'John Doe'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'John Doe'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(3) td', text: 'John Doe'))
+    end
 
-        it 'sorts users by current job in ascending order' do
-        params[:sort_by] = 'current_job'
-        params[:sort_direction] = 'asc'
+    it 'sorts users by name in descending order' do
+      params[:sort_by] = 'name'
+      params[:sort_direction] = 'desc'
 
-        render
+      render
 
-        expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer')
-        expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer')
-        expect(rendered).to have_selector('table tbody tr:nth-child(3) td', text: 'Software Engineer')
-        end
+      expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'John Doe'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'John Doe'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(3) td', text: 'John Doe'))
+    end
 
-        it 'sorts users by current job in descending order' do
-        params[:sort_by] = 'current_job'
-        params[:sort_direction] = 'desc'
+    it 'sorts users by current job in ascending order' do
+      params[:sort_by] = 'current_job'
+      params[:sort_direction] = 'asc'
 
-        render
+      render
 
-        expect(rendered).to have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer')
-        expect(rendered).to have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer')
-        expect(rendered).to have_selector('table tbody tr:nth-child(3) td', text: 'Software Engineer')
-        end
+      expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(3) td', text: 'Software Engineer'))
+    end
 
-    
+    it 'sorts users by current job in descending order' do
+      params[:sort_by] = 'current_job'
+      params[:sort_direction] = 'desc'
+
+      render
+
+      expect(rendered).to(have_selector('table tbody tr:nth-child(1) td', text: 'Software Engineer'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(2) td', text: 'Software Engineer'))
+      expect(rendered).to(have_selector('table tbody tr:nth-child(3) td', text: 'Software Engineer'))
+    end
   end
 end

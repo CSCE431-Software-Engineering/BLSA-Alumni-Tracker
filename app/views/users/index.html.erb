@@ -68,6 +68,7 @@
      </thead>
     <tbody>
       <% @users.each do |user| %>
+      <% next if user.Email == 'blsa.tamu@gmail.com' %> <!-- Skip the BLSA account -->
         <tr class="hover:bg-gray-100 cursor-pointer" onclick="window.location='<%= user_path(user) %>'">
           <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <!-- User name and avatar here -->

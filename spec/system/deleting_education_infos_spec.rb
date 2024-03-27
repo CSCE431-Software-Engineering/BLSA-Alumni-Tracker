@@ -29,7 +29,7 @@ RSpec.describe('Deleting Education Info', type: :system) do
   it '(Sunny Day) Delete Education Info' do
     visit education_info_path(@education_info.id)
 
-    click_on 'Destroy this education info'
+    click_on 'Delete'
 
     expect(page).to(have_content('Education info was successfully destroyed.'))
   end

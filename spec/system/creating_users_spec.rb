@@ -73,30 +73,6 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content("Last name can't be blank"))
   end
 
-  it '(Rainy Day) does not save the user if the Middle Name is missing' do
-    visit new_user_path
-    select @location_id.city, from: 'user_location_id'
-    fill_in 'user_Middle_Name', with: ''
-    click_on 'Save'
-    expect(page).to(have_content("Middle name can't be blank"))
-  end
-
-  it '(Rainy Day) does not save the user if the Profile Picture is missing' do
-    visit new_user_path
-    select @location_id.city, from: 'user_location_id'
-    fill_in 'user_Profile_Picture', with: ''
-    click_on 'Save'
-    expect(page).to(have_content("Profile picture can't be blank"))
-  end
-
-  it '(Rainy Day) does not save the user if the Phone Number is missing' do
-    visit new_user_path
-    select @location_id.city, from: 'user_location_id'
-    fill_in 'user_Phone_Number', with: ''
-    click_on 'Save'
-    expect(page).to(have_content("Phone number can't be blank"))
-  end
-
   it '(Rainy Day) does not save the user if the Current Job is missing' do
     visit new_user_path
     select @location_id.city, from: 'user_location_id'

@@ -72,7 +72,6 @@ na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 
 # Development only
-puts Rails.env
 if Rails.env == 'development' then
   # temp values, should be replaced by BLSA gmail account
   users = [

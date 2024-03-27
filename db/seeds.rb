@@ -72,7 +72,7 @@ na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 # temp values, should be replaced by BLSA gmail account
 users = [
-  #SAM admin should be deleted before app is sent to customer
+  # SAM admin should be deleted before app is sent to customer
   {
     First_Name: 'Sam Admin',
     Last_Name: 'N/A',

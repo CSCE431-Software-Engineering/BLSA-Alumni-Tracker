@@ -2,6 +2,7 @@
 
 class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   class InvalidEmailError < StandardError; end
+
   def google_oauth2
     admin = Admin.from_google(**from_google_params)
 
@@ -35,9 +36,8 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def from_google_params
     @from_google_params ||= begin
-      if auth.info.email.downcase.end_with?('@tamu.edu')
-        raise InvalidEmailError
-      end
+      raise(InvalidEmailError) if auth.info.email.downcase.end_with?('@tamu.edu')
+
       {
         uid: auth.uid,
         email: auth.info.email,

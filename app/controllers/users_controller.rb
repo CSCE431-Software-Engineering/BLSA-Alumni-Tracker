@@ -188,6 +188,27 @@ class UsersController < ApplicationController
       end
       return
     end
+
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+    @users = User.where(is_Admin: true)
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = User.where(
+        "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+        LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+        LOWER(\"First_Name\") LIKE :search OR
+        LOWER(\"Last_Name\") LIKE :search OR
+        LOWER(\"Middle_Name\") LIKE :search",
+        search: "%#{search_term}%"
+      )
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
+    end
   end
 
   private

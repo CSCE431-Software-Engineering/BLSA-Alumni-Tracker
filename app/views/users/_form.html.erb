@@ -86,7 +86,7 @@
       <%= form.label :firm_type_id, "Firm Type", class: label_class%>
       <%= form.collection_select :firm_type_id,
       FirmType.order(:firm_type), :id, :firm_type, {}, 
-      {multiple: false, include_blank: false}%>
+      {multiple: false, include_blank: false, required: true}%>
     </div>
   </div>
 
@@ -95,7 +95,7 @@
       <%= form.label :practice_areas, "Practice Areas", class: label_no_block_class %>
       <span title="Use ctrl-click to select multiple practice areas.">(&#x1F6C8;)</span>
     </div>
-    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class } %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class, required: true } %>
   </div>
 
   <div class="px-3 m-4">

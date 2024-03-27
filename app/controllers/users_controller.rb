@@ -28,12 +28,12 @@ class UsersController < ApplicationController
                    'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
                    search: "%#{search_term}%"
                  )
-                when 'class_year'
-                  search_year = search_term.to_i
-                  @users = User.joins(:education_infos)
-                               .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
-                               .group('users.id')
-                               .order('year_diff')
+               when 'class_year'
+                 search_year = Integer(search_term, 10)
+                 @users = User.joins(:education_infos)
+                              .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
+                              .group('users.id')
+                              .order('year_diff')
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
                else
@@ -181,7 +181,7 @@ class UsersController < ApplicationController
 
   # GET /users/view_admins
   def view_admins
-    if !current_user_is_admin?
+    unless current_user_is_admin?
       respond_to do |format|
         format.html { redirect_to(root_path, alert: 'Only admins can view this page.') }
         format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }

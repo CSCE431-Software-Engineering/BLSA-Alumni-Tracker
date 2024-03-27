@@ -28,13 +28,12 @@ class UsersController < ApplicationController
                    'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
                    search: "%#{search_term}%"
                  )
-               when 'class_year'
-                 search_year = search_term.to_i
-                 search_year = search_term.to_i
-                 @users = User.joins(:education_infos)
-                              .select('users.*, MIN(ABS(education_infos."Grad_Year" - ?)) AS year_diff', search_year)
-                              .group('users.id')
-                              .order('year_diff')
+                when 'class_year'
+                  search_year = search_term.to_i
+                  @users = User.joins(:education_infos)
+                               .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
+                               .group('users.id')
+                               .order('year_diff')
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
                else

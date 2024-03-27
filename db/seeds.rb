@@ -105,8 +105,8 @@ if Rails.env == 'development' then
   # must do it this way in order to associate the pratice_areas array
   # This still prevents duplicates users.
   users.each do |user|
-    User.find_or_create_by!(Email: user[:Email]) do |u|
-      u.assign_attributes(user)
-    end
+    u = User.find_or_create_by!(Email: user[:Email])
+    u.assign_attributes(user)
+    u.save
   end
 end 

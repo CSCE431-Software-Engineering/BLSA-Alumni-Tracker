@@ -348,4 +348,17 @@ RSpec.describe('Updating Users', type: :system) do
 
     expect(page).to(have_content('You cannot change your own admin status.'))
   end
+
+  it '(Rainy Day) BLSA gmail account cannot be edited, even by an admin' do
+    set_admin_true
+    blsa_user = User.find_by(Email: 'blsa.tamu@gmail.com')
+    visit edit_user_path(blsa_user.id)
+
+    # Attempt to edit the user
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('This account cannot be edited.'))
+  end
 end

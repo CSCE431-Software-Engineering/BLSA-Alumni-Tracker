@@ -179,6 +179,17 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/view_admins
+  def view_admins
+    if !current_user_is_admin?
+      respond_to do |format|
+        format.html { redirect_to(root_path, alert: 'Only admins can view this page.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

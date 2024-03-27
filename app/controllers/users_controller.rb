@@ -31,7 +31,7 @@ class UsersController < ApplicationController
                when 'class_year'
                  search_year = Integer(search_term, 10)
                  @users = User.joins(:education_infos)
-                              .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
+                              .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - ?)) AS year_diff", search_year)
                               .group('users.id')
                               .order('year_diff')
                when 'practice_area'

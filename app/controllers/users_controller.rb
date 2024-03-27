@@ -59,7 +59,7 @@ class UsersController < ApplicationController
       new_location_id = nil
 
       if @user.Email == session[:email] || current_user_is_admin?
-        if @user.Email == session[:email] && !params[:user][:is_Admin].blank? && params[:user][:is_Admin] != @user.is_Admin.to_s
+        if @user.Email == session[:email] && params[:user][:is_Admin].present? && params[:user][:is_Admin] != @user.is_Admin.to_s
           format.html { redirect_to(@user, alert: 'You cannot change your own admin status.') }
           format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
         end

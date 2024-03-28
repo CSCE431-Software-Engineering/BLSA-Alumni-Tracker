@@ -44,7 +44,7 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('Doe'))
     expect(page).to(have_content('M'))
     expect(page).to(have_content('https://www.google.com'))
-    expect(page).to(have_content('csce431@tamu.edu'))
+    expect(page).to(have_content('csce431@gmail.com'))
     expect(page).to(have_content('123-456-7890'))
     expect(page).to(have_content('Software Engineer'))
     expect(page).to(have_content('Government'))

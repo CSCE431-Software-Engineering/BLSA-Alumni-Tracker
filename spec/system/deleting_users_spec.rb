@@ -22,7 +22,7 @@ RSpec.describe('Deleting Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'NOTcsce431@tamu.edu',
+      Email: 'NOTcsce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
@@ -36,7 +36,7 @@ RSpec.describe('Deleting Users', type: :system) do
   end
 
   it '(Sunny Day) Delete User' do
-    visit delete_user_path(User.find_by(Email: 'csce431@tamu.edu').id)
+    visit delete_user_path(User.find_by(Email: 'csce431@gmail.com').id)
 
     click_on 'Destroy this user'
 

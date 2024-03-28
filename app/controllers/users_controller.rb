@@ -111,6 +111,14 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    if @user.Email == 'blsa.tamu@gmail.com'
+      respond_to do |format|
+        format.html { redirect_to(@user, alert: 'This account cannot be edited.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
     respond_to do |format|
       new_location_id = nil
 

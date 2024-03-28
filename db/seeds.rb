@@ -72,18 +72,33 @@ na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 # temp values, should be replaced by BLSA gmail account
 users = [
+  # SAM admin should be deleted before app is sent to customer
   {
-    First_Name: 'Admin Sam',
-    Last_Name: 'Cole',
-    Middle_Name: 'David',
-    Profile_Picture: 'url.com',
+    First_Name: 'Sam Admin',
+    Last_Name: 'N/A',
+    Middle_Name: 'N/A',
+    Profile_Picture: 'N/A',
     Email: 'samdcole48@gmail.com',
-    Phone_Number: '123-456-7890',
-    Current_Job: 'Test Admin',
+    Phone_Number: 'N/A',
+    Current_Job: 'N/A',
     location_id: na_location.id,
     firm_type_id: na_firm_type.id,
     practice_areas: [na_practice_area],
-    Linkedin_Profile: 'https://www.linkedin.com/in/samuel-cole-91100a1a9/',
+    Linkedin_Profile: 'N/A',
+    is_Admin: true
+  },
+  {
+    First_Name: 'BLSA Admin',
+    Last_Name: 'N/A',
+    Middle_Name: 'N/A',
+    Profile_Picture: 'N/A',
+    Email: 'blsa.tamu@gmail.com',
+    Phone_Number: 'N/A',
+    Current_Job: 'N/A',
+    location_id: na_location.id,
+    firm_type_id: na_firm_type.id,
+    practice_areas: [na_practice_area],
+    Linkedin_Profile: 'N/A',
     is_Admin: true
   }
 ]

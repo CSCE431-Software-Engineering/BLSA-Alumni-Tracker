@@ -23,7 +23,7 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'csce431@tamu.edu',
+      Email: 'csce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
@@ -38,7 +38,7 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'NOTcsce431@tamu.edu',
+      Email: 'NOTcsce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
@@ -347,5 +347,18 @@ RSpec.describe('Updating Users', type: :system) do
     click_on 'Save'
 
     expect(page).to(have_content('You cannot change your own admin status.'))
+  end
+
+  it '(Rainy Day) BLSA gmail account cannot be edited, even by an admin' do
+    set_admin_true
+    blsa_user = User.find_by(Email: 'blsa.tamu@gmail.com')
+    visit edit_user_path(blsa_user.id)
+
+    # Attempt to edit the user
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('This account cannot be edited.'))
   end
 end

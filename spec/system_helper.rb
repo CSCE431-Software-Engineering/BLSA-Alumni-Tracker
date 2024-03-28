@@ -25,17 +25,17 @@ module SystemHelper
   end
 
   def set_admin_false
-    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@gmail.com')
     @user.update!(is_Admin: false)
   end
 
   def set_admin_true
-    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@gmail.com')
     @user.update!(is_Admin: true)
   end
 
   def destroy_user
-    @user.destroy! if @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user.destroy! if @user = User.find_by(Email: 'csce431@gmail.com')
   end
 end
 

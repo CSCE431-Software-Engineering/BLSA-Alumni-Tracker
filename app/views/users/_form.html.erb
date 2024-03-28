@@ -114,7 +114,7 @@
   
   <div class="flex justify-between">
     <div class="px-3 m-4">
-      <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+      <%= form.submit "Save", class: "bg-gray-800 hover:bg-gray-400 #{button_class}" %>
     </div>
     <% if current_user_is_admin? || @user.Email == session[:email] %>
     <div class="m-4">

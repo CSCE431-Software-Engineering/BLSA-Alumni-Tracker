@@ -99,8 +99,8 @@
   </div>
 
   <div class="px-3 m-4">
-    <%= form.label :Linkedin_Profile, "LinkedIn Profile Link", required: true, class: label_class %>
-    <%= form.text_field :Linkedin_Profile, required: true, placeholder: "N/A or https://www.linkedin.com/in/my-name/", class: text_field_class %>
+    <%= form.label :Linkedin_Profile, "LinkedIn Profile Link (Optional)", class: label_class %>
+    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-profile/", class: text_field_class %>
   </div>
 
   <% if current_user_is_admin? %>

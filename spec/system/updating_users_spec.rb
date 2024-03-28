@@ -274,24 +274,24 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('https://www.linkedin.com/in/john-doe2'))
   end
 
-  it '(Sunny Day) Update Linkedin Profile to N/A' do
-    visit edit_user_path(@user.id)
-
-    fill_in 'user_Linkedin_Profile', with: 'N/A'
-
-    click_on 'Save'
-
-    expect(page).to(have_content('N/A'))
-  end
-
-  it '(Rainy Day) Empty Linkedin Profile' do
+  it '(Sunny Day) Update Linkedin Profile to blank' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Linkedin_Profile', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
+  end
+
+  it '(Rainy Day) Linkedin Profile is invalid' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'test'
+
+    click_on 'Save'
+
+    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
   end
 
   it '(Rainy Day) Invalid Linkedin Profile url' do
@@ -301,7 +301,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
+    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do

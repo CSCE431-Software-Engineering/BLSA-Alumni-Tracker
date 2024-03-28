@@ -89,12 +89,12 @@ RSpec.describe('Creating Users', type: :system) do
   #   expect(page).to(have_content("Firm Type can't be blank"))
   # end
 
-  it '(Rainy Day) does not save the user if the Linkedin Profile is missing' do
+  it '(Rainy Day) does not save the user if the Linkedin Profile is not a valid link' do
     visit new_user_path
     select @location_id.city, from: 'user_location_id'
-    fill_in 'user_Linkedin_Profile', with: ''
+    fill_in 'user_Linkedin_Profile', with: 'test'
     click_on 'Save'
-    expect(page).to(have_content("Linkedin profile can't be blank"))
+    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
   end
 
   it '(Rainy Day) does not save the user if the Linkedin Profile link is not to linkedin' do
@@ -102,7 +102,7 @@ RSpec.describe('Creating Users', type: :system) do
     select @location_id.city, from: 'user_location_id'
     fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com/john-doe'
     click_on 'Save'
-    expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
+    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
   end
 
   it '(Rainy Day) does not save the user if the Practice Area is missing' do

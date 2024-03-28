@@ -28,12 +28,12 @@ class UsersController < ApplicationController
                    'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
                    search: "%#{search_term}%"
                  )
-                when 'class_year'
-                  search_year = search_term.to_i
-                  @users = User.joins(:education_infos)
-                               .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
-                               .group('users.id')
-                               .order('year_diff')
+               when 'class_year'
+                 search_year = Integer(search_term, 10)
+                 @users = User.joins(:education_infos)
+                              .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - ?)) AS year_diff", search_year)
+                              .group('users.id')
+                              .order('year_diff')
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
                else
@@ -111,6 +111,14 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    if @user.Email == 'blsa.tamu@gmail.com'
+      respond_to do |format|
+        format.html { redirect_to(@user, alert: 'This account cannot be edited.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
     respond_to do |format|
       new_location_id = nil
 
@@ -176,6 +184,38 @@ class UsersController < ApplicationController
         format.html { redirect_to(@user, alert: 'You can only delete your own profile.') }
         format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
       end
+    end
+  end
+
+  # GET /users/view_admins
+  def view_admins
+    unless current_user_is_admin?
+      respond_to do |format|
+        format.html { redirect_to(root_path, alert: 'Only admins can view this page.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+    @users = User.where(is_Admin: true)
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = User.where(
+        "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+        LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+        LOWER(\"First_Name\") LIKE :search OR
+        LOWER(\"Last_Name\") LIKE :search OR
+        LOWER(\"Middle_Name\") LIKE :search",
+        search: "%#{search_term}%"
+      )
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
     end
   end
 

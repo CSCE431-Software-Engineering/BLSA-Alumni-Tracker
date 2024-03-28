@@ -70,9 +70,8 @@ na_location = Location.find_by!(country: 'N/A', state: 'N/A', city: 'N/A')
 na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
-
 # Development only
-if Rails.env == 'development' then
+if Rails.env.development?
   # temp values, should be replaced by BLSA gmail account
   users = [
     {
@@ -107,6 +106,6 @@ if Rails.env == 'development' then
   users.each do |user|
     u = User.find_or_create_by!(Email: user[:Email])
     u.assign_attributes(user)
-    u.save
+    u.save!
   end
-end 
+end

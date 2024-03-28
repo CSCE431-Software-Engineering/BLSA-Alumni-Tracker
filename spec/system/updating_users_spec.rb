@@ -119,7 +119,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Profile was successfully updated."))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Profile Picture' do
@@ -139,7 +139,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Profile was successfully updated."))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Phone Number' do
@@ -159,7 +159,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Profile was successfully updated."))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Current Job' do

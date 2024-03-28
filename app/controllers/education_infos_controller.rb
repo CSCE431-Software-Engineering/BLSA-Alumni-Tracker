@@ -24,7 +24,11 @@ class EducationInfosController < ApplicationController
 
   # GET /education_infos/1/edit
   def edit
-    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
+    if @education_info.user.Email != session[:email] && !current_user_is_admin?
+      redirect_to(@education_info,
+                  alert: 'You may only edit education infos you own'
+                 )
+    end
   end
 
   # POST /education_infos or /education_infos.json
@@ -45,7 +49,11 @@ class EducationInfosController < ApplicationController
 
   # PATCH/PUT /education_infos/1 or /education_infos/1.json
   def update
-    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
+    if @education_info.user.Email != session[:email] && !current_user_is_admin?
+      redirect_to(@education_info,
+                  alert: 'You may only edit education infos you own'
+                 )
+    end
 
     respond_to do |format|
       if @education_info.update(education_info_params)
@@ -60,7 +68,11 @@ class EducationInfosController < ApplicationController
 
   # DELETE /education_infos/1 or /education_infos/1.json
   def destroy
-    redirect_to(@education_info, alert: 'You may only delete education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
+    if @education_info.user.Email != session[:email] && !current_user_is_admin?
+      redirect_to(@education_info,
+                  alert: 'You may only delete education infos you own'
+                 )
+    end
 
     @education_info.destroy!
 

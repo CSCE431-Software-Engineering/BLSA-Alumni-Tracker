@@ -1,10 +1,21 @@
-<h2>Delete User</h2>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
 
-<p>Are you sure you want to permanently delete this user?</p>
+<div class="m-4">
+  <div class="flex justify-between">
+    <h1 class="font-bold text-2xl">Are you sure you want to permanently delete this profile?</h1>
+    <div></div>
+  </div>
 
-<%= render @user %>
+  <p></p>
 
-<div>
-    <%= link_to "Edit this user", edit_user_path(@user) %>
-    <%= button_to "Destroy this user", @user, method: :delete %>
+  <%= render @user %>
+
+  <div class="flex justify-between">
+    <%= link_to users_path, class: "underline m-4" do %>
+      <span>&#8592;</span> <%= "Back to users" %>
+    <% end %>
+    <div>
+      <%= button_to "Permanently delete this profile", @user, method: :delete, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+    </div>
+  </div>
 </div>

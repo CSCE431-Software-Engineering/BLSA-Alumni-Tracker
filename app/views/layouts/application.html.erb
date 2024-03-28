@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BLSAAlumniTracker</title>
+    <title>BLSA Alumni Tracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -9,6 +9,11 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
     <style>
       .flash__alert   { color: red; }
       .flash__notice  { color: blue; }
@@ -22,14 +27,14 @@
       <div class="flex items-center justify-between">
         <div class="ml-0">
           <!--contents of left edge of nav bar-->
-          <%= image_tag("temp_BLSA_logo.jpg", class: "w-auto mr-4", style: "height: 60px;")%>
+          <%= image_tag("blsa_logo.png", class: "w-auto mr-4", style: "height: 60px;")%>
         </div>
         <div class="container mx-auto flex-grow">
           <!--contents of center of navbar -->
           <ul class="flex justify-between items-center p-4">
             <li><%= link_to "Dashboard", root_path, class: "text-white hover:text-gray-300" %></li>
             <li><%= link_to "Users", users_path, class: "text-white hover:text-gray-300" %></li>
-            <li><%= link_to "Education Info", education_infos_path, class: "text-white hover:text-gray-300" %></li>
+            <li><%= link_to "My Education Information", education_infos_path, class: "text-white hover:text-gray-300" %></li>
             <li><%= link_to "Universities", universities_path, class: "text-white hover:text-gray-300" %></li>
             <% if current_user_is_admin? %>
               <li><%= link_to "Admins", view_admins_users_path, class: "text-white hover:text-gray-300" %></li>

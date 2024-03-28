@@ -70,24 +70,8 @@ na_location = Location.find_by!(country: 'N/A', state: 'N/A', city: 'N/A')
 na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
-# temp values, should be replaced by BLSA gmail account
-# make blsa email account first name BLSA last name Admin so that it looks better in admin search
 users = [
-  # SAM admin should be deleted before app is sent to customer
-  {
-    First_Name: 'Sam Admin',
-    Last_Name: 'N/A',
-    Middle_Name: 'N/A',
-    Profile_Picture: 'N/A',
-    Email: 'samdcole48@gmail.com',
-    Phone_Number: 'N/A',
-    Current_Job: 'N/A',
-    location_id: na_location.id,
-    firm_type_id: na_firm_type.id,
-    practice_areas: [na_practice_area],
-    Linkedin_Profile: 'N/A',
-    is_Admin: true
-  },
+  # make blsa email account first name BLSA last name Admin so that it looks better in admin search
   {
     First_Name: 'BLSA Admin',
     Last_Name: 'N/A',
@@ -95,19 +79,47 @@ users = [
     Profile_Picture: 'N/A',
     Email: 'blsa.tamu@gmail.com',
     Phone_Number: 'N/A',
-    Current_Job: 'N/A',
+    Current_Job: 'Root Admin',
     location_id: na_location.id,
     firm_type_id: na_firm_type.id,
     practice_areas: [na_practice_area],
-    Linkedin_Profile: 'N/A',
     is_Admin: true
   }
 ]
+# Development only
+if Rails.env.development?
+  users << {
+    First_Name: 'Sam Admin',
+    Last_Name: 'N/A',
+    Middle_Name: 'N/A',
+    Profile_Picture: 'N/A',
+    Email: 'samdcole48@gmail.com',
+    Phone_Number: 'N/A',
+    Current_Job: 'Test Admin',
+    location_id: na_location.id,
+    firm_type_id: na_firm_type.id,
+    practice_areas: [na_practice_area],
+    is_Admin: true
+  } << {
+    First_Name: 'Admin Aidan',
+    Last_Name: 'Queng',
+    Email: 'tongqu777@gmail.com',
+    Current_Job: 'Test Admin',
+    location_id: na_location.id,
+    firm_type_id: na_firm_type.id,
+    practice_areas: [na_practice_area],
+    is_Admin: true
+  }
+end
 
 # must do it this way in order to associate the pratice_areas array
 # This still prevents duplicates users.
 users.each do |user|
-  User.find_or_create_by!(Email: user[:Email]) do |u|
+  u = User.find_by(Email: user[:Email])
+  if u.blank?
+    u = User.create!(user)
+  else
     u.assign_attributes(user)
   end
+  u.save!
 end

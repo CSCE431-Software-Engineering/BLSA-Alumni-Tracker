@@ -38,7 +38,7 @@ RSpec.describe('Deleting Users', type: :system) do
   it '(Sunny Day) Delete User' do
     visit delete_user_path(User.find_by(Email: 'csce431@gmail.com').id)
 
-    click_on 'Destroy this user'
+    click_on 'Permanently delete this profile'
 
     expect(page).to(have_content('User was successfully destroyed.'))
   end
@@ -55,7 +55,7 @@ RSpec.describe('Deleting Users', type: :system) do
     set_admin_true
     visit delete_user_path(@user2.id)
 
-    click_on 'Destroy this user'
+    click_on 'Permanently delete this profile'
 
     expect(page).to(have_content('User was successfully destroyed.'))
   end
@@ -64,7 +64,7 @@ RSpec.describe('Deleting Users', type: :system) do
     set_admin_true
     visit delete_user_path(@user.id)
 
-    click_on 'Destroy this user'
+    click_on 'Permanently delete this profile'
 
     expect(page).to(have_content('Admins cannot delete their own profile'))
   end
@@ -73,7 +73,7 @@ RSpec.describe('Deleting Users', type: :system) do
     set_admin_true
     visit delete_user_path(@user2.id)
 
-    click_on 'Destroy this user'
+    click_on 'Permanently delete this profile'
 
     expect(page).to(have_content('User was successfully destroyed.'))
   end

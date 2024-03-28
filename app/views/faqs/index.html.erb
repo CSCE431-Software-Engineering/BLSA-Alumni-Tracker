@@ -1,13 +1,44 @@
 <h1>Frequently Asked Questions</h1>
 
 <div class="faq-container">
-  <div class="faq">
-    <h2>Question 1</h2>
-    <p>Answer to question 1...</p>
-  </div>
-  <div class="faq">
-    <h2>Question 2</h2>
-    <p>Answer to question 2...</p>
-  </div>
-  <!-- Add more questions as needed -->
+  <% # FAQ entries %>
+  <% [["Where can I get assistance?", "The primary goal of this application is autonomous use. However, if you need assistance, 
+        please contact the developer at <a href='mailto:markbc25@tamu.edu'>"],
+      ["Who would this help?", "We wanted to have a centralized database representing the Aggie BLSA alumni. This application 
+      is intended to help current students and alumni connect with each other."],
+      ["What is the purpose of this application?", "The purpose of this application is to provide a centralized database for 
+      Aggie BLSA alumni to connect with each other."],
+      ["How do I get started?", "To get started, you will need to create an account. Once you have created an account, you 
+      can begin adding your information to the database."],
+      ["How do I add my information to the database?", "To add your information to the database, you will need to create an 
+      account. Once you have created an account, you can begin adding your information to the database."],
+      ["How do I edit my information?", "To edit your information, you will need to log in to your account. Once you have 
+      logged in, you can edit your information."],
+      ["How do I delete my account?", "To delete your account, you will need to log in to your account. Once you have logged 
+      in, you can delete your account."]
+    ].each_with_index do |(question, answer), index| %>
+    <div class="faq-item">
+      <button class="faq-question" data-target="#answer<%= index %>">
+        <%= question %>
+      </button>
+      <div id="answer<%= index %>" class="faq-answer" style="display: none;">
+        <%= answer %>
+      </div>
+    </div>
+  <% end %>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('.faq-question').forEach(function(question) {
+    question.onclick = function() {
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    };
+  });
+});
+</script>

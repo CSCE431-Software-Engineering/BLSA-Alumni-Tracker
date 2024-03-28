@@ -48,7 +48,6 @@ class EducationInfosController < ApplicationController
     redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
 
     respond_to do |format|
-      puts "\n\n\nEducation Info Owner: #{@education_info.user.First_Name}\n\n\n"
       if @education_info.update(education_info_params)
         format.html { redirect_to(education_info_url(@education_info), notice: 'Education info was successfully updated.') }
         format.json { render(:show, status: :ok, location: @education_info) }

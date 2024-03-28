@@ -1,7 +1,7 @@
 <% text_field_class = "appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
 <% label_no_block_class = "text-gray-700 text-sm font-bold mb-2" %>
 <% label_class = "block #{label_no_block_class}" %>
-
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
 
 <%= form_with(model: user, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if user.errors.any? %>
@@ -104,6 +104,7 @@
   </div>
 
   <% if current_user_is_admin? %>
+    <hr>
     <div class="px-3 m-4">
       <%= form.label :is_Admin, "Is Admin?", class: label_class %>
       <%= form.check_box :is_Admin, {}, 'true', 'false'%>
@@ -111,8 +112,15 @@
     </div>
   <% end %>
   
-  <div class="px-3 m-4">
-    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+  <div class="flex justify-between">
+    <div class="px-3 m-4">
+      <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+    </div>
+    <% if current_user_is_admin? || @user.Email == session[:email] %>
+    <div class="m-4">
+      <%= link_to "Delete this profile", delete_user_path(@user), class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+    </div>
+    <% end %>
   </div>
 
 <% end %>

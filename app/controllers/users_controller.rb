@@ -6,7 +6,63 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = case params[:filter]
+               when 'name'
+                 User.where(
+                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+           LOWER(\"First_Name\") LIKE :search OR
+           LOWER(\"Last_Name\") LIKE :search OR
+           LOWER(\"Middle_Name\") LIKE :search",
+                   search: "%#{search_term}%"
+                 )
+               when 'current_job'
+                 User.where('LOWER("Current_Job") LIKE ?', "%#{search_term}%")
+               when 'location'
+                 User.joins(:location).where(
+                   'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
+                   search: "%#{search_term}%"
+                 )
+                when 'class_year'
+                  search_year = search_term.to_i
+                  @users = User.joins(:education_infos)
+                               .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
+                               .group('users.id')
+                               .order('year_diff')
+               when 'practice_area'
+                 User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
+               else
+                 User.where(
+                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+           LOWER(\"First_Name\") LIKE :search OR
+           LOWER(\"Last_Name\") LIKE :search OR
+           LOWER(\"Middle_Name\") LIKE :search",
+                   search: "%#{search_term}%"
+                 )
+               end
+    else
+      @users = User.all
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
+    when 'current_job'
+      @users = @users.order("\"Current_Job\" #{@sort_direction}")
+
+    when 'practice_areas'
+      @sort_direction = %w[asc desc].include?(@sort_direction) ? @sort_direction : 'asc'
+
+      @users = @users.left_joins(:practice_areas)
+                     .group(:id)
+                     .order(Arel.sql("array_to_string(array_agg(practice_areas.practice_area ORDER BY practice_areas.practice_area #{@sort_direction}), ', ') #{@sort_direction}"))
+    end
   end
 
   # GET /users/1 or /users/1.json
@@ -116,6 +172,7 @@ class UsersController < ApplicationController
           format.json { head(:no_content) }
         end
       else
+
         format.html { redirect_to(@user, alert: 'You can only delete your own profile.') }
         format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
       end

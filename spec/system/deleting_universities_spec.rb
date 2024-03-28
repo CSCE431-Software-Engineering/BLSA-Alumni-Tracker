@@ -22,7 +22,7 @@ RSpec.describe('Deleting Universities', type: :system) do
     set_admin_true
     visit university_path(@university.id)
 
-    click_on 'Delete University'
+    click_on 'Delete'
 
     expect(page).to(have_content('University was successfully destroyed.'))
   end
@@ -33,6 +33,6 @@ RSpec.describe('Deleting Universities', type: :system) do
 
     visit university_path(@university.id)
 
-    expect(page).not_to(have_button('Delete University'))
+    expect(page).not_to(have_button('Delete'))
   end
 end

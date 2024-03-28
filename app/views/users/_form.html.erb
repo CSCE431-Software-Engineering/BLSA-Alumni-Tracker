@@ -116,7 +116,7 @@
     <div class="px-3 m-4">
       <%= form.submit "Save", class: "bg-gray-800 hover:bg-gray-400 #{button_class}" %>
     </div>
-    <% if current_user_is_admin? || @user.Email == session[:email] %>
+    <% if (current_user_is_admin? || @user.Email == session[:email]) && @user.id.present? %>
     <div class="m-4">
       <%= link_to "Delete this profile", delete_user_path(@user), class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
     </div>

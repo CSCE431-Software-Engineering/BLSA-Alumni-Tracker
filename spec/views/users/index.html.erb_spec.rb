@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
 # spec/views/users/index.html.erb_spec.rb
 
 require 'rails_helper'
 
 RSpec.describe('users/index', type: :view) do
   def create_practice_area(practice_area)
-    PracticeArea.find_or_create_by(practice_area: practice_area)
+    PracticeArea.find_or_create_by!(practice_area: practice_area)
   end
 
   def create_firm_type(firm_type)
-    FirmType.find_or_create_by(firm_type: firm_type)
+    FirmType.find_or_create_by!(firm_type: firm_type)
   end
 
   def create_location(country, state, city)
-    Location.find_or_create_by(country: country, state: state, city: city)
+    Location.find_or_create_by!(country: country, state: state, city: city)
   end
 
   def create_university(name)
-    University.find_or_create_by(University: name)
+    University.find_or_create_by!(University: name)
   end
 
   def create_user(email:, ft:, pa:, country:, state:, city:, university_name:, semester:, grad_year:, degree_type:)

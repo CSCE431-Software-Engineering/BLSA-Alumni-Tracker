@@ -71,6 +71,7 @@ na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 # temp values, should be replaced by BLSA gmail account
+# make blsa email account first name BLSA last name Admin so that it looks better in admin search
 users = [
   # SAM admin should be deleted before app is sent to customer
   {

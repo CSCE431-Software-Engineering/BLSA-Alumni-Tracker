@@ -1,3 +1,5 @@
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+
 <%= form_with(model: education_info, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if education_info.errors.any? %>
     <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -32,7 +34,14 @@
     <%= form.text_field :Degree_Type, required: true, placeholder: "EX: Juris Doctor", value: "Juris Doctor" %>
   </div>
 
-  <div class="px-3 mb-4">
-    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+  <div class="flex justify-between">
+    <div class="m-4">
+      <%= form.submit "Save", class: "bg-gray-800 hover:bg-gray-400 #{button_class}" %>
+    </div>
+    <% if current_user_is_admin? %>
+      <div class="m-4">
+        <%= link_to "Delete", @education_info, method: :delete, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+      </div>
+    <% end %>
   </div>
 <% end %>

@@ -3,6 +3,7 @@
 class EducationInfosController < ApplicationController
   before_action :set_education_info, only: %i[show edit update destroy]
   before_action -> { set_current_user(true) }
+  helper_method :current_user_is_admin?
 
   # GET /education_infos or /education_infos.json
   def index
@@ -23,7 +24,7 @@ class EducationInfosController < ApplicationController
 
   # GET /education_infos/1/edit
   def edit
-    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email]
+    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
   end
 
   # POST /education_infos or /education_infos.json
@@ -44,9 +45,10 @@ class EducationInfosController < ApplicationController
 
   # PATCH/PUT /education_infos/1 or /education_infos/1.json
   def update
-    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email]
+    redirect_to(@education_info, alert: 'You may only edit education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
 
     respond_to do |format|
+      puts "\n\n\nEducation Info Owner: #{@education_info.user.First_Name}\n\n\n"
       if @education_info.update(education_info_params)
         format.html { redirect_to(education_info_url(@education_info), notice: 'Education info was successfully updated.') }
         format.json { render(:show, status: :ok, location: @education_info) }
@@ -59,7 +61,7 @@ class EducationInfosController < ApplicationController
 
   # DELETE /education_infos/1 or /education_infos/1.json
   def destroy
-    redirect_to(@education_info, alert: 'You may only delete education infos you own') if @education_info.user.Email != session[:email]
+    redirect_to(@education_info, alert: 'You may only delete education infos you own') if @education_info.user.Email != session[:email] && !current_user_is_admin?
 
     @education_info.destroy!
 
@@ -79,5 +81,10 @@ class EducationInfosController < ApplicationController
   # Only allow a list of trusted parameters through.
   def education_info_params
     params.require(:education_info).permit(:Semester, :Grad_Year, :university_id, :Degree_Type)
+  end
+
+  def current_user_is_admin?
+    logged_in_user = User.find_by(Email: session[:email])
+    logged_in_user&.is_Admin
   end
 end

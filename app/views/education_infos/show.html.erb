@@ -2,7 +2,11 @@
 
 <div class="m-4">
   <div class="flex justify-between">
-    <h1 class="text-2xl">Education Information</h1>
+    <h1 class="text-2xl">Education Information for 
+      <span>
+        <%= link_to "#{@education_info.user.First_Name} #{@education_info.user.Last_Name}", user_path(@education_info.user), class: "underline" %>
+      </span>
+    </h1>
     
     <div class="flex flex-row">
       <%= button_to "Edit", edit_education_info_path(@education_info), method: :get, class: "m-4 bg-blue-500 hover:bg-blue-700 #{button_class}" %>
@@ -16,8 +20,17 @@
   <br>
 
   <div>
+    <% if current_user_is_admin? %>
+      <div>
+        <%= link_to user_path(@education_info.user), class: "underline" do %>
+          <span>&#8592;</span> <%= "Back to user" %>
+        <% end %>
+      </div>
+    <% end %>
+    <div>
     <%= link_to education_infos_path, class: "underline" do %>
       <span>&#8592;</span> <%= "Back to my education information" %>
     <% end %>
+    </div>
   </div>
 </div>

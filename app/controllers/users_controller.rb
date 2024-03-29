@@ -6,6 +6,8 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
+    set_todo
+
     @sort_by = params[:sort_by] || 'name'
     @sort_direction = params[:sort_direction] || 'asc'
 
@@ -267,6 +269,17 @@ class UsersController < ApplicationController
   def current_user_is_admin?
     logged_in_user = User.find_by(Email: session[:email])
     logged_in_user&.is_Admin
+  end
+
+  def set_todo
+    @todo_list = []
+
+    if @current_user.blank?
+      @todo_list.append(['Click here to finish creating your account', new_user_path])
+      return
+    end
+
+    @todo_list.append(['Click here to fill out your education information', new_education_info_path]) if @current_user.education_infos.empty?
   end
 end
 

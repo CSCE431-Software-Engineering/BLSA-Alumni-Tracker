@@ -1,4 +1,4 @@
-<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
 <div class="m-4">
   <div class="flex justify-between">
@@ -9,8 +9,8 @@
     </h1>
     
     <div class="flex flex-row">
-      <%= button_to "Edit", edit_education_info_path(@education_info), method: :get, class: "m-4 bg-blue-500 hover:bg-blue-700 #{button_class}" %>
-      <%= button_to "Delete", @education_info, method: :delete, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+      <%= button_to "Edit", edit_education_info_path(@education_info), method: :get, class: "m-4 #{button_class}" %>
+      <%= button_to "Delete", @education_info, method: :delete, class: "m-4 #{button_class}" %>
     </div>
   </div>
   

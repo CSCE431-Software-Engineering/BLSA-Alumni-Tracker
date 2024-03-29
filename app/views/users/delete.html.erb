@@ -1,4 +1,4 @@
-<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
 <div class="m-4">
   <div class="flex justify-between">
@@ -15,7 +15,7 @@
       <span>&#8592;</span> <%= "Back to users" %>
     <% end %>
     <div>
-      <%= button_to "Permanently delete this profile", @user, method: :delete, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+      <%= button_to "Permanently delete this profile", @user, method: :delete, class: "#{button_class}" %>
     </div>
   </div>
 </div>

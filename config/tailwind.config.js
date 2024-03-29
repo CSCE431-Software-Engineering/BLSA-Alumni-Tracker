@@ -12,6 +12,18 @@ module.exports = {
       fontFamily: {
         sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
       },
+      colors: {
+        'tamu-maroon': '#500000',
+        'tamu-white': '#ffffff',
+        'tamu-dark-maroon': '#3c0000',
+        'tamu-blue': '#003C71',
+        'tamu-light-gray': '#a7a7a7',
+        'tamu-dark-gray': '#333333',
+        'tamu-black': '#000000',
+      },
+      fontSize: {
+        'xxs': '0.5rem', // ~8px
+      },
     },
   },
   plugins: [

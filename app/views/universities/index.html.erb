@@ -1,4 +1,4 @@
-<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
 <div class="m-4">
   <% if notice.present? %>
@@ -8,7 +8,7 @@
   <div class="flex justify-between">
     <h1 class="font-bold text-2xl">University List</h1>
     <div>
-      <%= link_to "New university", new_university_path, class: "m-4 bg-green-500 hover:bg-green-700 #{button_class}" %>
+      <%= link_to "New university", new_university_path, class: "m-4 #{button_class}" %>
     </div>
   </div>
 
@@ -22,6 +22,4 @@
       </div>
     <% end %>
   </div>
-
- 
 </div>

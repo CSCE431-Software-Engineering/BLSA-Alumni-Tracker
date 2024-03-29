@@ -1,4 +1,4 @@
-<div class="flex justify-center my-4">
+<div class="flex justify-center my-4 p-4">
     <%= form_with(url: view_admins_users_path, method: :get, local: true, class: "w-1/2") do |form| %>
         <div class="flex items-center">
             <div class="relative flex-grow">
@@ -7,7 +7,7 @@
                     <%= form.select :filter, options_for_select([['Name', 'name']], params[:filter]), { prompt: 'Filter by' }, class: "w-48 py-2 rounded-r-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
                 </div>
             </div>
-            <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+            <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
         </div>
     <% end %>
 </div>

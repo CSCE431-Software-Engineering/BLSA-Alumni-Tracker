@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BLSA Alumni Tracker</title>
+    <title>TAMU BLSA Alumni Tracker</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -9,6 +9,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= favicon_link_tag 'rounded_blsa_logo.png' %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,33 +25,39 @@
 
   <body>
 
-    <nav class="bg-gray-800">
+    <nav class="bg-tamu-maroon">
       <div class="flex items-center justify-between">
-        <div class="ml-0">
+        <%= link_to root_path, class: "flex items-center w-1/4 ml-0 mt-0 mb-0" do %>
           <!--contents of left edge of nav bar-->
-          <%= image_tag("blsa_logo.png", class: "w-auto mr-4", style: "height: 60px;")%>
-        </div>
-        <div class="container mx-auto flex-grow">
-          <!--contents of center of navbar -->
-          <ul class="flex justify-between items-center p-4">
-            <li><%= link_to "Dashboard", root_path, class: "text-white hover:text-gray-300" %></li>
-            <li><%= link_to "Users", users_path, class: "text-white hover:text-gray-300" %></li>
-            <li><%= link_to "My Education Information", education_infos_path, class: "text-white hover:text-gray-300" %></li>
-            <li><%= link_to "Universities", universities_path, class: "text-white hover:text-gray-300" %></li>
+          <%= image_tag("blsa_logo.png", class: "object-contain w-14 h-14 p-2 rounded-full")%>
+          <div class="w-64">
+            <p class="text-white justify-center">TAMU BLSA Alumni Tracker</p>
+          </div>
+        <% end %>
+        <div class="container flex max-w-4xl w-2/3">
+          <ul class="flex justify-end items-center space-x-4 mr-4 ml-auto">
+            <li><%= link_to "Dashboard", root_path, class: "text-white hover:text-gray-300 hover:underline" %></li>
             <% if current_user_is_admin? %>
-              <li><%= link_to "Admins", view_admins_users_path, class: "text-white hover:text-gray-300" %></li>
+              <li><%= link_to "Admins", view_admins_users_path, class: "text-white hover:text-gray-300 hover:underline" %></li>
             <% end %>
-            <% if current_user %>
-              <li><%= link_to "Profile", edit_user_path(current_user), class: "text-white hover:text-gray-300" %></li>
-            <% else %>
-              <%= link_to "Profile", new_user_path, class: "text-white hover:text-gray-300" %>
-            <% end %>
-
+            
+            <div class="relative inline-block">
+              <div class="flex items-center cursor-pointer dropdown-toggle">
+                <%= image_tag(session[:pfp] || "default_pfp.png", alt: "User Avatar", class: "w-8 h-8 rounded-full") %>
+                <span class="text-white text-xs ml-1 transform -rotate-90 dropdown-arrow">&#9660;</span>
+              </div>
+              <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10 hidden">
+                <% if current_user %>
+                  <%= link_to "My Profile", user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+                <% else %>
+                  <%= link_to "My Profile", new_user_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+                <% end %>
+                <%= link_to "My Education Information", education_infos_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+                <%= link_to "Universities", universities_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+                <%= link_to "Sign Out", destroy_admin_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+              </div>
+            </div>
           </ul>
-        </div>
-        <div>
-          <!--content of right edge of navbar -->
-          
         </div>
       </div>
     </nav>
@@ -60,6 +68,21 @@
     <% end %>
 
     <%= yield %>
+
+    <script>
+      document.querySelector('.dropdown-toggle').addEventListener('click', function() {
+        var menu = document.querySelector('.dropdown-menu');
+        var arrow = document.querySelector('.dropdown-arrow');
+        menu.classList.toggle('hidden');
+        if (arrow.classList.contains('-rotate-90')) {
+          arrow.classList.remove('-rotate-90');
+          arrow.classList.add('rotate-0');
+        } else {
+          arrow.classList.remove('rotate-0');
+          arrow.classList.add('-rotate-90');
+        }
+      });
+    </script>
   </body>
 </html>
 

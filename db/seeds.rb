@@ -71,15 +71,11 @@ na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 users = [
-  # make blsa email account first name BLSA last name Admin so that it looks better in admin search
   {
-    First_Name: 'BLSA Admin',
-    Last_Name: 'N/A',
-    Middle_Name: 'N/A',
-    Profile_Picture: 'N/A',
+    First_Name: 'BLSA',
+    Last_Name: 'Admin',
     Email: 'blsa.tamu@gmail.com',
-    Phone_Number: 'N/A',
-    Current_Job: 'Root Admin',
+    Current_Job: 'System Admin',
     location_id: na_location.id,
     firm_type_id: na_firm_type.id,
     practice_areas: [na_practice_area],
@@ -89,12 +85,9 @@ users = [
 # Development only
 if Rails.env.development?
   users << {
-    First_Name: 'Sam Admin',
-    Last_Name: 'N/A',
-    Middle_Name: 'N/A',
-    Profile_Picture: 'N/A',
+    First_Name: 'Admin Sam',
+    Last_Name: 'Cole',
     Email: 'samdcole48@gmail.com',
-    Phone_Number: 'N/A',
     Current_Job: 'Test Admin',
     location_id: na_location.id,
     firm_type_id: na_firm_type.id,

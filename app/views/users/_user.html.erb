@@ -7,6 +7,7 @@
       <% if user.Profile_Picture.blank? %>
         <%= image_tag('default_pfp', alt: "Default profile picture", class: "h-24 w-24 object-cover rounded-full") %>
       <% else %>
+      <!-- needs to be edited once profile picture functionality is implemented -->
         <%= image_tag(user.Profile_Picture, alt: "#{user.First_Name}'s profile picture", class: "h-24 w-24 object-cover rounded-full") %>
       <% end %>
     </div>

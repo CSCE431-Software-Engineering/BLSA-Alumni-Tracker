@@ -48,7 +48,7 @@
               </div>
               <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10 hidden">
                 <% if current_user %>
-                  <%= link_to "My Profile", edit_user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
+                  <%= link_to "My Profile", user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
                 <% else %>
                   <%= link_to "My Profile", new_user_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
                 <% end %>

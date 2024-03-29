@@ -23,7 +23,7 @@
           <%= form.select :filter, options_for_select([['Name', 'name'], ['Current Job', 'current_job'], ['Location', 'location'], ['Class Year', 'class_year'], ['Practice Area', 'practice_area']], params[:filter]), { prompt: 'Filter by' }, class: "w-48 py-2 rounded-r-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
         </div>
       </div>
-      <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      <%= form.submit "Search", class: "ml-2 px-4 py-2 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
     </div>
   <% end %>
 </div>

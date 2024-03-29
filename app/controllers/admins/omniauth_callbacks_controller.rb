@@ -10,6 +10,7 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # store the email so we can track the session
       # puts "Email: #{from_google_params[:email]}"
       session[:email] = from_google_params[:email]
+      session[:pfp] = from_google_params[:avatar_url]
 
       flash[:success] = t('devise.omniauth_callbacks.success', kind: 'Google')
       sign_in_and_redirect(admin, event: :authentication)

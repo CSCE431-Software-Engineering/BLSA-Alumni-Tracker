@@ -21,6 +21,9 @@ module.exports = {
         'tamu-dark-gray': '#333333',
         'tamu-black': '#000000',
       },
+      fontSize: {
+        'xxs': '0.5rem', // ~8px
+      },
     },
   },
   plugins: [

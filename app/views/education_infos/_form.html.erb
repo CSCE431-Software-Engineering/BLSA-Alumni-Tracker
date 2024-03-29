@@ -29,7 +29,7 @@
     <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}, {required: true}) %>
     <div class="flex-initial">
       <p class="text-sm text-gray-600">Dont see your university?</p>
-      <%= link_to "Click here to add university", universities_path, class: "text-sm text-gray-600 hover:text-blue-600" %>
+      <%= link_to "Click here to add university", universities_path, class: "text-sm text-gray-600 hover:text-blue-600 hover:underline" %>
     </div>
   </div>
 

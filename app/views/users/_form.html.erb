@@ -85,7 +85,7 @@
     <div>
       <%= form.label :firm_type_id, "Firm Type", class: label_class%>
       <%= form.collection_select :firm_type_id,
-      FirmType.order(:firm_type), :id, :firm_type, {}, 
+      FirmType.order(Arel.sql('CASE WHEN firm_type = \'N/A\' THEN 0 ELSE 1 END, firm_type')), :id, :firm_type, {}, 
       {multiple: false, include_blank: false, required: true}%>
     </div>
   </div>
@@ -93,14 +93,16 @@
   <div class="px-3 m-4">
     <div class="flex-initial">
       <%= form.label :practice_areas, "Practice Areas", class: label_no_block_class %>
-      <span title="Use ctrl-click to select multiple practice areas.">(&#x1F6C8;)</span>
     </div>
-    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class, required: true } %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(Arel.sql('CASE WHEN practice_area = \'N/A\' THEN 0 ELSE 1 END, practice_area')), :id, :practice_area, {}, { multiple: true, include_blank: false, class: "#{text_field_class} w-1/2", required: true, size:10 } %>
+    <div class="flex-initial">
+      <p class="text-sm text-gray-600 mb-4">Use ctrl-click to select multiple practice areas.</p>
+    </div>
   </div>
 
   <div class="px-3 m-4">
     <%= form.label :Linkedin_Profile, "LinkedIn Profile Link (Optional)", class: label_class %>
-    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-profile/", class: text_field_class %>
+    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-profile/", class: "#{text_field_class} w-1/2" %>
   </div>
 
   <% if current_user_is_admin? %>

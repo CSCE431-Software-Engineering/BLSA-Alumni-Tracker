@@ -71,7 +71,6 @@ na_practice_area = PracticeArea.find_by!(practice_area: 'N/A')
 na_firm_type = FirmType.find_by!(firm_type: 'N/A')
 
 users = [
-  # make blsa email account first name BLSA last name Admin so that it looks better in admin search
   {
     First_Name: 'BLSA',
     Last_Name: 'Admin',

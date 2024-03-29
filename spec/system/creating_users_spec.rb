@@ -26,7 +26,6 @@ RSpec.describe('Creating Users', type: :system) do
     fill_in 'user_First_Name', with: 'John'
     fill_in 'user_Last_Name', with: 'Doe'
     fill_in 'user_Middle_Name', with: 'M'
-    fill_in 'user_Profile_Picture', with: 'https://www.google.com'
     fill_in 'user_Phone_Number', with: '123-456-7890'
     fill_in 'user_Current_Job', with: 'Software Engineer'
     select 'Government', from: 'user_firm_type_id'
@@ -43,7 +42,6 @@ RSpec.describe('Creating Users', type: :system) do
     expect(page).to(have_content('John'))
     expect(page).to(have_content('Doe'))
     expect(page).to(have_content('M'))
-    expect(page).to(have_content('https://www.google.com'))
     expect(page).to(have_content('csce431@gmail.com'))
     expect(page).to(have_content('123-456-7890'))
     expect(page).to(have_content('Software Engineer'))

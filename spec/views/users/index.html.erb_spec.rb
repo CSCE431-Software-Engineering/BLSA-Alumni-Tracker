@@ -64,6 +64,7 @@ RSpec.describe('users/index', type: :view) do
     @user2 = create_user(email: 'user2@example.com', ft: @firm_type.firm_type, pa: @practice_area2.practice_area, country: @location.country, state: @location.state, city: @location.city, university_name: @university.University, semester: 'Spring', grad_year: 2021, degree_type: 'Master')
 
     assign(:users, [@user1, @user2])
+    assign(:todo_list, [])
   end
 
   it 'displays the search form' do

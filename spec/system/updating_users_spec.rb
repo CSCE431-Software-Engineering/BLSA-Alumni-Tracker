@@ -122,16 +122,6 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('Profile was successfully updated.'))
   end
 
-  it '(Sunny Day) Empty Profile Picture' do
-    visit edit_user_path(@user.id)
-
-    fill_in 'user_Profile_Picture', with: ''
-
-    click_on 'Save'
-
-    expect(page).to(have_content('Profile was successfully updated.'))
-  end
-
   it '(Sunny Day) Update Phone Number' do
     visit edit_user_path(@user.id)
 

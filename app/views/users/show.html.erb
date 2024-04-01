@@ -10,7 +10,7 @@
     <%= link_to users_path, class: "underline m-4" do %>
       <span>&#8592;</span> <%= "Back to users" %>
     <% end %>
-    <div>
+    <div class="m-4">
       <% if current_user_is_admin? || @user.Email == session[:email]%>
         <%= link_to "Edit User", edit_user_path(@user), class: "m-4 bg-blue-500 hover:bg-blue-700 #{button_class}" %>
         <%= link_to "Delete User", delete_user_path(@user), method: :delete, data: { confirm: "Are you sure?" }, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>

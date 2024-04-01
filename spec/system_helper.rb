@@ -11,7 +11,6 @@ module SystemHelper
     fill_in('user_First_Name', with: 'John')
     fill_in('user_Last_Name', with: 'Doe')
     fill_in('user_Middle_Name', with: 'M')
-    fill_in('user_Profile_Picture', with: 'https://www.google.com')
     fill_in('user_Phone_Number', with: '123-456-7890')
     fill_in('user_Current_Job', with: 'Software Engineer')
     select('Government', from: 'user_firm_type_id')

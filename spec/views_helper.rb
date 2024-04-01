@@ -1,9 +1,24 @@
 # frozen_string_literal: true
 
 module ViewHelper
+
+
+
   def create_university(uni = 'Texas A&M')
-    University.create!(
+    University.find_or_create_by!(
       University: uni
+    )
+  end
+
+
+
+  def find_or_create_education_info(grad_year = 2020, user)
+    EducationInfo.find_or_create_by!(
+      Semester: 'Spring',
+      Grad_Year: grad_year,
+      university_id:   create_university().id,
+      user_id: user.id,
+      Degree_Type: 'Bachelors'
     )
   end
 
@@ -12,7 +27,6 @@ module ViewHelper
       First_Name: 'Pauline',
       Last_Name: 'Wade',
       Middle_Name: 'idk',
-      Profile_Picture: 'url.com',
       Email: email,
       Phone_Number: '1234567890',
       Current_Job: 'Procrastinator',
@@ -22,7 +36,9 @@ module ViewHelper
         find_or_create_practice_area(pa)
       ],
       Linkedin_Profile: 'https://www.linkedin.com/in/pauline-wade',
-      is_Admin: true
+
+      is_Admin: true,
+
     )
   end
 

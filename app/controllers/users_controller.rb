@@ -31,22 +31,19 @@ class UsersController < ApplicationController
                    search: "%#{search_term}%"
                  )
                when 'class_year'
-                 search_year = Integer(search_term, 10)
-                 @users = User.joins(:education_infos)
-                              .select('users.*, MIN(ABS(education_infos."Grad_Year" - ?)) AS year_diff', search_year)
-                              .group('users.id')
-                              .order('year_diff')
+                 begin
+                   Integer(search_term, 10)
+                   @users = User.joins(:education_infos)
+                                .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_term})) AS year_diff")
+                                .group('users.id')
+                                .order('year_diff')
+                 rescue ArgumentError
+                   # Handle the case when search_term is not a valid integer
+                   @users = User.none
+                 end
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
-               else
-                 User.where(
-                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
-           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
-           LOWER(\"First_Name\") LIKE :search OR
-           LOWER(\"Last_Name\") LIKE :search OR
-           LOWER(\"Middle_Name\") LIKE :search",
-                   search: "%#{search_term}%"
-                 )
+
                end
     else
       @users = User.all
@@ -97,6 +94,8 @@ class UsersController < ApplicationController
     @user.is_Admin = false if params[:user][:is_Admin].nil?
 
     @user.Email = session[:email]
+    @user.Profile_Picture = session[:pfp]
+
     respond_to do |format|
       if @user.save
         save_practice_areas
@@ -275,11 +274,11 @@ class UsersController < ApplicationController
     @todo_list = []
 
     if @current_user.blank?
-      @todo_list.append(['Click here to finish creating your account', new_user_path])
+      @todo_list.append(['Click here to finish creating your account &#10132;', new_user_path])
       return
     end
 
-    @todo_list.append(['Click here to fill out your education information', new_education_info_path]) if @current_user.education_infos.empty?
+    @todo_list.append(['Click here to fill out your education information &#10132;', new_education_info_path]) if @current_user.education_infos.empty?
   end
 end
 

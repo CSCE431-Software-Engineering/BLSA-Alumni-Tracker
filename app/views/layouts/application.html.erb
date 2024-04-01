@@ -37,6 +37,7 @@
         <div class="container flex max-w-4xl w-2/3">
           <ul class="flex justify-end items-center space-x-4 mr-4 ml-auto">
             <li><%= link_to "Dashboard", root_path, class: "text-white hover:text-gray-300 hover:underline" %></li>
+            <li><%= link_to "FAQs", faqs_path, class: "text-white hover:text-gray-300 hover:underline" %></li>
             <% if current_user_is_admin? %>
               <li><%= link_to "Admins", view_admins_users_path, class: "text-white hover:text-gray-300 hover:underline" %></li>
             <% end %>
@@ -54,7 +55,6 @@
                 <% end %>
                 <%= link_to "My Education Information", education_infos_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
                 <%= link_to "Universities", universities_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
-                <%= link_to "FAQs", faqs_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
                 <%= link_to "Sign Out", destroy_admin_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-tamu-maroon hover:text-white" %>
               </div>
             </div>

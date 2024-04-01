@@ -1,9 +1,11 @@
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
+
 <%= form_with(model: education_info, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if education_info.errors.any? %>
     <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
       <h2><%= pluralize(education_info.errors.count, "error") %> prohibited this education_info from being saved:</h2>
     </div>
-    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+    <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700 mb-4">
       <ul>
         <% education_info.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -13,26 +15,37 @@
   <% end %>
 
   <div class="px-3 mb-4">
-    <%= form.label :Semester, style: "display: block" %>
-    <%= form.text_field :Semester %>
+    <%= form.label :Semester, required: true, style: "display: block" %>
+    <%= form.text_field :Semester, required: true, placeholder: "EX: Spring/Summer/Fall" %>
   </div>
 
   <div class="px-3 mb-4">
-    <%= form.label :Grad_Year, style: "display: block" %>
-    <%= form.number_field :Grad_Year %>
+    <%= form.label :Grad_Year, "Graduation Year", required: true, style: "display: block" %>
+    <%= form.number_field :Grad_Year, required: true, placeholder: "EX: 2020", min: 1000 %>
   </div>
 
   <div class="px-3 mb-4">
-    <%= form.label :University, style: "display: block" %>
-    <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}) %>
+    <%= form.label :University, required: true, style: "display: block" %>
+    <%= form.collection_select(:university_id, University.all, :id, :University, {include_blank: true}, {required: true}) %>
+    <div class="flex-initial">
+      <p class="text-sm text-gray-600">Dont see your university?</p>
+      <%= link_to "Click here to add university", universities_path, class: "text-sm text-gray-600 hover:text-blue-600 hover:underline" %>
+    </div>
   </div>
 
   <div class="px-3 mb-4">
-    <%= form.label :Degree_Type, style: "display: block" %>
-    <%= form.text_field :Degree_Type %>
+    <%= form.label :Degree_Type, "Degree Type", required: true, style: "display: block" %>
+    <%= form.text_field :Degree_Type, required: true, placeholder: "EX: Juris Doctor", value: "Juris Doctor" %>
   </div>
 
-  <div class="px-3 mb-4">
-    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+  <div class="flex justify-between">
+    <div class="m-4">
+      <%= form.submit "Save", class: " #{button_class}" %>
+    </div>
+    <% if current_user_is_admin? %>
+      <div class="m-4">
+        <%= link_to "Delete", @education_info, method: :delete, class: "m-4 #{button_class}" %>
+      </div>
+    <% end %>
   </div>
 <% end %>

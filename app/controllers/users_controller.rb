@@ -2,10 +2,66 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update delete destroy]
+  helper_method :current_user_is_admin?
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    set_todo
+
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = case params[:filter]
+               when 'name'
+                 User.where(
+                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+           LOWER(\"First_Name\") LIKE :search OR
+           LOWER(\"Last_Name\") LIKE :search OR
+           LOWER(\"Middle_Name\") LIKE :search",
+                   search: "%#{search_term}%"
+                 )
+               when 'current_job'
+                 User.where('LOWER("Current_Job") LIKE ?', "%#{search_term}%")
+               when 'location'
+                 User.joins(:location).where(
+                   'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
+                   search: "%#{search_term}%"
+                 )
+               when 'class_year'
+                 begin
+                   Integer(search_term, 10)
+                   @users = User.joins(:education_infos)
+                                .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_term})) AS year_diff")
+                                .group('users.id')
+                                .order('year_diff')
+                 rescue ArgumentError
+                   # Handle the case when search_term is not a valid integer
+                   @users = User.none
+                 end
+               when 'practice_area'
+                 User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
+
+               end
+    else
+      @users = User.all
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
+    when 'current_job'
+      @users = @users.order("\"Current_Job\" #{@sort_direction}")
+
+    when 'practice_areas'
+      @sort_direction = %w[asc desc].include?(@sort_direction) ? @sort_direction : 'asc'
+
+      @users = @users.left_joins(:practice_areas)
+                     .group(:id)
+                     .order(Arel.sql("array_to_string(array_agg(practice_areas.practice_area ORDER BY practice_areas.practice_area #{@sort_direction}), ', ') #{@sort_direction}"))
+    end
   end
 
   # GET /users/1 or /users/1.json
@@ -21,14 +77,25 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
-
-    if params[:user][:location_id].blank? && params[:user][:location_attributes].present?
-      # Build a new location for the user
-      @user.build_location(user_params[:location_attributes])
+    @user = User.new(user_params.except(:location_attributes))
+    if user_params[:location_id].blank? && user_params[:location_attributes].present?
+      # Update the location for the user
+      @new_location = Location.new(user_params[:location_attributes])
+      if @new_location.save
+        new_location_id = @new_location.id
+      else
+        flash[:error] = @new_location.errors.full_messages.join(', ')
+        render(:edit) and return
+      end
     end
 
+    @user.location_id = new_location_id if new_location_id
+
+    @user.is_Admin = false if params[:user][:is_Admin].nil?
+
     @user.Email = session[:email]
+    @user.Profile_Picture = session[:pfp]
+
     respond_to do |format|
       if @user.save
         save_practice_areas
@@ -45,9 +112,42 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    if @user.Email == 'blsa.tamu@gmail.com'
+      respond_to do |format|
+        format.html { redirect_to(@user, alert: 'This account cannot be edited.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
     respond_to do |format|
-      if @user.Email == session[:email]
-        if @user.update(user_params)
+      new_location_id = nil
+
+      if @user.Email == session[:email] || current_user_is_admin?
+        if @user.Email == session[:email] && params[:user][:is_Admin].present? && params[:user][:is_Admin] != @user.is_Admin.to_s
+          format.html { redirect_to(@user, alert: 'You cannot change your own admin status.') }
+          format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+        end
+        if user_params[:location_id].blank? && user_params[:location_attributes].present?
+          # Update the location for the user
+          @new_location = Location.new(user_params[:location_attributes])
+          if @new_location.save
+            new_location_id = @new_location.id
+          else
+            flash[:error] = @new_location.errors.full_messages.join(', ')
+            render(:edit) and return
+          end
+        end
+
+        updated_params = user_params.except(:location_attributes)
+        updated_params[:location_id] = new_location_id if new_location_id
+
+        if @user.update(updated_params)
+          save_practice_areas
+          save_firm_type
+          format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
+          format.json { render(:show, status: :ok, location: @user) }
+        elsif @user.update(user_params)
           save_practice_areas
           save_firm_type
           format.html { redirect_to(@user, notice: 'Profile was successfully updated.') }
@@ -65,22 +165,58 @@ class UsersController < ApplicationController
 
   # GET /users/1/delete
   def delete
-    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email]
+    redirect_to(@user, alert: 'You can only delete your own profile.') if @user.Email != session[:email] && !current_user_is_admin?
   end
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if @user.Email == session[:email]
-      @user.destroy!
-      respond_to do |format|
-        format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
-        format.json { head(:no_content) }
-      end
-    else
-      respond_to do |format|
+    respond_to do |format|
+      if @user.Email == session[:email] || current_user_is_admin?
+        if @user.Email == session[:email] && current_user_is_admin?
+          format.html { redirect_to(@user, alert: 'Admins cannot delete their own profile') }
+          format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+        else
+          @user.destroy!
+          format.html { redirect_to(users_url, notice: 'User was successfully destroyed.') }
+          format.json { head(:no_content) }
+        end
+      else
+
         format.html { redirect_to(@user, alert: 'You can only delete your own profile.') }
         format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
       end
+    end
+  end
+
+  # GET /users/view_admins
+  def view_admins
+    unless current_user_is_admin?
+      respond_to do |format|
+        format.html { redirect_to(root_path, alert: 'Only admins can view this page.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+    @users = User.where(is_Admin: true)
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = User.where(
+        "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+        LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+        LOWER(\"First_Name\") LIKE :search OR
+        LOWER(\"Last_Name\") LIKE :search OR
+        LOWER(\"Middle_Name\") LIKE :search",
+        search: "%#{search_term}%"
+      )
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
     end
   end
 
@@ -99,8 +235,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     permitted_params = params.require(:user).permit(:First_Name, :Last_Name, :Middle_Name, :Profile_Picture, :Email, :Phone_Number, :Current_Job,
-                                                    :Linkedin_Profile, :is_Admin, { location_attributes: %i[country state city] },
-                                                    :firm_type_id, practice_area_ids: []
+                                                    :Linkedin_Profile, :is_Admin, :location_id,
+                                                    :firm_type_id, practice_area_ids: [],
+                                                                   location_attributes: %i[country state city]
     )
     permitted_params[:is_Admin] = false if permitted_params[:is_Admin] == 'false'
     permitted_params
@@ -126,6 +263,22 @@ class UsersController < ApplicationController
       firm_type = FirmType.find(firm_type_id)
       @user.firm_type = firm_type if firm_type.present?
     end
+  end
+
+  def current_user_is_admin?
+    logged_in_user = User.find_by(Email: session[:email])
+    logged_in_user&.is_Admin
+  end
+
+  def set_todo
+    @todo_list = []
+
+    if @current_user.blank?
+      @todo_list.append(['Click here to finish creating your account &#10132;', new_user_path])
+      return
+    end
+
+    @todo_list.append(['Click here to fill out your education information &#10132;', new_education_info_path]) if @current_user.education_infos.empty?
   end
 end
 

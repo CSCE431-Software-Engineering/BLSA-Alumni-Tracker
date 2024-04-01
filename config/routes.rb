@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  resources :universities
   #oAuth
-  root to: 'dashboards#show'
+  root to: 'users#index'
   devise_for :admins, controllers: { omniauth_callbacks: 'admins/omniauth_callbacks' }
   devise_scope :admin do
     get 'admins/sign_in', to: 'admins/sessions#new', as: :new_admin_session
@@ -18,7 +17,12 @@ Rails.application.routes.draw do
     member do
       get :delete
     end
+    collection do
+      get :view_admins
+    end
   end
+
+  resources :faqs, only: [:index]
 
   resources :universities
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   #oAuth
-  root to: 'dashboards#show'
+  root to: 'users#index'
   devise_for :admins, controllers: { omniauth_callbacks: 'admins/omniauth_callbacks' }
   devise_scope :admin do
     get 'admins/sign_in', to: 'admins/sessions#new', as: :new_admin_session
@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   resources :users do
     member do
       get :delete
+    end
+    collection do
+      get :view_admins
     end
   end
 

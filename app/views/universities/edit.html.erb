@@ -1,8 +1,11 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing university</h1>
+<div class="m-4">
+  <h1 class="font-bold text-2xl">Editing University</h1>
 
   <%= render "form", university: @university %>
 
-  <%= link_to "Show this university", @university, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-  <%= link_to "Back to universities", universities_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <div>
+      <%= link_to universities_path, class: "underline" do %>
+        <span>&#8592;</span> <%= "Back to universities" %>
+      <% end %>
+    </div>
 </div>

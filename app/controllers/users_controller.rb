@@ -6,6 +6,8 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
+    set_todo
+
     @sort_by = params[:sort_by] || 'name'
     @sort_direction = params[:sort_direction] || 'asc'
 
@@ -28,12 +30,12 @@ class UsersController < ApplicationController
                    'LOWER(locations.city) LIKE :search OR LOWER(locations.state) LIKE :search OR LOWER(locations.country) LIKE :search',
                    search: "%#{search_term}%"
                  )
-                when 'class_year'
-                  search_year = search_term.to_i
-                  @users = User.joins(:education_infos)
-                               .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_year})) AS year_diff")
-                               .group('users.id')
-                               .order('year_diff')
+               when 'class_year'
+                 search_year = Integer(search_term, 10)
+                 @users = User.joins(:education_infos)
+                              .select('users.*, MIN(ABS(education_infos."Grad_Year" - ?)) AS year_diff', search_year)
+                              .group('users.id')
+                              .order('year_diff')
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
                else
@@ -111,11 +113,19 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    if @user.Email == 'blsa.tamu@gmail.com'
+      respond_to do |format|
+        format.html { redirect_to(@user, alert: 'This account cannot be edited.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
     respond_to do |format|
       new_location_id = nil
 
       if @user.Email == session[:email] || current_user_is_admin?
-        if @user.Email == session[:email] && params[:user][:is_Admin] != @user.is_Admin.to_s
+        if @user.Email == session[:email] && params[:user][:is_Admin].present? && params[:user][:is_Admin] != @user.is_Admin.to_s
           format.html { redirect_to(@user, alert: 'You cannot change your own admin status.') }
           format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
         end
@@ -179,6 +189,38 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/view_admins
+  def view_admins
+    unless current_user_is_admin?
+      respond_to do |format|
+        format.html { redirect_to(root_path, alert: 'Only admins can view this page.') }
+        format.json { render(json: { error: 'Unauthorized' }, status: :unauthorized) }
+      end
+      return
+    end
+
+    @sort_by = params[:sort_by] || 'name'
+    @sort_direction = params[:sort_direction] || 'asc'
+    @users = User.where(is_Admin: true)
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @users = User.where(
+        "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
+        LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
+        LOWER(\"First_Name\") LIKE :search OR
+        LOWER(\"Last_Name\") LIKE :search OR
+        LOWER(\"Middle_Name\") LIKE :search",
+        search: "%#{search_term}%"
+      )
+    end
+
+    case @sort_by
+    when 'name'
+      @users = @users.order("\"First_Name\" #{@sort_direction}, \"Last_Name\" #{@sort_direction}")
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -227,6 +269,17 @@ class UsersController < ApplicationController
   def current_user_is_admin?
     logged_in_user = User.find_by(Email: session[:email])
     logged_in_user&.is_Admin
+  end
+
+  def set_todo
+    @todo_list = []
+
+    if @current_user.blank?
+      @todo_list.append(['Click here to finish creating your account', new_user_path])
+      return
+    end
+
+    @todo_list.append(['Click here to fill out your education information', new_education_info_path]) if @current_user.education_infos.empty?
   end
 end
 

@@ -1,19 +1,18 @@
 <div id="<%= dom_id user %>" class="flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-  <div class="md:flex items-center mb-4">
-    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-      <p class="block text-gray-700 text-sm font-bold mb-2">Name:</p>
-      <div class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-        <%= user.First_Name %> <%= user.Middle_Name %> <%= user.Last_Name %>
-      </div>
+  <div class="flex justify-between items-center mb-4">
+    <div class="py-2 px-4 font-bold text-2xl w-1/2">
+      <%= user.First_Name %> <%= user.Middle_Name %> <%= user.Last_Name %>
+    </div>
+    <div class="ml-1/4 mr-auto">
+      <% if user.Profile_Picture.blank? %>
+        <%= image_tag('default_pfp', alt: "Default profile picture", class: "h-24 w-24 object-cover rounded-full") %>
+      <% else %>
+      <!-- needs to be edited once profile picture functionality is implemented -->
+        <%= image_tag(user.Profile_Picture, alt: "#{user.First_Name}'s profile picture", class: "h-24 w-24 object-cover rounded-full") %>
+      <% end %>
     </div>
   </div>
 
-  <div class="md:flex items-center mb-4">
-    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-      <p class="block text-gray-700 text-sm font-bold mb-2">Profile Picture:</p>
-      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Profile_Picture %></p>
-    </div>
-  </div>
 
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
@@ -22,12 +21,14 @@
     </div>
   </div>
 
+  <% if !user.Phone_Number.blank? %>
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <p class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</p>
       <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"><%= user.Phone_Number %></p>
     </div>
   </div>
+  <% end %>
 
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
@@ -60,30 +61,33 @@
       </div>
   </div>
 
-  <div class="md:flex items-center mb-4">
-    <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-      <p class="block text-gray-700 text-sm font-bold mb-2">Linkedin Profile:</p>
-      <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-        <% if user.Linkedin_Profile != "N/A" %>
+  <% if !user.Linkedin_Profile.blank? %>
+    <div class="md:flex items-center mb-4">
+      <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+        <p class="block text-gray-700 text-sm font-bold mb-2">Linkedin Profile:</p>
+        <p class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
           <%= link_to user.Linkedin_Profile, user.Linkedin_Profile, target: "_blank", class: "text-blue-500 hover:underline" %>
-        <% else %>
-          <%= user.Linkedin_Profile %>
-        <% end %>
-      </p>
+        </p>
+      </div>
     </div>
-  </div>
+  <% end %>
 
+  <% if user.education_infos.length != 0 %>
   <div class="md:flex items-center mb-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-
-      <p class="block text-gray-700 text-sm font-bold mb-2">Education Info:</p>
+      <p class="block text-gray-700 text-sm font-bold mb-2">Education Information:</p>
       <ul class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
         <% user.education_infos.each do |education_info| %>
-          <li><%= education_info.education_info_string %></li>
+          <% if current_user_is_admin? %>
+            <li><%= link_to education_info.education_info_string, edit_education_info_path(education_info), class: "hover:underline" %></li>
+          <% else %>
+            <li><%= education_info.education_info_string %></li>
+          <% end %>
         <% end %>
       </ul>
       </div>
   </div>
+  <% end %>
 
   <% if current_user_is_admin? %>
     <div class="md:flex items-center mb-4">

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  class InvalidEmailError < StandardError; end
+
   def google_oauth2
     admin = Admin.from_google(**from_google_params)
 
@@ -8,6 +10,7 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # store the email so we can track the session
       # puts "Email: #{from_google_params[:email]}"
       session[:email] = from_google_params[:email]
+      session[:pfp] = from_google_params[:avatar_url]
 
       flash[:success] = t('devise.omniauth_callbacks.success', kind: 'Google')
       sign_in_and_redirect(admin, event: :authentication)
@@ -15,6 +18,9 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:alert] = t('devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized.")
       redirect_to(new_admin_session_path)
     end
+  rescue InvalidEmailError
+    flash[:alert] = 'Please use a personal email address. You will lose access to your tamu email address over time.'
+    redirect_to(new_admin_session_path)
   end
 
   protected
@@ -30,12 +36,16 @@ class Admins::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   private
 
   def from_google_params
-    @from_google_params ||= {
-      uid: auth.uid,
-      email: auth.info.email,
-      full_name: auth.info.name,
-      avatar_url: auth.info.image
-    }
+    @from_google_params ||= begin
+      raise(InvalidEmailError) if auth.info.email.downcase.end_with?('@tamu.edu')
+
+      {
+        uid: auth.uid,
+        email: auth.info.email,
+        full_name: auth.info.name,
+        avatar_url: auth.info.image
+      }
+    end
   end
 
   def auth

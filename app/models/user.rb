@@ -12,15 +12,15 @@ class User < ApplicationRecord
 
   validates :First_Name, presence: true
   validates :Last_Name, presence: true
-  validates :Middle_Name, presence: true
-  validates :Profile_Picture, presence: true
+  validates :Middle_Name, presence: true, allow_blank: true
+  validates :Profile_Picture, presence: true, allow_blank: true
   validates :Email, presence: true, uniqueness: true
-  validates :Phone_Number, presence: true
+  validates :Phone_Number, presence: true, allow_blank: true
   validates :Current_Job, presence: true
   validates :firm_type_id, presence: true
 
-  validates :Linkedin_Profile, presence: true,
-                               format: { with: %r{\A(N/A|https?://(?:www\.)?linkedin\.com/.*)\z}, message: "must be 'N/A' or a valid LinkedIn URL" }
+  validates :Linkedin_Profile, presence: true, allow_blank: true,
+                               format: { with: %r{\A(https?://(?:www\.)?linkedin\.com/.*)\z}, message: 'must be a valid LinkedIn URL or blank' }
 
   validates :practice_areas, presence: true
   validates :is_Admin, presence: { allow_blank: true }

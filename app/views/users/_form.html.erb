@@ -1,7 +1,7 @@
-<% text_field_class = "appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" %>
+<% text_field_class = "appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" %>
 <% label_no_block_class = "text-gray-700 text-sm font-bold mb-2" %>
 <% label_class = "block #{label_no_block_class}" %>
-
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
 <%= form_with(model: user, class: "flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if user.errors.any? %>
@@ -21,8 +21,8 @@
 
   <div class="md:flex items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-      <%= form.label :First_Name, "First Name", class: "#{label_class}" %>
-      <%= form.text_field :First_Name, placeholder: "EX: John", class: text_field_class %>
+      <%= form.label :First_Name, "First Name", required: true, class: "#{label_class}" %>
+      <%= form.text_field :First_Name, placeholder: "EX: John", required: true, class: text_field_class %>
     </div>
     <div class="md:w-1/2 px-3">
       <%= form.label :Middle_Name, "Middle Name (Optional)", class: "#{label_class}" %>
@@ -30,7 +30,7 @@
     </div>
     <div class="md:w-1/2 px-3">
       <%= form.label :Last_Name, "Last Name", class: "#{label_class}" %>
-      <%= form.text_field :Last_Name, placeholder: "EX: Doe", class: text_field_class %>
+      <%= form.text_field :Last_Name, placeholder: "EX: Doe", required: true, class: text_field_class %>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
   </div>
 
   <div class="px-3 m-4">
-    <%= form.label :Phone_Number, "Phone Number", class: label_class %>
+    <%= form.label :Phone_Number, "Phone Number (Optional)", class: label_class %>
     <%= form.text_field :Phone_Number, placeholder: "EX: 111-111-1111", class: text_field_class %>
   </div>
 
@@ -54,7 +54,7 @@
       <%= form.collection_select :location_id, Location.order(:city), :id, :location_string, include_blank: "Create new location", id: "location_select", class: "flex-1" %>
     </div>
     <div id="new_location_form">
-      <p class="text-sm text-gray-600">Or create a new location:</p>
+      <p class="text-sm text-gray-600 mb-4">Or create a new location:</p>
       <div class="md:flex items-center mb-4">
         <%= form.fields_for :location, Location.new do |location_form| %>
           <div class="md:w-1/2 mb-4 md:mb-0">
@@ -79,31 +79,34 @@
   <div class="md:flex md:items-center m-4">
     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
       <%= form.label :Current_Job, "Current Job Title", class: label_class %>
-      <%= form.text_field :Current_Job, placeholder: "EX: Lawyer", class: text_field_class %>
+      <%= form.text_field :Current_Job, placeholder: "EX: Lawyer", required: true, class: text_field_class %>
     </div>
 
     <div>
-      <%= form.label :firm_type_id, style: "display: block"%>
+      <%= form.label :firm_type_id, "Firm Type", class: label_class%>
       <%= form.collection_select :firm_type_id,
-      FirmType.order(:firm_type), :id, :firm_type, {}, 
-      {multiple: false, include_blank: false}%>
+      FirmType.order(Arel.sql('CASE WHEN firm_type = \'N/A\' THEN 0 ELSE 1 END, firm_type')), :id, :firm_type, {}, 
+      {multiple: false, include_blank: false, required: true}%>
     </div>
   </div>
 
   <div class="px-3 m-4">
     <div class="flex-initial">
       <%= form.label :practice_areas, "Practice Areas", class: label_no_block_class %>
-      <span title="Use ctrl-click to select multiple practice areas.">(&#x1F6C8;)</span>
     </div>
-    <%= form.collection_select :practice_area_ids, PracticeArea.order(:practice_area), :id, :practice_area, {}, { multiple: true, include_blank: false, class: text_field_class } %>
+    <%= form.collection_select :practice_area_ids, PracticeArea.order(Arel.sql('CASE WHEN practice_area = \'N/A\' THEN 0 ELSE 1 END, practice_area')), :id, :practice_area, {}, { multiple: true, include_blank: false, class: "#{text_field_class} w-1/2", required: true, size:10 } %>
+    <div class="flex-initial">
+      <p class="text-sm text-gray-600 mb-4">Use ctrl-click to select multiple practice areas.</p>
+    </div>
   </div>
 
   <div class="px-3 m-4">
     <%= form.label :Linkedin_Profile, "LinkedIn Profile Link (Optional)", class: label_class %>
-    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-name/", class: text_field_class %>
+    <%= form.text_field :Linkedin_Profile, placeholder: "https://www.linkedin.com/in/my-profile/", class: "#{text_field_class} w-1/2" %>
   </div>
 
   <% if current_user_is_admin? %>
+    <hr>
     <div class="px-3 m-4">
       <%= form.label :is_Admin, "Is Admin?", class: label_class %>
       <%= form.check_box :is_Admin, {}, 'true', 'false'%>
@@ -111,8 +114,15 @@
     </div>
   <% end %>
   
-  <div class="px-3 m-4">
-    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+  <div class="flex justify-between">
+    <div class="px-3 m-4">
+      <%= form.submit "Save", class: "#{button_class}" %>
+    </div>
+    <% if (current_user_is_admin? || @user.Email == session[:email]) && @user.id.present? %>
+    <div class="m-4">
+      <%= link_to "Delete this profile", delete_user_path(@user), class: "#{button_class}" %>
+    </div>
+    <% end %>
   </div>
 
 <% end %>

@@ -15,14 +15,14 @@ RSpec.describe('Deleting Universities', type: :system) do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login
 
-    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@gmail.com')
   end
 
   it '(Sunny Day) Delete University as Admin' do
     set_admin_true
     visit university_path(@university.id)
 
-    click_on 'Delete University'
+    click_on 'Delete'
 
     expect(page).to(have_content('University was successfully destroyed.'))
   end
@@ -33,6 +33,6 @@ RSpec.describe('Deleting Universities', type: :system) do
 
     visit university_path(@university.id)
 
-    expect(page).not_to(have_button('Delete University'))
+    expect(page).not_to(have_button('Delete'))
   end
 end

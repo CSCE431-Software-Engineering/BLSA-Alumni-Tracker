@@ -23,7 +23,7 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'csce431@tamu.edu',
+      Email: 'csce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
@@ -38,7 +38,7 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'NOTcsce431@tamu.edu',
+      Email: 'NOTcsce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
@@ -112,34 +112,24 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('L'))
   end
 
-  it '(Rainy Day) Empty Middle Name' do
+  it '(Sunny Day) Empty Middle Name' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Middle_Name', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Middle name can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
-  it '(Sunny Day) Update Profile Picture' do
-    visit edit_user_path(@user.id)
-
-    fill_in 'user_Profile_Picture', with: 'https://www.facebook.com'
-
-    click_on 'Save'
-
-    expect(page).to(have_content('https://www.facebook.com'))
-  end
-
-  it '(Rainy Day) Empty Profile Picture' do
+  it '(Sunny Day) Empty Profile Picture' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Profile_Picture', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Profile picture can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Phone Number' do
@@ -152,14 +142,14 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('555-555-5555'))
   end
 
-  it '(Rainy Day) Empty Phone Number' do
+  it '(Sunny Day) Empty Phone Number' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Phone_Number', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Phone number can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Current Job' do
@@ -274,24 +264,24 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('https://www.linkedin.com/in/john-doe2'))
   end
 
-  it '(Sunny Day) Update Linkedin Profile to N/A' do
-    visit edit_user_path(@user.id)
-
-    fill_in 'user_Linkedin_Profile', with: 'N/A'
-
-    click_on 'Save'
-
-    expect(page).to(have_content('N/A'))
-  end
-
-  it '(Rainy Day) Empty Linkedin Profile' do
+  it '(Sunny Day) Update Linkedin Profile to blank' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Linkedin_Profile', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
+  end
+
+  it '(Rainy Day) Linkedin Profile is invalid' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'test'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
   end
 
   it '(Rainy Day) Invalid Linkedin Profile url' do
@@ -301,7 +291,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile must be 'N/A' or a valid LinkedIn URL"))
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do
@@ -347,5 +337,18 @@ RSpec.describe('Updating Users', type: :system) do
     click_on 'Save'
 
     expect(page).to(have_content('You cannot change your own admin status.'))
+  end
+
+  it '(Rainy Day) BLSA gmail account cannot be edited, even by an admin' do
+    set_admin_true
+    blsa_user = User.find_by(Email: 'blsa.tamu@gmail.com')
+    visit edit_user_path(blsa_user.id)
+
+    # Attempt to edit the user
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('This account cannot be edited.'))
   end
 end

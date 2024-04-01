@@ -19,11 +19,11 @@
   <% end %>
 
   <div class="px-3 mb-4">
-    <%= form.label :University, "University/College Name", style: "display: block", class: "#{label_class}" %>
-    <%= form.text_field :University, placeholder: "EX: Texas A&M University", class: text_field_class %>
+    <%= form.label :University, "University/College Name", required: true, style: "display: block", class: "#{label_class}" %>
+    <%= form.text_field :University, placeholder: "EX: Texas A&M University", required: true, class: text_field_class %>
   </div>
 
   <div class="px-3 mb-4">
-    <%= form.submit "Save", class: "shadow bg-gray-800 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
+    <%= form.submit "Save", class: "shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
   </div>
 <% end %>

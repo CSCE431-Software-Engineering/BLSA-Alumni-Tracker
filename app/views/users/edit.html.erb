@@ -1,16 +1,15 @@
-<h1>Editing user</h1>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" %>
 
-<%= render "form", user: @user %>
+<div class="m-4">
+  <h1 class="font-bold text-2xl">Editing user</h1>
 
-<br>
+  <%= render "form", user: @user %>
 
-<div>
-  <% if @user.persisted? %>
-    <%= link_to "Delete this user", delete_user_path(@user) %>
-  <% end %>
+  <br>
+
+  <div>
+    <%= link_to users_path, class: "underline" do %>
+      <span>&#8592;</span> <%= "Back to users" %>
+    <% end %>
+  </div>
 </div>
-
-<!--div>
-  <%= link_to "Show this user", @user %> |
-  <%= link_to "Back to users", users_path %>
-</div-->

@@ -7,7 +7,7 @@ module ViewHelper
     )
   end
 
-  def create_user(email  , ft  , pa, country , state = 'New York', city = 'New York')
+  def create_user(email = 'csce431@gmail.com', ft = 'Government', pa = 'Civil Litigation', country = 'USA', state = 'New York', city = 'New York')
     User.create!(
       First_Name: 'Pauline',
       Last_Name: 'Wade',

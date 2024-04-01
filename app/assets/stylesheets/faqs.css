@@ -1,0 +1,68 @@
+ /* Add to app/assets/stylesheets/faqs.css */
+.faq-question {
+    background-color: #f1f1f1;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: 1px solid #ccc;
+    text-align: left;
+    position: relative;
+}
+
+.faq-question::after {
+    content: "\25BC"; /* Unicode character for downward-pointing triangle */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+.faq-question.collapsed::after {
+    content: "\25B6"; /* Unicode character for right-pointing triangle */
+}
+
+.faq-answer {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+}
+
+/* WCAG 2.1 Accessibility */
+.faq-question:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #007bff;
+}
+
+.faq-question:hover {
+    background-color: #e5e5e5;
+}
+
+.faq-question:active {
+    background-color: #d9d9d9;
+}
+
+.faq-question.collapsed:focus::after {
+    content: "\25B6"; /* Unicode character for right-pointing triangle */
+}
+
+.faq-question.collapsed:hover::after {
+    content: "\25B6"; /* Unicode character for right-pointing triangle */
+}
+
+.faq-question.collapsed:active::after {
+    content: "\25B6"; /* Unicode character for right-pointing triangle */
+}
+
+.faq-answer {
+    margin-top: 10px;
+    padding-bottom: 10px; /* Add padding-bottom property */
+    border: 1px solid #ccc;
+    border-top: none;
+    outline: none; /* Add outline property */
+}
+  

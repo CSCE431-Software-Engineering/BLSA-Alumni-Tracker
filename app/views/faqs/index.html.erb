@@ -1,38 +1,90 @@
-<h1>Frequently Asked Questions</h1>
+<h1 style="text-align: center; padding: 20px; font-size: larger;">Frequently Asked Questions</h1>
 
 <div class="faq-container">
   <% # FAQ entries %>
   <% [["Where can I get assistance?", "The primary goal of this application is autonomous use. However, if you need assistance, 
-        please contact the developer at MAILTOLATER"],
-      ["Who would this help?", "We wanted to have a centralized database representing the Aggie BLSA alumni. This application 
-      is intended to help current students and alumni connect with each other."],
+        please contact the developer at <a href='mailto:paulinewade@tamu.edu'>paulinewade@tamu.edu</a>"],
+
       ["What is the purpose of this application?", "The purpose of this application is to provide a centralized database for 
       Aggie BLSA alumni to connect with each other."],
-      ["How do I get started?", "To get started, you will need to create an account. Once you have created an account, you 
-      can begin adding your information to the database."],
-      ["How do I add my information to the database?", "To add your information to the database, you will need to create an 
-      account. Once you have created an account, you can begin adding your information to the database."],
+
+      ["How do I get started?", "To get started, you will need to create an account. You can do this by clicking the 'Sign in
+      with Google'."],
+
       ["How do I edit my information?", "To edit your information, you will need to log in to your account. Once you have 
-      logged in, you can edit your information."],
+      logged in, you will be directed to profile creation."],
+
       ["How do I delete my account?", "To delete your account, you will need to log in to your account. Once you have logged 
-      in, you can delete your account."]
+      in, you can delete you profile by clicking 'Profile Picture -> My Profile -> Delete User'."],
+
+      ["How do I get a valid link to my LinkedIn profile?", "To get a valid link to your LinkedIn profile, you will need to
+      navigate to your LinkedIn profile and copy your URL. Paste this URL into the LinkedIn field on your profile. Make sure to follow
+      the guide text for the correct format. (<a href='http://www.linkedin.com/in/yourname'>http://www.linkedin.com/in/yourname</a>)"],
+
+      ["How do I add my education information?", "Once you create your profile, click 'Dashboard' and click the ToDo List button."],
+
+      ["How do I add a university option?", "When creating your education information, you can add a university via the 'Click here to add university' button.
+      Otherwise, click 'Profile Picture -> Universities -> New University'."],
+
+      ["How do I add a location option?", "If your location is not an option, fill the input boxes (Country, State, City) in 'Edit User'"],
+
+      ["Why can I not login with my TAMU email address?", "We do this for security reasons. We want to ensure that only Aggie BLSA alumni can access this applicaiton"],
+      ["(Keyboard Users) How do I select multiple practice areas?", "See keyboard shortcuts for navigation"],
     ].each_with_index do |(question, answer), index| %>
     <div class="faq-item">
-      <button class="faq-question" data-target="#answer<%= index %>">
+      <button class="faq-question" data-target="#answer<%= index %>" aria-expanded="false" aria-controls="answer<%= index %>">
         <%= question %>
       </button>
-      <div id="answer<%= index %>" class="faq-answer" style="display: none;">
-        <%= answer %>
+      <div id="answer<%= index %>" class="faq-answer" style="display: none;" aria-hidden="true">
+        <%= answer.html_safe %>
       </div>
     </div>
   <% end %>
 </div>
+
+<% if current_user_is_admin? %>
+  <div class="admin-container">
+      <% # Admin FAQ entries %>
+  <% [["How can I edit a user's profile?", "On the Dashboard, search for the user you want to edit. Click on the user's name to view their profile.
+      Click the 'Edit User' button to edit their profile."],
+
+      ["How can I delete a user's profile?", "On the Dashboard, search for the user you want to edit. Click on the user's name to view their profile.
+      Click the 'Delete User' button to delete their profile."],
+
+      ["How can I promote other admins?", "On the Dashboard, search for the user you want to promote. Click on the user's name to view their profile.
+      Click the 'Promote to Admin' button to promote them."],
+
+      ["Why can't I change my own admin status?", "As the expectation is that officers will change frequently (yearly), we have disabled the ability for
+      admins to change their own status. If you need to change your status, please contact the developer."],
+
+      ["Where can I get developer help?", "See the 'Where can I get assistance?' FAQ. The developers were contracted to a team of students who cannot
+      provide support after the development cycle has ended. To find assistance, see our documentation and support documents at <a href='https://github.com/CSCE431-Software-Engineering/BLSA-Alumni-Tracker'>https://github.com/CSCE431-Software-Engineering/BLSA-Alumni-Tracker</a>.
+      Additionally, you can contact the professor in charge of development
+      at <a href='mailto:paulinewade@tamu.edu'>paulinewade@tamu.edu</a>"],
+    ].each_with_index do |(question, answer), index| %>
+    <div class="faq-item">
+      <button class="faq-question" data-target="#answer<%= index %>" aria-expanded="false" aria-controls="answer<%= index %>">
+        <%= question %>
+      </button>
+      <div id="answer<%= index %>" class="faq-answer" style="display: none;" aria-hidden="true">
+        <%= answer.html_safe %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<% end %>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('.faq-question').forEach(function(question) {
     question.onclick = function() {
       var content = this.nextElementSibling;
+      var allContents = document.querySelectorAll('.faq-answer');
+      allContents.forEach(function(item) {
+        if (item !== content) {
+          item.style.display = "none";
+        }
+      });
       if (content.style.display === "block") {
         content.style.display = "none";
       } else {

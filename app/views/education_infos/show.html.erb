@@ -1,10 +1,36 @@
-<p style="color: green"><%= notice %></p>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
-<%= render @education_info %>
+<div class="m-4">
+  <div class="flex justify-between">
+    <h1 class="font-bold text-2xl">Education Information for 
+      <span>
+        <%= link_to "#{@education_info.user.First_Name} #{@education_info.user.Last_Name}", user_path(@education_info.user), class: "underline" %>
+      </span>
+    </h1>
+    
+    <div class="flex flex-row">
+      <%= button_to "Edit", edit_education_info_path(@education_info), method: :get, class: "m-4 #{button_class}" %>
+      <%= button_to "Delete", @education_info, method: :delete, class: "m-4 #{button_class}" %>
+    </div>
+  </div>
+  
+  
+  <%= render @education_info %>
 
-<div>
-  <%= link_to "Edit this education info", edit_education_info_path(@education_info) %> |
-  <%= link_to "Back to education infos", education_infos_path %>
+  <br>
 
-  <%= button_to "Destroy this education info", @education_info, method: :delete %>
+  <div>
+    <% if current_user_is_admin? %>
+      <div>
+        <%= link_to user_path(@education_info.user), class: "underline" do %>
+          <span>&#8592;</span> <%= "Back to user" %>
+        <% end %>
+      </div>
+    <% end %>
+    <div>
+    <%= link_to education_infos_path, class: "underline" do %>
+      <span>&#8592;</span> <%= "Back to my education information" %>
+    <% end %>
+    </div>
+  </div>
 </div>

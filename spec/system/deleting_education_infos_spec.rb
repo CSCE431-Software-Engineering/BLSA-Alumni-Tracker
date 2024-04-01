@@ -11,7 +11,7 @@ RSpec.describe('Deleting Education Info', type: :system) do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login
 
-    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@gmail.com')
 
     @university = University.create!(
       University: 'Texas A&M'
@@ -29,7 +29,7 @@ RSpec.describe('Deleting Education Info', type: :system) do
   it '(Sunny Day) Delete Education Info' do
     visit education_info_path(@education_info.id)
 
-    click_on 'Destroy this education info'
+    click_on 'Delete'
 
     expect(page).to(have_content('Education info was successfully destroyed.'))
   end

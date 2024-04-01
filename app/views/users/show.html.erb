@@ -1,7 +1,20 @@
-<p style="color: green"><%= notice %></p>
+<% button_class="shadow focus:shadow-outline focus:outline-none text-white py-2 px-4 bg-tamu-maroon text-white rounded-md hover:bg-tamu-dark-maroon" %>
 
-<%= render @user %>
+<div class="m-4">
+  <div class="flex justify-between">
+    <h1 class="font-bold text-2xl">User Information</h1>
+  </div>
+  <%= render @user %>
 
-<div>
-  <%= link_to "Back to users", users_path %> 
+  <div class="flex justify-between">
+    <%= link_to users_path, class: "underline m-4" do %>
+      <span>&#8592;</span> <%= "Back to users" %>
+    <% end %>
+    <div class="m-4">
+      <% if current_user_is_admin? || @user.Email == session[:email]%>
+        <%= link_to "Edit User", edit_user_path(@user), class: "m-4 bg-blue-500 hover:bg-blue-700 #{button_class}" %>
+        <%= link_to "Delete User", delete_user_path(@user), method: :delete, data: { confirm: "Are you sure?" }, class: "m-4 bg-red-500 hover:bg-red-700 #{button_class}" %>
+      <% end %>
+    </div>
+  </div>
 </div>

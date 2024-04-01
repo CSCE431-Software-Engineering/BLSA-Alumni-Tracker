@@ -19,10 +19,10 @@ RSpec.describe('Creating Education Infos', type: :system) do
   it '(Sunny Day) Creating and Showing Education Info' do
     visit new_education_info_path
 
-    fill_in 'Semester', with: 'Spring'
-    fill_in 'Grad year', with: 2025
+    fill_in 'education_info_Semester', with: 'Spring'
+    fill_in 'education_info_Grad_Year', with: 2025
     select 'Texas A&M University', from: 'education_info_university_id'
-    fill_in 'Degree type', with: 'Bachelors of Computer Science'
+    fill_in 'education_info_Degree_Type', with: 'Bachelors of Computer Science'
 
     click_on 'Save'
 
@@ -35,7 +35,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
   it '(Rainy Day) No Semester' do
     visit new_education_info_path
 
-    fill_in 'Semester', with: ''
+    fill_in 'education_info_Semester', with: ''
 
     click_on 'Save'
 
@@ -46,7 +46,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
     it '(Rainy Day) No Graduation Year' do
       visit new_education_info_path
 
-      fill_in 'Grad year', with: ''
+      fill_in 'education_info_Grad_Year', with: ''
 
       click_on 'Save'
 
@@ -56,7 +56,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
     it '(Rainy Day) Too Short Graduation Year' do
       visit new_education_info_path
 
-      fill_in 'Grad year', with: 123
+      fill_in 'education_info_Grad_Year', with: 123
 
       click_on 'Save'
 
@@ -66,7 +66,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
     it '(Rainy Day) Non-Numeric Graduation Year' do
       visit new_education_info_path
 
-      fill_in 'Grad year', with: 'abc123'
+      fill_in 'education_info_Grad_Year', with: 'abc123'
 
       click_on 'Save'
 
@@ -87,7 +87,7 @@ RSpec.describe('Creating Education Infos', type: :system) do
   it '(Rainy Day) No Degree Type' do
     visit new_education_info_path
 
-    fill_in 'Degree type', with: ''
+    fill_in 'education_info_Degree_Type', with: ''
 
     click_on 'Save'
 

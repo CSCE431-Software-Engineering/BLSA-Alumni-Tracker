@@ -15,10 +15,11 @@ RSpec.describe('Updating Universities', type: :system) do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
     login
 
-    @user = User.find_by(Email: 'csce431@tamu.edu')
+    @user = User.find_by(Email: 'csce431@gmail.com')
   end
 
   it '(Sunny Day) Valid University Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: 'Another test uni'
@@ -28,6 +29,7 @@ RSpec.describe('Updating Universities', type: :system) do
   end
 
   it '(Rainy Day) Empty University Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     fill_in 'University', with: ''
@@ -37,6 +39,7 @@ RSpec.describe('Updating Universities', type: :system) do
   end
 
   it '(Rainy Day) Update with Duplicate Name' do
+    set_admin_true
     visit edit_university_path(@university.id)
 
     University.create!(

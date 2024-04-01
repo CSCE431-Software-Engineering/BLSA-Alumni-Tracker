@@ -23,15 +23,32 @@ RSpec.describe('Updating Users', type: :system) do
       Last_Name: 'Doe',
       Middle_Name: 'M',
       Profile_Picture: 'https://www.google.com',
-      Email: 'csce431@tamu.edu',
+      Email: 'csce431@gmail.com',
       Phone_Number: '123-456-7890',
       Current_Job: 'Software Engineer',
       firm_type_id: @firm_type.id,
       location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
       practice_areas: [@practice_area],
       is_Admin: true
     )
+
+    @user2 = User.create!(
+      First_Name: 'John',
+      Last_Name: 'Doe',
+      Middle_Name: 'M',
+      Profile_Picture: 'https://www.google.com',
+      Email: 'NOTcsce431@gmail.com',
+      Phone_Number: '123-456-7890',
+      Current_Job: 'Software Engineer',
+      firm_type_id: @firm_type.id,
+      # Location: 'New York',
+      location_id: @location_id.id,
+      Linkedin_Profile: 'https://www.linkedin.com/in/john-doe',
+      practice_areas: [@practice_area],
+      is_Admin: false
+    )
+
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
 
@@ -47,11 +64,6 @@ RSpec.describe('Updating Users', type: :system) do
 
   it '(Sunny Day) Update First Name' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_First_Name', with: 'Jane'
 
@@ -73,11 +85,6 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Last Name' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_Last_Name', with: 'Smith'
 
     click_on 'Save'
@@ -98,11 +105,6 @@ RSpec.describe('Updating Users', type: :system) do
   it '(Sunny Day) Update Middle Name' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     fill_in 'user_Middle_Name', with: 'L'
 
     click_on 'Save'
@@ -110,69 +112,18 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('L'))
   end
 
-  it '(Rainy Day) Empty Middle Name' do
+  it '(Sunny Day) Empty Middle Name' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Middle_Name', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Middle name can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
-
-  it '(Sunny Day) Update Profile Picture' do
-    visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
-    fill_in 'user_Profile_Picture', with: 'https://www.facebook.com'
-
-    click_on 'Save'
-
-    expect(page).to(have_content('https://www.facebook.com'))
-  end
-
-  it '(Rainy Day) Empty Profile Picture' do
-    visit edit_user_path(@user.id)
-
-    fill_in 'user_Profile_Picture', with: ''
-
-    click_on 'Save'
-
-    expect(page).to(have_content("Profile picture can't be blank"))
-  end
-
-  # these tests should be removed since the user no longer enters their own email
-  # it '(Sunny Day) Update Email' do
-  #   visit edit_user_path(@user.id)
-
-  #   fill_in 'user_Email', with: 'JaneSmith@gmail.com'
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content('JaneSmith@gmail.com'))
-  # end
-
-  # it '(Rainy Day) Empty Email' do
-  #   visit edit_user_path(@user.id)
-
-  #   fill_in 'user_Email', with: ''
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content("Email can't be blank"))
-  # end
 
   it '(Sunny Day) Update Phone Number' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Phone_Number', with: '555-555-5555'
 
@@ -181,23 +132,18 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content('555-555-5555'))
   end
 
-  it '(Rainy Day) Empty Phone Number' do
+  it '(Sunny Day) Empty Phone Number' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Phone_Number', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Phone number can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
   end
 
   it '(Sunny Day) Update Current Job' do
     visit edit_user_path(@user.id)
-
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
 
     fill_in 'user_Current_Job', with: 'Lawyer'
 
@@ -222,11 +168,6 @@ RSpec.describe('Updating Users', type: :system) do
     )
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
-    fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
-
     select @firm_type_new.firm_type, from: 'user_firm_type_id'
 
     click_on 'Save'
@@ -234,73 +175,170 @@ RSpec.describe('Updating Users', type: :system) do
     expect(page).to(have_content(@firm_type_new.firm_type))
   end
 
-  # not sure how to add rainy day case since user only has the options given to them
+  it '(Sunny Day) Update Location to an existing location' do
+    @new_location_id = Location.create!(
+      country: 'USA',
+      state: 'California',
+      city: 'San Jose'
+    )
+    visit edit_user_path(@user.id)
+    select @new_location_id.city, from: 'user_location_id'
 
-  # it '(Sunny Day) Update Location' do
-  #   visit edit_user_path(@user.id)
+    click_on 'Save'
+    expect(page).to(have_content(@new_location_id.location_string))
+  end
 
-  #   fill_in 'user_Location', with: 'Los Angeles'
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content('Los Angeles'))
-  # end
-
-  # it '(Rainy Day) Empty Location' do
-  #   visit edit_user_path(@user.id)
-
-  #   fill_in 'user_Location', with: ''
-
-  #   click_on 'Save'
-
-  #   expect(page).to(have_content("Location can't be blank"))
-  # end
-
-  it '(Sunny Day) Update Linkedin Profile' do
+  it '(Sunny Day) Update Location to a new location' do
     visit edit_user_path(@user.id)
 
-    # HARDCODED TESTS, REMOVE LATER AND FIX
+    select 'Create new location', from: 'user_location_id'
     fill_in 'user_location_attributes_country', with: 'USA'
-    fill_in 'user_location_attributes_state', with: 'New York'
-    fill_in 'user_location_attributes_city', with: 'New York'
+    fill_in 'user_location_attributes_state', with: 'California'
+    fill_in 'user_location_attributes_city', with: 'San Jose'
 
-    fill_in 'user_Linkedin_Profile', with: 'https://www.myspace.com'
+    click_on 'Save'
+    expect(page).to(have_content('San Jose, California, USA'))
+  end
+
+  it '(Rainy Day) Update Location select existing location, and fill out new location areas' do
+    @new_location_id = Location.create!(
+      country: 'USA',
+      state: 'California',
+      city: 'San Jose'
+    )
+    visit edit_user_path(@user.id)
+    select @new_location_id.city, from: 'user_location_id'
+
+    fill_in 'user_location_attributes_country', with: 'USA'
+    fill_in 'user_location_attributes_state', with: 'California'
+    fill_in 'user_location_attributes_city', with: 'San Jose'
+
+    click_on 'Save'
+    expect(page).to(have_content(@new_location_id.location_string))
+  end
+
+  it '(Rainy Day) Update Location to a new location, but leave country field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_country', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('Country can\'t be blank'))
+  end
+
+  it '(Rainy Day) Update Location to a new location, but leave state field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_state', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('State can\'t be blank'))
+  end
+
+  it '(Rainy Day) Update Location to a new location, but leave city field blank' do
+    visit edit_user_path(@user.id)
+    select 'Create new location', from: 'user_location_id'
+    fill_in 'user_location_attributes_city', with: ''
+
+    click_on 'Save'
+    expect(page).to(have_content('City can\'t be blank'))
+  end
+
+  it '(Sunny Day) Update Linkedin Profile to valid url' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'https://www.linkedin.com/in/john-doe2'
 
     click_on 'Save'
 
-    expect(page).to(have_content('https://www.myspace.com'))
+    expect(page).to(have_content('https://www.linkedin.com/in/john-doe2'))
   end
 
-  it '(Rainy Day) Empty Linkedin Profile' do
+  it '(Sunny Day) Update Linkedin Profile to blank' do
     visit edit_user_path(@user.id)
 
     fill_in 'user_Linkedin_Profile', with: ''
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile can't be blank"))
+    expect(page).to(have_content('Profile was successfully updated.'))
+  end
+
+  it '(Rainy Day) Linkedin Profile is invalid' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'test'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
+  end
+
+  it '(Rainy Day) Invalid Linkedin Profile url' do
+    visit edit_user_path(@user.id)
+
+    fill_in 'user_Linkedin_Profile', with: 'https://www.lonkedin.com/in/john-doe'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do
-    @practice_area = PracticeArea.create!(practice_area: 'Civil Litigation')
-    @user2 = User.create!(
-      First_Name: 'John',
-      Last_Name: 'Doe',
-      Middle_Name: 'M',
-      Profile_Picture: 'https://www.google.com',
-      Email: 'NOTcsce431@tamu.edu',
-      Phone_Number: '123-456-7890',
-      Current_Job: 'Software Engineer',
-      firm_type_id: @firm_type.id,
-      # Location: 'New York',
-      location_id: @location_id.id,
-      Linkedin_Profile: 'https://www.linkedin.com',
-      practice_areas: [@practice_area],
-      is_Admin: true
-    )
+    set_admin_false
+
     visit edit_user_path(@user2.id)
+
+    fill_in 'user_First_Name', with: 'Jane'
+
     click_on 'Save'
 
     expect(page).to(have_content('You can only update your own profile.'))
+  end
+
+  it '(Sunny Day) Admin users can edit a profile that is not theirs' do
+    set_admin_true
+    visit edit_user_path(@user2.id)
+
+    fill_in 'user_First_Name', with: 'Jane'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('Jane'))
+  end
+
+  it '(Sunny Day) Admin can promote another user to admin' do
+    set_admin_true
+    visit edit_user_path(@user2.id)
+
+    check 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('true'))
+  end
+
+  it '(Rainy Day) Admin cannot remove their own admin status' do
+    set_admin_true
+    visit edit_user_path(@user.id)
+
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('You cannot change your own admin status.'))
+  end
+
+  it '(Rainy Day) BLSA gmail account cannot be edited, even by an admin' do
+    set_admin_true
+    blsa_user = User.find_by(Email: 'blsa.tamu@gmail.com')
+    visit edit_user_path(blsa_user.id)
+
+    # Attempt to edit the user
+    uncheck 'user_is_Admin'
+
+    click_on 'Save'
+
+    expect(page).to(have_content('This account cannot be edited.'))
   end
 end

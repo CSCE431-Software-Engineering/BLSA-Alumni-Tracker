@@ -1,0 +1,148 @@
+<h1 style="text-align: center; padding: 20px; font-size: larger;">Frequently Asked Questions</h1>
+
+<div class="faq-container">
+  <% # FAQ entries %>
+  <% [
+      [
+        "Where can I get assistance?", 
+        "This FAQ page, but if your question is not satisfied contact current organization officers by sending an email to \
+        <a href='mailto:blsa.tamu@gmail.com'>blsa.tamu@gmail.com</a>"
+      ],
+      [
+        "What is the purpose of this application?", 
+        "The purpose of this application is to allow current and previous members of the Texas A&M Black Law Student Association \
+        to connect with each other."
+      ],
+      [
+        "How do I get started?", 
+        "To get started, you will need to create an account. You can do this by clicking the 'Profile Icon' in the top right corner \
+        and then selecting 'My Profile'."
+      ],
+      [
+        "How do I edit my information?", 
+        "To edit your information, you will need to log in to your account. Once you have logged in, you can edit your profile by \
+        clicking 'Profile Icon -> My Profile -> Delete User'."
+      ],
+      [
+        "How do I delete my account?", 
+        "To delete your account, you will need to log in to your account. Once you have logged in, you can delete your profile by \
+        clicking 'Profile Icon -> My Profile -> Delete User'."
+      ],
+      [
+        "How do I get a valid link to my LinkedIn profile?", 
+        "To get a valid link to your LinkedIn profile, you will need to navigate to your LinkedIn profile on \
+        <a href='http://www.linkedin.com' class='hover:text-blue-600 hover:underline'>Linkedin</a> and copy your URL. Paste this URL \
+        into the LinkedIn field on your profile. A valid link will follow this format: http://www.linkedin.com/in/yourname."
+      ],
+      [
+        "How do I add my education information?", 
+        "Once you create your profile, you can add education information by clicking 'Profile Icon -> My Education Information' and \
+        then will see options to add Graduate or Undergraduate degrees in the top right corner."
+      ],
+      [
+        "How do I add a university option?", 
+        "When creating your education information, you can add a university via the 'Click here to add university' button. \
+        Otherwise, click 'Profile Picture -> Universities -> New University'."
+      ],
+      [
+        "How do I add a location option?", 
+        "If your location is not an option, select 'Create new Location' and fill the input boxes (Country, State, City) with your location."
+      ],
+      [
+        "Why can I not login with my TAMU email address?", 
+        "Students lose access to their @tamu.edu email accounts and we want to ensure that accounts are accessible after graduation."
+      ],
+      [
+        "How do I select multiple practice areas?", 
+        "Hold 'ctrl' while selecting desired practice areas"
+      ],
+      [
+        "How do I search for a user?", 
+        "On the Dashboard, you can search for a user by selecting a filter and then typing into the search bar."
+      ],
+      [
+        "How do I view a user's profile?", 
+        "On the Dashboard, search for the user you want to view. Click on the user's name to view their profile."
+      ],
+    ].each_with_index do |(question, answer), index| %>
+    <div class="faq-item">
+      <button class="faq-question" data-target="#answer<%= index %>" aria-expanded="false" aria-controls="answer<%= index %>">
+        <%= question %>
+      </button>
+      <div id="answer<%= index %>" class="faq-answer" style="display: none;" aria-hidden="true">
+        <%= answer.html_safe %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if current_user_is_admin? %>
+  <h1 style="text-align: center; padding: 20px; font-size: larger;">Admin Frequently Asked Questions</h1>
+  <div class="admin-container">
+      <% # Admin FAQ entries %>
+  <% [
+      [
+        "How can I edit a user's profile?", 
+        "On the Dashboard, search for the user you want to edit. Click on the user's name to view their profile. \
+        Click the 'Edit User' button to edit their profile."
+      ],
+      [
+        "How can I delete a user's profile?", 
+        "On the Dashboard, search for the user you want to delete. Click on the user's name to view their profile. \
+        Click the 'Delete User' button to delete their profile."
+      ],
+      [
+        "How can I promote other admins?", 
+        "On the Dashboard, search for the user you want to promote. Click on the user's name to view their profile. \
+        Click the 'Edit User' button to edit their profile. Check the 'Is Admin' checkbox and click 'Save'."
+      ],
+      [
+        "How can I demote other admins?", 
+        "On the Admin Search Screen, search for the user you want to demote. Click on the user's name to view their profile. \
+        Click the 'Edit User' button to edit their profile. Uncheck the 'Is Admin' checkbox and click 'Save'."
+      ],
+      [
+        "Why can't I change my own admin status?", 
+        "Admins are unable to change their own status to prevent the system from being left with no admins. In order to remove your admin status please promote a current officer to admin and then have them demote you. \
+        If needed login to the blsa.tamu@gmail.com and remove your admin status through that account."
+      ],
+      [
+        "Where can I get developer help?", 
+        "The developers were a contracted team of students who cannot provide support after the development cycle (class) has ended. \
+        To find assistance, see our documentation and support documents that should be saved within the blsa.tamu@gmail.com email account. \
+        Additionally, you can contact the professor if the documents do not satisfy your questions, at \
+        <a href='mailto:paulinewade@tamu.edu'>paulinewade@tamu.edu</a>"
+      ],
+    ].each_with_index do |(question, answer), index| %>
+    <div class="faq-item">
+      <button class="faq-question" data-target="#answer<%= index %>" aria-expanded="false" aria-controls="answer<%= index %>">
+        <%= question %>
+      </button>
+      <div id="answer<%= index %>" class="faq-answer" style="display: none;" aria-hidden="true">
+        <%= answer.html_safe %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('.faq-question').forEach(function(question) {
+    question.onclick = function() {
+      var content = this.nextElementSibling;
+      var allContents = document.querySelectorAll('.faq-answer');
+      allContents.forEach(function(item) {
+        if (item !== content) {
+          item.style.display = "none";
+        }
+      });
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    };
+  });
+});
+</script>

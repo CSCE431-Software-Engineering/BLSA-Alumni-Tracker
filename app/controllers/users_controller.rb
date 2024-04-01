@@ -68,7 +68,9 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1 or /users/1.json
-  def show; end
+  def show
+    puts("\n\n\n#{@user.inspect}\n\n\n")
+  end
 
   # GET /users/new
   def new
@@ -97,6 +99,8 @@ class UsersController < ApplicationController
     @user.is_Admin = false if params[:user][:is_Admin].nil?
 
     @user.Email = session[:email]
+    @user.Profile_Picture = session[:pfp]
+
     respond_to do |format|
       if @user.save
         save_practice_areas
@@ -275,11 +279,11 @@ class UsersController < ApplicationController
     @todo_list = []
 
     if @current_user.blank?
-      @todo_list.append(['Click here to finish creating your account', new_user_path])
+      @todo_list.append(['Click here to finish creating your account &#10132;', new_user_path])
       return
     end
 
-    @todo_list.append(['Click here to fill out your education information', new_education_info_path]) if @current_user.education_infos.empty?
+    @todo_list.append(['Click here to fill out your education information &#10132;', new_education_info_path]) if @current_user.education_infos.empty?
   end
 end
 

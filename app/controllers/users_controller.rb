@@ -34,16 +34,12 @@ class UsersController < ApplicationController
                  begin
                    Integer(search_term, 10)
                    @users = User.joins(:education_infos)
-                                .select(%{users.*, MIN(ABS(education_infos."Grad_Year" - #{search_year})) AS year_diff})
+                                .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_term})) AS year_diff")
                                 .group('users.id')
                                 .order('year_diff')
                  rescue ArgumentError
                    # Handle the case when search_term is not a valid integer
-                   # You can choose to return an empty result set or display an error message
                    @users = User.none
-                   # or
-                   # flash[:error] = "Invalid search term. Please enter a valid year."
-                   # redirect_to root_path
                  end
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")

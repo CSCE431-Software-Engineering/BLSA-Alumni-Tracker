@@ -13,6 +13,10 @@ RSpec.describe('User Index', type: :system) do
     @user1 = create_user('user1@example.com', 'Law Firm', 'Tax Law', 'USA', 'California', 'Los Angeles')
     @user2 = create_user('user2@example.com', 'Government', 'Criminal Law', 'USA', 'New York', 'New York')
     @user3 = create_user('user3@example.com', 'Non-Profit', 'Environmental Law', 'Canada', 'Ontario', 'Toronto')
+    find_or_create_education_info(2014, @user1)
+    find_or_create_education_info(2013, @user2)
+    find_or_create_education_info(2025, @user3)
+    find_or_create_education_info(2029, @user3)
 
     Rails.application.load_seed
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
@@ -81,6 +85,17 @@ RSpec.describe('User Index', type: :system) do
       click_on 'Search'
 
       expect(page).to(have_selector('table tbody tr', count: 0))
+    end
+    it '(Sunny Day) displays users when searching class year' do
+      visit users_path
+      fill_in 'search', with: '2020'
+      select 'Class Year', from: 'filter'
+      click_on 'Search'
+
+      expect(page).to(have_selector('table tbody tr', count: 3))
+      expect(page).to(have_selector('table tbody tr:nth-child(1) td', text: 'Pauline Wade'))
+      expect(page).to(have_selector('table tbody tr:nth-child(2) td', text: 'Pauline Wade'))
+      expect(page).to(have_selector('table tbody tr:nth-child(3) td', text: 'Pauline Wade'))
     end
   end
 

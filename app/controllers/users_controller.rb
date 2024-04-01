@@ -31,22 +31,19 @@ class UsersController < ApplicationController
                    search: "%#{search_term}%"
                  )
                when 'class_year'
-                 search_year = Integer(search_term, 10)
-                 @users = User.joins(:education_infos)
-                              .select('users.*, MIN(ABS(education_infos."Grad_Year" - ?)) AS year_diff', search_year)
-                              .group('users.id')
-                              .order('year_diff')
+                 begin
+                   Integer(search_term, 10)
+                   @users = User.joins(:education_infos)
+                                .select("users.*, MIN(ABS(education_infos.\"Grad_Year\" - #{search_term})) AS year_diff")
+                                .group('users.id')
+                                .order('year_diff')
+                 rescue ArgumentError
+                   # Handle the case when search_term is not a valid integer
+                   @users = User.none
+                 end
                when 'practice_area'
                  User.joins(:practice_areas).where('LOWER(practice_areas.practice_area) LIKE ?', "%#{search_term}%")
-               else
-                 User.where(
-                   "LOWER(CONCAT(\"First_Name\", ' ', \"Last_Name\")) LIKE :search OR
-           LOWER(CONCAT(\"First_Name\", ' ', \"Middle_Name\")) LIKE :search OR
-           LOWER(\"First_Name\") LIKE :search OR
-           LOWER(\"Last_Name\") LIKE :search OR
-           LOWER(\"Middle_Name\") LIKE :search",
-                   search: "%#{search_term}%"
-                 )
+
                end
     else
       @users = User.all

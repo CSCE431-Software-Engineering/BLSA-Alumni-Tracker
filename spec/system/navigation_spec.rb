@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'system_helper'
 
@@ -19,6 +21,6 @@ RSpec.describe('Navigation', type: :system) do
   end
 
   it '' do
-    # TODO :: Add search tests
+    # TODO: : Add search tests
   end
 end

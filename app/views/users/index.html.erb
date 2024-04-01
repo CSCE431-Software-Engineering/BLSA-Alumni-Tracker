@@ -6,7 +6,7 @@
       <div class="todo-list m-4">
         <ul id="todo-list" class="space-y-2">
           <% @todo_list.each do |item, path| %>
-          <li><a href=<%= path %> class="text-white hover:text-gray-300"><%= item.html_safe %></a></li></li>
+          <li><a href=<%= path.html_safe %> class="text-white hover:text-gray-300"><%= item.html_safe %></a></li></li>
           <% end %>
         </ul>
       </div>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="overflow-x-auto">
-  <table class="min-w-full leading-normal">
+  <table class="min-w-full leading-normal user-table">
     <thead>
       <tr>
         <th class="text-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">

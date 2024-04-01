@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+
+table.user-table tr:hover td {
+  background-color: #f3f4f6;
+}

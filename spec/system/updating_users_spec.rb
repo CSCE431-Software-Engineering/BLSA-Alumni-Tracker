@@ -281,7 +281,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
   end
 
   it '(Rainy Day) Invalid Linkedin Profile url' do
@@ -291,7 +291,7 @@ RSpec.describe('Updating Users', type: :system) do
 
     click_on 'Save'
 
-    expect(page).to(have_content("Linkedin profile must be a valid LinkedIn URL or blank"))
+    expect(page).to(have_content('Linkedin profile must be a valid LinkedIn URL or blank'))
   end
 
   it '(Rainy Day) User cannot edit a profile that is not theirs' do

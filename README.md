@@ -29,6 +29,12 @@ This code has been run and tested using the following internal and external comp
 - [Git](https://git-scm.com/)
 - [PostgreSQL](https://www.postgresql.org/download/): `13.14 (Debian 13.14-0+deb11u1)`
 
+## Documentation
+Our product and sprint backlogs can be found in [Jira](https://texas-a-m-black-law-student-association.atlassian.net/jira/software/projects/TMBLSA/boards/2/timeline).
+- [Data Design](https://docs.google.com/document/d/169YDOrC9fSvsNO03ffqzUm7zm3S4_Sz2/edit?usp=drive_link&ouid=106160650923967633444&rtpof=true&sd=true)
+- [UX Design: Figma](https://www.figma.com/file/AbzQb9h7kRRq4PqSrggduX/Week-7-Lab?type=design&node-id=0-1&mode=design)
+  - Please note that this is not representative of how to website looks, it was a guide. 
+
 ## Installation
 ```bash
 git clone github.com:CSCE431-Software-Engineering/BLSA-Alumni-Tracker.git # or use https, up to you
